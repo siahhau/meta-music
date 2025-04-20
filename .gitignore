@@ -41,10 +41,7 @@ migrations/
 
 # Node.js/React 相关
 node_modules/
-dist/
 dist-ssr/
-frontend/.env
-frontend/.env.*
 frontend/build/
 
 # 编辑器和 IDE 相关

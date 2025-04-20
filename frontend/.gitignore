@@ -31,9 +31,7 @@ Python/Django 相关
 *.pyc
 *.pyo
 *.pyd
-env/
 venv/
-*.env
 *.egg-info/
 dist/
 build/
@@ -45,8 +43,6 @@ migrations/
 node_modules/
 dist/
 dist-ssr/
-frontend/.env
-frontend/.env.*
 frontend/build/
 
 # 编辑器和 IDE 相关
