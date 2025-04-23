@@ -1,15 +1,11 @@
+// frontend/src/components/header/Header.jsx
 import { useState } from "react";
 import { ThemeToggleButton } from "../common/ThemeToggleButton";
 import NotificationDropdown from "./NotificationDropdown";
 import UserDropdown from "./UserDropdown";
-import { Link } from "react-router";
+import { Link } from "react-router-dom"; // 修改导入
 
-// Define the interface for the props
-interface HeaderProps {
-  onClick?: () => void; // Optional function that takes no arguments and returns void
-  onToggle: () => void;
-}
-const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
+const Header = ({ onClick, onToggle }) => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const toggleApplicationMenu = () => {
@@ -24,9 +20,9 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
             className="block w-10 h-10 text-gray-500 lg:hidden dark:text-gray-400"
             onClick={onToggle}
           >
-            {/* Hamburger Icon */}
+            {/* 汉堡菜单图标 */}
             <svg
-              className={`block`}
+              className="block"
               width="16"
               height="12"
               viewBox="0 0 16 12"
@@ -55,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
                 fill="currentColor"
               />
             </svg>
-            {/* Cross Icon */}
+            {/* 关闭图标 */}
           </button>
           <button
             onClick={onClick}
@@ -146,18 +142,15 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
           </div>
         </div>
         <div
-          className={`${
-            isApplicationMenuOpen ? "flex" : "hidden"
-          } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+          className={`${isApplicationMenuOpen ? "flex" : "hidden"} items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
-            {/* <!-- Dark Mode Toggler --> */}
+            {/* 暗模式切换按钮 */}
             <ThemeToggleButton />
-            {/* <!-- Dark Mode Toggler --> */}
+            {/* 通知下拉菜单 */}
             <NotificationDropdown />
-            {/* <!-- Notification Menu Area --> */}
           </div>
-          {/* <!-- User Area --> */}
+          {/* 用户下拉菜单 */}
           <UserDropdown />
         </div>
       </div>

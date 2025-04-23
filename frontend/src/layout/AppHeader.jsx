@@ -60,7 +60,7 @@ function AppHeader() {
         console.log('搜索响应:', response.data);
         setSearchResults(response.data.results || []);
         if (!response.data.results || response.data.results.length === 0) {
-          setError('没有找到结果，请尝试拼音（如 Wu Yue Tian）或英文（如 Mayday）。');
+          setError('没有找到结果');
         }
       } catch (err) {
         console.error('搜索失败:', err);

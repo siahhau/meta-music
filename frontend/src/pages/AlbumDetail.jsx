@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import ComponentCard from "../components/common/ComponentCard";
 import PageMeta from "../components/common/PageMeta";
@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "../components/ui/table";
 import Badge from "../components/ui/badge/Badge";
-import api from '../api';
+import api from "../api";
 
 export default function AlbumDetail() {
   const { id } = useParams();
@@ -24,8 +24,8 @@ export default function AlbumDetail() {
         const response = await api.get(`/api/albums/${id}/`);
         setAlbumData(response.data);
       } catch (err) {
-        console.error('获取专辑详情失败:', err);
-        setError('无法加载专辑详情，请稍后重试');
+        console.error("获取专辑详情失败:", err);
+        setError("无法加载专辑详情，请稍后重试");
       }
     };
     fetchAlbum();
@@ -52,7 +52,10 @@ export default function AlbumDetail() {
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex flex-col items-center w-full gap-6 xl:flex-row mb-5">
             <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-              <img src={album.image_url || "/images/user/owner.jpg"} alt={album.name} />
+              <img
+                src={album.image_url || "/images/user/owner.jpg"}
+                alt={album.name}
+              />
             </div>
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
@@ -64,15 +67,15 @@ export default function AlbumDetail() {
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  发行时间：{album.release_date || '未知'}
+                  发行时间：{album.release_date || "未知"}
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  唱片公司：{album.label || '未知'}
+                  唱片公司：{album.label || "未知"}
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  类型：{album.album_type || '未知'}
+                  类型：{album.album_type || "未知"}
                 </p>
               </div>
             </div>
@@ -112,8 +115,10 @@ export default function AlbumDetail() {
               {albumData.tracks.length > 0 ? (
                 albumData.tracks.map((track) => (
                   <TableRow key={track.spotify_id}>
-                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {track.name}
+                    <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                      <Link to={`/detail/track/${track.spotify_id}`}>
+                        {track.name}
+                      </Link>
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                       {track.artist_name}
@@ -122,7 +127,10 @@ export default function AlbumDetail() {
                       {track.duration}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                      <Badge size="sm" color={track.has_score ? "success" : "danger"}>
+                      <Badge
+                        size="sm"
+                        color={track.has_score ? "success" : "danger"}
+                      >
                         {track.has_score ? "是" : "否"}
                       </Badge>
                     </TableCell>
@@ -130,7 +138,10 @@ export default function AlbumDetail() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} className="px-4 py-3 text-gray-500 text-center">
+                  <TableCell
+                    colSpan={4}
+                    className="px-4 py-3 text-gray-500 text-center"
+                  >
                     无歌曲
                   </TableCell>
                 </TableRow>

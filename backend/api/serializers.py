@@ -1,3 +1,4 @@
+# backend/api/serializers.py
 from rest_framework import serializers
 from .models import Note, Track, Artist, Album, Score, Profile
 from django.contrib.auth.models import User
@@ -95,7 +96,7 @@ class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
         fields = ['id', 'track_id', 'track_name', 'artist_name', 'user', 'score_data', 'created_at', 'status', 'reviewer', 'review_comments', 'reward', 'is_paid', 'paid_at']
-        read_only_fields = ['status', 'reviewer', 'review_comments', 'reward', 'is_paid', 'paid_at']
+        read_only_fields = ['reward', 'is_paid', 'paid_at', 'track_name', 'artist_name', 'user', 'created_at', 'reviewer']  # 移除 status, review_comments
 
     def validate_track_id(self, value):
         try:
@@ -107,7 +108,14 @@ class ScoreSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         track_id = validated_data.pop('track_id')
         track = Track.objects.get(spotify_id=track_id)
-        score = Score.objects.create(track=track, user=self.context['request'].user, **validated_data)
+        score = Score.objects.create(track=track, **validated_data)
         score.reward = score.calculate_reward()
         score.save()
         return score
+
+    def update(self, instance, validated_data):
+        instance.score_data = validated_data.get('score_data', instance.score_data)
+        instance.status = validated_data.get('status', instance.status)
+        instance.review_comments = validated_data.get('review_comments', instance.review_comments)
+        instance.save()
+        return instance

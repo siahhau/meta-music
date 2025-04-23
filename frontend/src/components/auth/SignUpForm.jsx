@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // 修正导入
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import api from "../../api";
+import Alert from "../ui/alert/Alert";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,23 +14,50 @@ export default function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [alert, setAlert] = useState({ show: false, variant: "", message: "" });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isChecked) {
-      setError("请同意条款和隐私政策");
+      setAlert({
+        show: true,
+        variant: "error",
+        message: "请同意条款和隐私政策",
+      });
       return;
     }
     setLoading(true);
-    setError(null);
+    setAlert({ show: false, variant: "", message: "" }); // 重置 Alert
+
     try {
-      await api.post('/api/register/', { username, password, email });
-      navigate("/signin");
+      await api.post("/api/register/", { username, password, email });
+      setAlert({
+        show: true,
+        variant: "success",
+        title: "注册成功",
+        message: "您的账号已成功注册，请登录。",
+      });
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000); // 2秒后跳转到登录页面
     } catch (error) {
-      console.error('注册失败:', error);
-      setError(error.response?.data?.detail || "注册失败，请检查输入");
+      console.error("注册失败:", error);
+      let errorMessage = "注册失败，请检查输入";
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+        // 根据后端返回的具体错误信息定制消息
+        if (errorMessage === "用户名已存在") {
+          errorMessage = "用户名已存在，请选择其他用户名";
+        } else if (errorMessage.includes("密码")) {
+          errorMessage = "密码不符合要求，请重新输入";
+        }
+      }
+      setAlert({
+        show: true,
+        variant: "error",
+        message: errorMessage,
+      });
     } finally {
       setLoading(false);
     }
@@ -111,7 +139,7 @@ export default function SignUpForm() {
             </div>
             <form onSubmit={handleSubmit}>
               <div className="space-y-5">
-                {/* <!-- Email --> */}
+                {/* Email */}
                 <div>
                   <Label>
                     Email<span className="text-error-500">*</span>
@@ -125,7 +153,7 @@ export default function SignUpForm() {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                {/* <!-- 用户名 --> */}
+                {/* 用户名 */}
                 <div>
                   <Label>
                     用户名<span className="text-error-500">*</span>
@@ -138,7 +166,7 @@ export default function SignUpForm() {
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
-                {/* <!-- Password --> */}
+                {/* 密码 */}
                 <div>
                   <Label>
                     密码<span className="text-error-500">*</span>
@@ -162,7 +190,7 @@ export default function SignUpForm() {
                     </span>
                   </div>
                 </div>
-                {/* <!-- Checkbox --> */}
+                {/* Checkbox */}
                 <div className="flex items-center gap-3">
                   <Checkbox
                     className="w-5 h-5"
@@ -180,11 +208,15 @@ export default function SignUpForm() {
                     </span>
                   </p>
                 </div>
-                {/* <!-- Error Message --> */}
-                {error && (
-                  <div className="text-sm text-red-500">{error}</div>
+                {/* Alert 组件 */}
+                {alert.show && (
+                  <Alert
+                    variant={alert.variant}
+                    message={alert.message}
+                    showLink={false}
+                  />
                 )}
-                {/* <!-- Button --> */}
+                {/* 提交按钮 */}
                 <div>
                   <button
                     className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 disabled:opacity-50"
@@ -195,7 +227,6 @@ export default function SignUpForm() {
                 </div>
               </div>
             </form>
-
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                 已经有账号啦?{" "}

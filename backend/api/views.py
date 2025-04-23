@@ -1,7 +1,8 @@
+# backend/api/views.py
 from datetime import timezone
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics, status
+from rest_framework import generics, status, filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -11,7 +12,9 @@ from django.db.models import Q
 from .spotify_utils import search_spotify, get_album_details, get_track_details
 import logging
 from decimal import Decimal
-
+from django_filters.rest_framework import DjangoFilterBackend  # type: ignore # Correct import
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.exceptions import ValidationError
 logger = logging.getLogger(__name__)
 
 def get_chord_similarity(chords1, chords2, n=10):
@@ -23,12 +26,38 @@ def get_chord_similarity(chords1, chords2, n=10):
     matches = sum(1 for c1, c2 in zip(chords1, chords2) if c1.get('root') == c2.get('root') and c1.get('type') == c2.get('type'))
     return matches / max(len(chords1), len(chords2))
 
+# 自定义分页类
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+
+class TrackListView(generics.ListAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['explicit']
+    search_fields = ['name', 'artist_name']
+    ordering_fields = ['name', 'artist_name', 'album_name', 'duration_ms', 'popularity', 'created_at']
+    ordering = ['name']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.query_params.get('query', None)
+        if query:
+            queryset = queryset.filter(
+                Q(name__icontains=query) |
+                Q(artist_name__icontains=query)
+            )
+        return queryset
+
 class SearchView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         query = request.query_params.get('q', None)
-        limit = min(int(request.query_params.get('limit', 100)), 150)
+        limit = min(int(request.query_params.get('limit', 10)), 15)
         search_types = request.query_params.get('types', 'track,artist,album').split(',')
 
         if not query or len(query.strip()) < 1:
@@ -43,14 +72,14 @@ class SearchView(APIView):
 
         try:
             logger.info(f"正在从 Spotify 搜索 '{query}'...")
-            spotify_results = search_spotify(query, limit=min(limit, 50), search_types=search_types)
+            spotify_results = search_spotify(query, limit=min(limit, 5), search_types=search_types)
             logger.debug(f"Spotify 返回结果: {len(spotify_results)} 条")
 
             if not spotify_results:
                 logger.warning(f"Spotify 搜索 '{query}' 返回空结果")
             else:
                 type_counts = {'track': 0, 'artist': 0, 'album': 0}
-                max_per_type = max(33, limit // len(search_types))
+                max_per_type = max(3, limit // len(search_types))
                 filtered_results = []
 
                 for item in spotify_results:
@@ -59,54 +88,71 @@ class SearchView(APIView):
                         filtered_results.append(item)
                         try:
                             if item['type'] == 'track':
-                                Track.objects.update_or_create(
-                                    spotify_id=item['spotify_id'],
-                                    defaults={
-                                        'name': item['name'] or 'Unknown Track',
-                                        'artist_name': item['artist_name'] or '',
-                                        'artist_id': item['artist_id'] or '',
-                                        'album_name': item['album_name'] or '',
-                                        'album_id': item['album_id'] or '',
-                                        'image_url': item['image_url'] or '',
-                                        'release_date': item['release_date'] or '',
-                                        'duration_ms': item.get('duration_ms', 0) or 0,
-                                        'track_number': item.get('track_number', 0),
-                                        'explicit': item.get('explicit', False),
-                                        'popularity': item.get('popularity', 0)
-                                    }
-                                )
+                                # 检查数据库是否已有 Track
+                                try:
+                                    track = Track.objects.get(spotify_id=item['spotify_id'])
+                                    logger.debug(f"数据库中已有 Track (spotify_id: {item['spotify_id']})")
+                                except Track.DoesNotExist:
+                                    logger.debug(f"数据库中无 Track (spotify_id: {item['spotify_id']})，存储新记录")
+                                    Track.objects.update_or_create(
+                                        spotify_id=item['spotify_id'],
+                                        defaults={
+                                            'name': item['name'] or 'Unknown Track',
+                                            'artist_name': item['artist_name'] or '',
+                                            'artist_id': item['artist_id'] or '',
+                                            'album_name': item['album_name'] or '',
+                                            'album_id': item['album_id'] or '',
+                                            'image_url': item['image_url'] or '',
+                                            'release_date': item['release_date'] or '',
+                                            'duration_ms': item.get('duration_ms', 0) or 0,
+                                            'track_number': item.get('track_number', 0),
+                                            'explicit': item.get('explicit', False),
+                                            'popularity': item.get('popularity', 0)
+                                        }
+                                    )
                             elif item['type'] == 'artist':
-                                Artist.objects.update_or_create(
-                                    spotify_id=item['spotify_id'],
-                                    defaults={
-                                        'name': item['name'] or 'Unknown Artist',
-                                        'image_url': item['image_url'] or '',
-                                        'genres': item['genres'] or [],
-                                        'popularity': item.get('popularity', 0) or 0
-                                    }
-                                )
+                                # 检查数据库是否已有 Artist
+                                try:
+                                    artist = Artist.objects.get(spotify_id=item['spotify_id'])
+                                    logger.debug(f"数据库中已有 Artist (spotify_id: {item['spotify_id']})")
+                                except Artist.DoesNotExist:
+                                    logger.debug(f"数据库中无 Artist (spotify_id: {item['spotify_id']})，存储新记录")
+                                    Artist.objects.update_or_create(
+                                        spotify_id=item['spotify_id'],
+                                        defaults={
+                                            'name': item['name'] or 'Unknown Artist',
+                                            'image_url': item['image_url'] or '',
+                                            'genres': item['genres'] or [],
+                                            'popularity': item.get('popularity', 0) or 0
+                                        }
+                                    )
                             elif item['type'] == 'album':
-                                Album.objects.update_or_create(
-                                    spotify_id=item['spotify_id'],
-                                    defaults={
-                                        'name': item['name'] or 'Unknown Album',
-                                        'artist_name': item['artist_name'] or '',
-                                        'artist_id': item['artist_id'] or '',
-                                        'image_url': item['image_url'] or '',
-                                        'release_date': item['release_date'] or '',
-                                        'total_tracks': item.get('total_tracks', 0) or 0,
-                                        'label': item.get('label', '') or '',
-                                        'album_type': item.get('album_type', '') or ''
-                                    }
-                                )
-                            logger.debug(f"成功存储 {item['type']} 数据 (spotify_id: {item['spotify_id']})")
+                                # 检查数据库是否已有 Album
+                                try:
+                                    album = Album.objects.get(spotify_id=item['spotify_id'])
+                                    logger.debug(f"数据库中已有 Album (spotify_id: {item['spotify_id']})")
+                                except Album.DoesNotExist:
+                                    logger.debug(f"数据库中无 Album (spotify_id: {item['spotify_id']})，存储新记录")
+                                    Album.objects.update_or_create(
+                                        spotify_id=item['spotify_id'],
+                                        defaults={
+                                            'name': item['name'] or 'Unknown Album',
+                                            'artist_name': item['artist_name'] or '',
+                                            'artist_id': item['artist_id'] or '',
+                                            'image_url': item['image_url'] or '',
+                                            'release_date': item['release_date'] or '',
+                                            'total_tracks': item.get('total_tracks', 0) or 0,
+                                            'label': item.get('label', '') or '',
+                                            'album_type': item.get('album_type', '') or ''
+                                        }
+                                    )
                         except Exception as e:
                             logger.error(f"存储 {item['type']} 数据失败 (spotify_id: {item['spotify_id']}): {e}")
                     if sum(type_counts.values()) >= limit:
                         break
 
                 results = filtered_results
-                logger.info(f"Spotify 搜索为 '{query}' 返回 {len(results)} 条结果并存储到 PostgreSQL (track: {type_counts['track']}, artist: {type_counts['artist']}, album: {type_counts['album']})")
+                logger.info(f"Spotify 搜索为 '{query}' 返回 {len(results)} 条结果 (track: {type_counts['track']}, artist: {type_counts['artist']}, album: {type_counts['album']})")
 
             return Response({
                 "query": query,
@@ -209,10 +255,17 @@ class ScoreReviewUpdateView(generics.UpdateAPIView):
     def perform_update(self, serializer):
         instance = serializer.instance
         status = serializer.validated_data.get('status')
+        if instance.status != Score.STATUS_PENDING:
+            logger.warning(f"尝试更新非待审核歌谱 (id: {instance.id}, current_status: {instance.status})")
+            raise ValidationError("只能更新待审核的歌谱")
+        if status not in [Score.STATUS_APPROVED, Score.STATUS_REJECTED]:
+            logger.error(f"无效的状态值: {status}")
+            raise ValidationError("状态必须为 APPROVED 或 REJECTED")
+        instance.reviewer = self.request.user
         if status == Score.STATUS_APPROVED:
             instance.reward = instance.calculate_reward()
-        instance.reviewer = self.request.user
         serializer.save()
+        logger.info(f"歌谱 (id: {instance.id}) 更新为 {status} by {self.request.user.username}")
 
 class ScoreMarkPaidView(APIView):
     permission_classes = [IsAdminUser]
@@ -251,7 +304,42 @@ class ScoreStatsView(APIView):
             'paid_reward': float(paid_reward),
             'unpaid_reward': float(unpaid_reward)
         }, status=status.HTTP_200_OK)
+# backend/api/views.py
+from rest_framework import generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .models import Score
+from .serializers import ScoreSerializer
+class ScoreDetailView(generics.DestroyAPIView):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+    permission_classes = [IsAuthenticated]
 
+    def delete(self, request, *args, **kwargs):
+        score = self.get_object()
+        if score.user != request.user:
+            return Response(
+                {"error": "只能删除自己的乐谱"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        score.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ScoreUpdateView(generics.UpdateAPIView):
+    queryset = Score.objects.all()
+    serializer_class = ScoreSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        score = self.get_object()
+        if score.user != self.request.user:
+            raise serializers.ValidationError("只能编辑自己的乐谱")
+        if score.status != Score.STATUS_PENDING:
+            raise serializers.ValidationError("只能编辑待审核的乐谱")
+        serializer.save()
+        score.reward = score.calculate_reward()
+        score.save()
 class AlbumDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -330,6 +418,7 @@ class TrackDetailView(APIView):
 
     def get(self, request, spotify_id, *args, **kwargs):
         try:
+            # 尝试从数据库获取 Track
             try:
                 track = Track.objects.get(spotify_id=spotify_id)
                 logger.debug(f"数据库中找到歌曲 (spotify_id: {spotify_id})")
@@ -337,6 +426,7 @@ class TrackDetailView(APIView):
                 logger.info(f"数据库中未找到歌曲 (spotify_id: {spotify_id})，尝试从 Spotify API 获取")
                 track = None
 
+            # 如果 Track 不存在，从 Spotify API 获取并存储
             if not track:
                 spotify_data = get_track_details(spotify_id)
                 if not spotify_data:
@@ -351,13 +441,13 @@ class TrackDetailView(APIView):
                     album, _ = Album.objects.update_or_create(
                         spotify_id=album_data['spotify_id'],
                         defaults={
-                            'name': album_data['name'],
-                            'artist_name': album_data['artist_name'],
-                            'artist_id': album_data['artist_id'],
-                            'image_url': album_data['image_url'],
-                            'release_date': album_data['release_date'],
-                            'total_tracks': album_data['total_tracks'],
-                            'album_type': album_data['album_type'],
+                            'name': album_data['name'] or 'Unknown Album',
+                            'artist_name': album_data['artist_name'] or '',
+                            'artist_id': album_data['artist_id'] or '',
+                            'image_url': album_data['image_url'] or '',
+                            'release_date': album_data['release_date'] or '',
+                            'total_tracks': album_data['total_tracks'] or 0,
+                            'album_type': album_data['album_type'] or '',
                             'label': ''
                         }
                     )
@@ -378,17 +468,17 @@ class TrackDetailView(APIView):
                     track, _ = Track.objects.update_or_create(
                         spotify_id=spotify_id,
                         defaults={
-                            'name': spotify_data['name'],
-                            'artist_name': spotify_data['artist_name'],
-                            'artist_id': spotify_data['artist_id'],
-                            'album_name': spotify_data['album_name'],
-                            'album_id': spotify_data['album_id'],
-                            'image_url': spotify_data['image_url'],
-                            'release_date': spotify_data['release_date'],
-                            'duration_ms': spotify_data['duration_ms'],
-                            'track_number': spotify_data['track_number'],
-                            'explicit': spotify_data['explicit'],
-                            'popularity': spotify_data['popularity']
+                            'name': spotify_data['name'] or 'Unknown Track',
+                            'artist_name': spotify_data['artist_name'] or '',
+                            'artist_id': spotify_data['artist_id'] or '',
+                            'album_name': spotify_data['album_name'] or '',
+                            'album_id': spotify_data['album_id'] or '',
+                            'image_url': spotify_data['image_url'] or '',
+                            'release_date': spotify_data['release_date'] or '',
+                            'duration_ms': spotify_data['duration_ms'] or 0,
+                            'track_number': spotify_data['track_number'] or 0,
+                            'explicit': spotify_data['explicit'] or False,
+                            'popularity': spotify_data['popularity'] or 0
                         }
                     )
                 except Exception as e:
@@ -398,14 +488,20 @@ class TrackDetailView(APIView):
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR
                     )
 
+            # 尝试获取专辑数据，验证关键字段
+            album = None
+            album_serializer = None
             try:
                 album = Album.objects.get(spotify_id=track.album_id)
+                logger.debug(f"获取专辑数据: {album.__dict__}")
+                if not album.spotify_id or not album.name:
+                    logger.warning(f"专辑数据不完整 (album_id: {track.album_id}): {album.__dict__}")
+                    album = None
+                else:
+                    album_serializer = AlbumSerializer(album)
             except Album.DoesNotExist:
-                logger.error(f"关联专辑不存在 (album_id: {track.album_id})")
-                return Response(
-                    {"error": "关联专辑不存在"},
-                    status=status.HTTP_404_NOT_FOUND
-                )
+                logger.warning(f"关联专辑不存在 (album_id: {track.album_id})，返回 null")
+                album = None
 
             has_score = Score.objects.filter(track=track, user=request.user).exists()
             score_data = None
@@ -430,10 +526,9 @@ class TrackDetailView(APIView):
                 similar_tracks = similar_tracks[:5]
 
             track_serializer = TrackSerializer(track)
-            album_serializer = AlbumSerializer(album)
             return Response({
                 'track': track_serializer.data,
-                'album': album_serializer.data,
+                'album': album_serializer.data if album_serializer else None,
                 'has_score': has_score,
                 'score_data': score_data,
                 'similar_tracks': similar_tracks

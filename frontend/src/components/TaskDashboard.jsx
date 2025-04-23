@@ -25,7 +25,7 @@ export default function TaskDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const scoresResponse = await api.get('/api/scores/list/');
+        const scoresResponse = await api.get('/api/scores/');
         setScores(scoresResponse.data);
         const statsResponse = await api.get(`/api/scores/stats/?days=${timeRange}`);
         setStats(statsResponse.data);

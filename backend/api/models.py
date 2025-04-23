@@ -1,3 +1,4 @@
+# backend/api/models.py
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
@@ -84,7 +85,7 @@ class Score(models.Model):
         (STATUS_REJECTED, '拒绝'),
     ]
 
-    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='scores')
+    track = models.ForeignKey('Track', on_delete=models.CASCADE, related_name='scores')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scores')
     score_data = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,24 +105,16 @@ class Score(models.Model):
             models.Index(fields=['user']),
             models.Index(fields=['status']),
         ]
+
     def calculate_reward(self):
-        """Calculate reward based on score_data complexity."""
         if not self.score_data:
             return Decimal('0.00')
-
         notes = self.score_data.get('notes', [])
         chords = self.score_data.get('chords', [])
         sections = self.score_data.get('sections', [])
-
-        # 音符报酬：每 100 个音符 10 元
         note_reward = Decimal(len(notes) // 100 * 10)
-
-        # 和弦报酬：每 50 个和弦 5 元
         chord_reward = Decimal(len(chords) // 50 * 5)
-
-        # 结构报酬：每段 2 元
         section_reward = Decimal(len(sections) * 2)
-
         total_reward = note_reward + chord_reward + section_reward
         return total_reward.quantize(Decimal('0.01'))
     

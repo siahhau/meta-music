@@ -27,8 +27,8 @@ const navItems = [
     icon: <GridIcon />,
     name: "Music Lib",
     subItems: [
-      { name: "ScoreUpload", path: "/score-upload", pro: false },
-      { name: "Album Detail", path: "/album-detail", pro: false },
+      { name: "歌曲", path: "/tracks" },
+      { name: "乐谱", path: "/scores" }
     ],
   },
   {
