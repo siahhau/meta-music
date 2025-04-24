@@ -116,7 +116,7 @@ class Score(models.Model):
         chord_reward = Decimal(len(chords) // 50 * 5)
         section_reward = Decimal(len(sections) * 2)
         total_reward = note_reward + chord_reward + section_reward
-        return total_reward.quantize(Decimal('0.01'))
+        return total_reward.quantize(Decimal('0.005'))
     
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

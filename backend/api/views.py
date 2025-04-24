@@ -2,13 +2,13 @@
 from datetime import timezone
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics, status, filters
+from rest_framework import generics, status, filters, serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .serializers import UserSerializer, ScoreSerializer, AlbumSerializer, TrackSerializer, UserProfileSerializer
 from .models import Track, Artist, Album, Score
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
 from .spotify_utils import search_spotify, get_album_details, get_track_details
 import logging
 from decimal import Decimal
@@ -16,7 +16,6 @@ from django_filters.rest_framework import DjangoFilterBackend  # type: ignore # 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import ValidationError
 logger = logging.getLogger(__name__)
-
 def get_chord_similarity(chords1, chords2, n=10):
     """Calculate similarity between two chord sequences."""
     chords1 = chords1[:min(n, len(chords1))]
@@ -50,7 +49,21 @@ class TrackListView(generics.ListAPIView):
                 Q(name__icontains=query) |
                 Q(artist_name__icontains=query)
             )
+        # 优化查询，使用 annotate 添加 has_score
+        user = self.request.user
+        if user.is_authenticated:
+            queryset = queryset.annotate(
+                has_score=Exists(
+                    Score.objects.filter(track=OuterRef('pk'), user=user)
+                )
+            )
         return queryset
+
+    def get_serializer_context(self):
+        # 确保 request 传递到 serializer 上下文中
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
 
 class SearchView(APIView):
     permission_classes = [IsAuthenticated]
@@ -230,14 +243,22 @@ class ScoreCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        track_id = serializer.validated_data.get('track_id')
+        # 检查是否已存在该用户对该 track_id 的 Score
+        if Score.objects.filter(track__spotify_id=track_id, user=self.request.user).exists():
+            logger.warning(f"用户 {self.request.user.username} 尝试为已存在的 track_id {track_id} 创建重复歌谱")
+            raise serializers.ValidationError("您已为这首歌曲提交过歌谱，无法重复提交")
         serializer.save(user=self.request.user)
 
 class ScoreListView(generics.ListAPIView):
-    serializer_class = ScoreSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Score.objects.filter(user=self.request.user).select_related('track')
+  serializer_class = ScoreSerializer
+  permission_classes = [IsAuthenticated]
+  def get_queryset(self):
+    queryset = Score.objects.filter(user=self.request.user).select_related('track')
+    track_id = self.request.query_params.get('track_id')
+    if track_id:
+      queryset = queryset.filter(track__spotify_id=track_id)
+    return queryset
 
 class ScoreReviewListView(generics.ListAPIView):
     serializer_class = ScoreSerializer
@@ -335,11 +356,13 @@ class ScoreUpdateView(generics.UpdateAPIView):
         score = self.get_object()
         if score.user != self.request.user:
             raise serializers.ValidationError("只能编辑自己的乐谱")
-        if score.status != Score.STATUS_PENDING:
-            raise serializers.ValidationError("只能编辑待审核的乐谱")
+        logger.info(f"Updating score {score.id} with data: {serializer.validated_data}")
         serializer.save()
+        score.refresh_from_db()  # 强制刷新数据库状态
         score.reward = score.calculate_reward()
         score.save()
+        logger.info(f"Saved score {score.id} with score_data: {score.score_data}")
+        
 class AlbumDetailView(APIView):
     permission_classes = [IsAuthenticated]
 

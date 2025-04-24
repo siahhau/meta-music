@@ -1,4 +1,4 @@
-// frontend/src/pages/SongList.jsx
+// frontend/src/pages/Tracks.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Badge from "../components/ui/badge/Badge";
@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import api from "../api";
+import { formatDuration } from "../utils";
 
 // 分页大小
 const PAGE_SIZE = 100;
@@ -47,23 +48,15 @@ export default function SongList() {
     fetchTracks();
   }, [paginationModel.page, paginationModel.pageSize, filterText]);
 
-  // 格式化时长为 MM:SS
-  const formatDuration = (ms) => {
-    if (!ms || isNaN(ms)) return "0:00";
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000)
-      .toString()
-      .padStart(2, "0");
-    return `${minutes}:${seconds}`;
-  };
 
   // 处理搜索按钮点击
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     setFilterText(searchInput);
     setPaginationModel({ ...paginationModel, page: 0 }); // Reset to first page
   };
 
-  // Define DataGrid columns
+  // 定义 DataGrid 列
   const columns = [
     {
       field: "image_url",
@@ -119,7 +112,7 @@ export default function SongList() {
       field: "duration_ms",
       headerName: "时长",
       width: 100,
-      valueFormatter: (params) => formatDuration(params.value),
+      valueFormatter: ( value ) => formatDuration(value),
       sortable: true,
     },
     {
@@ -153,6 +146,17 @@ export default function SongList() {
       ),
       sortable: true,
     },
+    {
+      field: "has_score",
+      headerName: "是否有谱",
+      width: 120,
+      renderCell: (params) => (
+        <Badge size="sm" color={params.value ? "success" : "error"}>
+          {params.value ? "是" : "否"}
+        </Badge>
+      ),
+      sortable: true,
+    }, // 新增列
   ];
 
   if (loading && !tracks.length) {
@@ -180,7 +184,7 @@ export default function SongList() {
         歌曲列表
       </h2>
       {/* 过滤输入框和搜索按钮 */}
-      <div className="mb-4 flex gap-2">
+      <form className="mb-4 flex gap-2" onSubmit={handleSearch}>
         <TextField
           type="text"
           placeholder="搜索歌曲或艺术家..."
@@ -191,14 +195,14 @@ export default function SongList() {
           size="small"
         />
         <Button
-          onClick={handleSearch}
+          type="submit"
           variant="contained"
           loading={loading}
           sx={{ backgroundColor: '#3b82f6', '&:hover': { backgroundColor: '#2563eb' }, width: 100 }}
         >
           搜索
         </Button>
-      </div>
+      </form>
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
           <div style={{ height: 800, width: "100%" }}>

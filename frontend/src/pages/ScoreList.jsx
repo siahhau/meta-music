@@ -1,4 +1,3 @@
-// frontend/src/pages/ScoreList.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { Link } from 'react-router-dom';
@@ -82,7 +81,7 @@ const ScoreList = () => {
         setLoading(true);
         try {
           const updatedScoreData = JSON.parse(editScoreData);
-          await api.put(`/api/scores/${scoreId}/`, { score_data: updatedScoreData });
+          await api.post(`/api/scores/${scoreId}/update/`, { score_data: updatedScoreData });
           setScores(
             scores.map((score) =>
               score.id === scoreId ? { ...score, score_data: updatedScoreData } : score
@@ -159,6 +158,7 @@ const ScoreList = () => {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>歌曲 Spotify ID</TableCell> {/* 新增列 */}
                   <TableCell>歌曲名称</TableCell>
                   <TableCell>上传时间</TableCell>
                   <TableCell>状态</TableCell>
@@ -169,6 +169,7 @@ const ScoreList = () => {
               <TableBody>
                 {scores.map((score) => (
                   <TableRow key={score.id}>
+                    <TableCell>{score.track_id}</TableCell> {/* 显示 track_id */}
                     <TableCell>{score.track_name}</TableCell>
                     <TableCell>
                       {format(new Date(score.created_at), 'yyyy-MM-dd HH:mm')}
