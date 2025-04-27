@@ -112,11 +112,11 @@ class Score(models.Model):
         notes = self.score_data.get('notes', [])
         chords = self.score_data.get('chords', [])
         sections = self.score_data.get('sections', [])
-        note_reward = Decimal(len(notes) // 100 * 10)
-        chord_reward = Decimal(len(chords) // 50 * 5)
-        section_reward = Decimal(len(sections) * 2)
-        total_reward = note_reward + chord_reward + section_reward
-        return total_reward.quantize(Decimal('0.005'))
+        # note_reward = Decimal(len(notes) // 100 * 10)
+        # chord_reward = Decimal(len(chords) // 50 * 5)
+        # section_reward = Decimal(len(sections) * 2)
+        # total_reward = note_reward + chord_reward + section_reward
+        return (len(notes) + len(chords) + len(sections) )* 0.03
     
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

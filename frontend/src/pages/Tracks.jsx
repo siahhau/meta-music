@@ -35,7 +35,7 @@ export default function SongList() {
       setError(null);
       try {
         const response = await api.get(
-          `/api/tracks/?page_size=2000&query=${encodeURIComponent(filterText)}`
+          `/api/tracks/?page_size=200&query=${encodeURIComponent(filterText)}`
         );
         setTracks(response.data.results || []);
       } catch (err) {
