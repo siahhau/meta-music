@@ -23,7 +23,7 @@ export function AccountBillingPayment({ cards, sx, ...other }) {
     <>
       <Card sx={[{ my: 3 }, ...(Array.isArray(sx) ? sx : [sx])]} {...other}>
         <CardHeader
-          title="Payment method"
+          title="支付方式"
           action={
             <Button
               size="small"
@@ -31,7 +31,7 @@ export function AccountBillingPayment({ cards, sx, ...other }) {
               startIcon={<Iconify icon="mingcute:add-line" />}
               onClick={openForm.onTrue}
             >
-              New card
+              新增卡
             </Button>
           }
         />
@@ -52,7 +52,7 @@ export function AccountBillingPayment({ cards, sx, ...other }) {
       </Card>
 
       <Dialog fullWidth maxWidth="xs" open={openForm.value} onClose={openForm.onFalse}>
-        <DialogTitle> Add new card </DialogTitle>
+        <DialogTitle>添加新卡</DialogTitle>
 
         <DialogContent sx={{ overflow: 'unset' }}>
           <PaymentNewCardForm />
@@ -60,11 +60,11 @@ export function AccountBillingPayment({ cards, sx, ...other }) {
 
         <DialogActions>
           <Button color="inherit" variant="outlined" onClick={openForm.onFalse}>
-            Cancel
+            取消
           </Button>
 
           <Button color="inherit" variant="contained" onClick={openForm.onFalse}>
-            Add
+            添加
           </Button>
         </DialogActions>
       </Dialog>

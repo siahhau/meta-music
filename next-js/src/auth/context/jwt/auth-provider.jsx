@@ -23,7 +23,11 @@ export function AuthProvider({ children }) {
 
         const res = await axios.get(endpoints.auth.me);
 
-        const { user } = res.data;
+        const user  = res.data;
+
+        // 存储用户信息到 sessionStorage
+        sessionStorage.setItem('user', JSON.stringify(user));
+        console.log('登录用户信息已存储到 sessionStorage:', user);
 
         setState({ user: { ...user, accessToken }, loading: false });
       } else {

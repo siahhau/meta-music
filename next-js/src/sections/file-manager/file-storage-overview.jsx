@@ -37,7 +37,7 @@ export function FileStorageOverview({ data, total, chart, sx, ...other }) {
           name: { offsetY: 8 },
           value: { offsetY: -36 },
           total: {
-            label: `Used of ${fData(total)} / ${fData(total * 2)}`,
+            label: `已使用 ${fData(total)} / ${fData(total * 2)}`,
             color: theme.vars.palette.text.disabled,
             fontSize: theme.typography.caption.fontSize,
             fontWeight: theme.typography.caption.fontWeight,
@@ -86,7 +86,7 @@ export function FileStorageOverview({ data, total, chart, sx, ...other }) {
               <Box
                 component="span"
                 sx={{ typography: 'caption', color: 'text.disabled' }}
-              >{`${category.filesCount} files`}</Box>
+              >{`${category.filesCount} 个文件`}</Box>
             </Stack>
 
             <Box component="span"> {fData(category.usedStorage)} </Box>

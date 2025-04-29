@@ -49,10 +49,10 @@ const renderLines = () => (
 export function HomeZoneUI({ sx, ...other }) {
   const renderDescription = () => (
     <SectionTitle
-      caption="Looking For a"
-      title="Landing page"
-      txtGradient="template?"
-      description="Fuse with dashboards to produce a superior product."
+      caption="寻找"
+      title="落地页"
+      txtGradient="模板？"
+      description="与仪表板融合，打造卓越产品。"
       sx={{ textAlign: { xs: 'center', md: 'left' } }}
     />
   );
@@ -73,7 +73,7 @@ export function HomeZoneUI({ sx, ...other }) {
     >
       <Box
         component="img"
-        alt="Zone landing page"
+        alt="Zone 落地页"
         src={`${CONFIG.assetsDir}/assets/images/home/zone-landing.webp`}
         sx={[
           (theme) => ({
@@ -99,7 +99,7 @@ export function HomeZoneUI({ sx, ...other }) {
             '&:hover': { bgcolor: 'common.white' },
           }}
         >
-          Visit Zone UI
+          访问 Zone UI
         </Button>
       </Box>
     </Stack>

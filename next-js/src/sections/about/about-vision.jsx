@@ -114,7 +114,7 @@ export function AboutVision({ sx, ...other }) {
           variant="h3"
           sx={{ textAlign: 'center', maxWidth: 800, mx: 'auto' }}
         >
-          Our vision offering the best product nulla vehicula tortor scelerisque ultrices malesuada.
+          我们的愿景是提供最佳产品
         </Typography>
       </Container>
     </Box>

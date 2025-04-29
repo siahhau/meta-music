@@ -17,7 +17,7 @@ import { Iconify } from 'src/components/iconify';
 export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
   const { shipping, subtotal, discount, total } = checkoutState;
 
-  const displayShipping = shipping !== null ? 'Free' : '-';
+  const displayShipping = shipping !== null ? '免费' : '-';
 
   const rowStyles = {
     display: 'flex',
@@ -26,11 +26,11 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
-        title="Order summary"
+        title="订单总结"
         action={
           onEdit && (
             <Button size="small" onClick={onEdit} startIcon={<Iconify icon="solar:pen-bold" />}>
-              Edit
+              编辑
             </Button>
           )
         }
@@ -42,7 +42,7 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
             variant="body2"
             sx={{ flexGrow: 1, color: 'text.secondary' }}
           >
-            Subtotal
+            小计
           </Typography>
           <Typography component="span" variant="subtitle2">
             {fCurrency(subtotal)}
@@ -55,7 +55,7 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
             variant="body2"
             sx={{ flexGrow: 1, color: 'text.secondary' }}
           >
-            Discount
+            折扣
           </Typography>
           <Typography component="span" variant="subtitle2">
             {discount ? fCurrency(-discount) : '-'}
@@ -68,7 +68,7 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
             variant="body2"
             sx={{ flexGrow: 1, color: 'text.secondary' }}
           >
-            Shipping
+            运费
           </Typography>
           <Typography component="span" variant="subtitle2">
             {shipping ? fCurrency(shipping) : displayShipping}
@@ -79,7 +79,7 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
 
         <Box sx={{ ...rowStyles }}>
           <Typography component="span" variant="subtitle1" sx={{ flexGrow: 1 }}>
-            Total
+            总计
           </Typography>
 
           <Box sx={{ textAlign: 'right' }}>
@@ -91,7 +91,7 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
               {fCurrency(total)}
             </Typography>
             <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-              (VAT included if applicable)
+              （如适用，包含增值税）
             </Typography>
           </Box>
         </Box>
@@ -99,14 +99,14 @@ export function CheckoutSummary({ onEdit, checkoutState, onApplyDiscount }) {
         {onApplyDiscount && (
           <TextField
             fullWidth
-            placeholder="Discount codes / Gifts"
+            placeholder="折扣码 / 礼品卡"
             value="DISCOUNT5"
             slotProps={{
               input: {
                 endAdornment: (
                   <InputAdornment position="end">
                     <Button color="primary" onClick={() => onApplyDiscount(5)} sx={{ mr: -0.5 }}>
-                      Apply
+                      应用
                     </Button>
                   </InputAdornment>
                 ),

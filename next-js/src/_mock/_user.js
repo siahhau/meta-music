@@ -3,10 +3,10 @@ import { _mock } from './_mock';
 // ----------------------------------------------------------------------
 
 export const USER_STATUS_OPTIONS = [
-  { value: 'active', label: 'Active' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'banned', label: 'Banned' },
-  { value: 'rejected', label: 'Rejected' },
+  { value: 'active', label: '活跃' },
+  { value: 'pending', label: '待处理' },
+  { value: 'banned', label: '已禁用' },
+  { value: 'rejected', label: '已拒绝' },
 ];
 
 export const _userAbout = {
@@ -19,8 +19,7 @@ export const _userAbout = {
   coverUrl: _mock.image.cover(3),
   totalFollowers: _mock.number.nativeL(1),
   totalFollowing: _mock.number.nativeL(2),
-  quote:
-    'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
+  quote: '我爱糖梅，我爱燕麦蛋糕。甜卷焦糖我爱枣子。装饰蛋糕晶圆...',
   socialLinks: {
     facebook: `https://www.facebook.com/frankie`,
     instagram: `https://www.instagram.com/frankie`,
@@ -68,7 +67,7 @@ export const _userFeeds = Array.from({ length: 3 }, (_, index) => ({
         name: _mock.fullName(index + 5),
       },
       createdAt: _mock.time(2),
-      message: 'Praesent venenatis metus at',
+      message: '普雷森特·维纳纳蒂斯·梅图斯',
     },
     {
       id: _mock.id(9),
@@ -79,7 +78,7 @@ export const _userFeeds = Array.from({ length: 3 }, (_, index) => ({
       },
       createdAt: _mock.time(3),
       message:
-        'Etiam rhoncus. Nullam vel sem. Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, quam. Sed lectus.',
+        '埃蒂亚姆·隆库斯。努拉姆·维尔·塞姆。佩伦特斯克·利贝罗·托尔托，廷克蒂敦特·埃特，廷克蒂敦特·埃杰特，森佩尔·内克，夸姆。塞德·莱克图斯。',
     },
   ],
 }));
@@ -108,7 +107,7 @@ export const _userAddressBook = Array.from({ length: 4 }, (_, index) => ({
   name: _mock.fullName(index),
   phoneNumber: _mock.phoneNumber(index),
   fullAddress: _mock.fullAddress(index),
-  addressType: (index === 0 && 'Home') || 'Office',
+  addressType: (index === 0 && '家庭') || '办公室',
 }));
 
 export const _userInvoices = Array.from({ length: 10 }, (_, index) => ({
@@ -127,11 +126,11 @@ export const _userPlans = [
 export const _userList = Array.from({ length: 20 }, (_, index) => ({
   id: _mock.id(index),
   zipCode: '85807',
-  state: 'Virginia',
-  city: 'Rancho Cordova',
+  state: '弗吉尼亚',
+  city: '兰乔科多瓦',
   role: _mock.role(index),
   email: _mock.email(index),
-  address: '908 Jack Locks',
+  address: '908 杰克锁',
   name: _mock.fullName(index),
   isVerified: _mock.boolean(index),
   company: _mock.companyNames(index),

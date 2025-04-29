@@ -39,6 +39,21 @@ export const paths = {
     details: (id) => `/product/${id}`,
     demo: { details: `/product/${MOCK_ID}` },
   },
+  track: {
+    list: '/api/track/list',
+    details: '/api/track/:spotify_id/',
+    search: '/api/track/search',
+  },
+  // score: {
+  //   create: '/api/score/create',
+  //   list: '/api/score/list',
+  //   details: '/api/score/:id/',
+  //   update: '/api/score/:id/update',
+  //   review: '/api/score/review',
+  //   review_update: '/api/score/:id/review',
+  //   mark_paid: '/api/score/:id/mark-paid',
+  //   stats: '/api/score/stats',
+  // },
   post: {
     root: `/post`,
     details: (title) => `/post/${kebabCase(title)}`,
@@ -116,6 +131,14 @@ export const paths = {
       account: `${ROOTS.DASHBOARD}/user/account`,
       edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
       demo: { edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit` },
+    },
+    track: {
+      root: `${ROOTS.DASHBOARD}/track`,
+      details: (id) => `${ROOTS.DASHBOARD}/track/${id}`,
+    },
+    score: {
+      root: `${ROOTS.DASHBOARD}/score`,
+      details: (id) => `${ROOTS.DASHBOARD}/score/${id}`,
     },
     product: {
       root: `${ROOTS.DASHBOARD}/product`,

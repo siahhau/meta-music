@@ -65,15 +65,15 @@ export function KanbanDetailsToolbar({
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
+      title="删除"
       content={
         <>
-          Are you sure want to delete <strong> {taskName} </strong>?
+          您确定要删除 <strong> {taskName} </strong>?
         </>
       }
       action={
         <Button variant="contained" color="error" onClick={onDelete}>
-          Delete
+          删除
         </Button>
       }
     />
@@ -94,7 +94,7 @@ export function KanbanDetailsToolbar({
         {...other}
       >
         {!smUp && (
-          <Tooltip title="Back">
+          <Tooltip title="后退">
             <IconButton onClick={onCloseDetails} sx={{ mr: 1 }}>
               <Iconify icon="eva:arrow-ios-back-fill" />
             </IconButton>
@@ -113,13 +113,13 @@ export function KanbanDetailsToolbar({
         <Box component="span" sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: 'flex' }}>
-          <Tooltip title="Like">
+          <Tooltip title="赞">
             <IconButton color={liked ? 'default' : 'primary'} onClick={onLikeToggle}>
               <Iconify icon="solar:like-bold" />
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Delete task">
+          <Tooltip title="删除任务">
             <IconButton onClick={confirmDialog.onTrue}>
               <Iconify icon="solar:trash-bin-trash-bold" />
             </IconButton>

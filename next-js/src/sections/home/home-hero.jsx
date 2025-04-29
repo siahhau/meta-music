@@ -73,9 +73,9 @@ export function HomeHero({ sx, ...other }) {
         ]}
       >
         <Box component="span" sx={{ width: 1, opacity: 0.24 }}>
-          Boost your building
+          加速您的构建
         </Box>
-        process with
+        过程，使用
         <Box
           component={m.span}
           animate={{ backgroundPosition: '200% center' }}
@@ -113,7 +113,7 @@ export function HomeHero({ sx, ...other }) {
           }),
         ]}
       >
-        {`The starting point for your next project is based on MUI. \nEasy customization helps you build apps faster and better.`}
+        {`您的下一个项目起点基于 MUI。\n简单的自定义功能帮助您更快、更好地构建应用。`}
       </Typography>
     </m.div>
   );
@@ -139,7 +139,7 @@ export function HomeHero({ sx, ...other }) {
             />
           ))}
         </AvatarGroup>
-        160+ Happy customers
+        160+ 满意客户
       </Box>
     </m.div>
   );
@@ -164,7 +164,7 @@ export function HomeHero({ sx, ...other }) {
             startIcon={<Iconify width={24} icon="custom:flash-outline" />}
           >
             <span>
-              Live preview
+              实时预览
               <Box
                 component="small"
                 sx={[
@@ -177,7 +177,7 @@ export function HomeHero({ sx, ...other }) {
                   }),
                 ]}
               >
-                v{CONFIG.appVersion}
+                版本 {CONFIG.appVersion}
               </Box>
             </span>
           </Button>
@@ -192,7 +192,7 @@ export function HomeHero({ sx, ...other }) {
             sx={{ gap: 0.75, alignItems: 'center', display: 'inline-flex' }}
           >
             <Iconify width={16} icon="eva:external-link-fill" />
-            Get free version
+            获取免费版本
           </Link>
         </Stack>
       </m.div>
@@ -208,7 +208,7 @@ export function HomeHero({ sx, ...other }) {
           startIcon={<Iconify width={24} icon="solar:figma-outline" />}
           sx={{ borderColor: 'text.primary' }}
         >
-          Figma preview
+          Figma 预览
         </Button>
       </m.div>
     </Box>
@@ -218,7 +218,7 @@ export function HomeHero({ sx, ...other }) {
     <Stack spacing={3} sx={{ textAlign: 'center' }}>
       <m.div {...motionProps}>
         <Typography variant="overline" sx={{ opacity: 0.4 }}>
-          Available For
+          适用平台
         </Typography>
       </m.div>
 
@@ -227,7 +227,11 @@ export function HomeHero({ sx, ...other }) {
           <m.div {...motionProps} key={platform}>
             <Box
               component="img"
-              alt={platform}
+              alt={platform === 'js' ? 'JavaScript' :
+                   platform === 'ts' ? 'TypeScript' :
+                   platform === 'nextjs' ? 'Next.js' :
+                   platform === 'vite' ? 'Vite' :
+                   'Figma'}
               src={`${CONFIG.assetsDir}/assets/icons/platforms/ic-${platform}.svg`}
               sx={[
                 (theme) => ({

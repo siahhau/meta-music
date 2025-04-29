@@ -27,7 +27,7 @@ export function CheckoutPaymentMethods({ name, options, sx, ...other }) {
   return (
     <>
       <Card sx={sx} {...other}>
-        <CardHeader title="Payment" />
+        <CardHeader title="支付方式" />
 
         <Controller
           name={name}
@@ -59,7 +59,7 @@ export function CheckoutPaymentMethods({ name, options, sx, ...other }) {
 
               {!!error && (
                 <FormHelperText error sx={{ mt: 0, px: 2 }}>
-                  {error.message}
+                  {error.message === 'Payment method is required!' ? '请选择支付方式！' : error.message}
                 </FormHelperText>
               )}
             </Box>
@@ -67,7 +67,7 @@ export function CheckoutPaymentMethods({ name, options, sx, ...other }) {
         />
       </Card>
       <Dialog fullWidth maxWidth="xs" open={openForm.value} onClose={openForm.onFalse}>
-        <DialogTitle> Add new card </DialogTitle>
+        <DialogTitle>添加新卡</DialogTitle>
 
         <DialogContent sx={{ overflow: 'unset' }}>
           <PaymentNewCardForm />
@@ -75,11 +75,11 @@ export function CheckoutPaymentMethods({ name, options, sx, ...other }) {
 
         <DialogActions>
           <Button color="inherit" variant="outlined" onClick={openForm.onFalse}>
-            Cancel
+            取消
           </Button>
 
           <Button color="inherit" variant="contained" onClick={openForm.onFalse}>
-            Add
+            添加
           </Button>
         </DialogActions>
       </Dialog>
@@ -123,9 +123,15 @@ function OptionItem({ sx, option, onOpen, selected, isCredit, cardOptions, ...ot
             typography: 'subtitle1',
           }}
         >
-          {option.label}
+          {option.label === 'Credit Card' ? '信用卡' :
+           option.label === 'Paypal' ? 'Paypal' :
+           option.label === 'Cash' ? '现金' :
+           option.label}
           <Box component="span" sx={{ typography: 'body2', color: 'text.secondary' }}>
-            {option.description}
+            {option.description === 'Pay by credit card' ? '通过信用卡支付' :
+             option.description === 'Pay by paypal' ? '通过Paypal支付' :
+             option.description === 'Pay by cash on delivery' ? '货到付款' :
+             option.description}
           </Box>
         </Box>
 
@@ -143,7 +149,7 @@ function OptionItem({ sx, option, onOpen, selected, isCredit, cardOptions, ...ot
 
       {isCredit && (
         <Box sx={{ px: 3 }}>
-          <TextField select fullWidth label="Card" slotProps={{ select: { native: true } }}>
+          <TextField select fullWidth label="卡" slotProps={{ select: { native: true } }}>
             {cardOptions.map((card) => (
               <option key={card.value} value={card.value}>
                 {card.label}
@@ -158,7 +164,7 @@ function OptionItem({ sx, option, onOpen, selected, isCredit, cardOptions, ...ot
             onClick={onOpen}
             sx={{ my: 3 }}
           >
-            Add new card
+            添加新卡
           </Button>
         </Box>
       )}

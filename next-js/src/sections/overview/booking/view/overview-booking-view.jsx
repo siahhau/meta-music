@@ -29,7 +29,7 @@ export function OverviewBookingView() {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 4 }}>
           <BookingWidgetSummary
-            title="Total booking"
+            title="总预订量"
             percent={2.6}
             total={714000}
             icon={<BookingIllustration />}
@@ -38,7 +38,7 @@ export function OverviewBookingView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <BookingWidgetSummary
-            title="Sold"
+            title="已售出"
             percent={0.2}
             total={311000}
             icon={<CheckInIllustration />}
@@ -47,7 +47,7 @@ export function OverviewBookingView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <BookingWidgetSummary
-            title="Canceled"
+            title="已取消"
             percent={-0.1}
             total={124000}
             icon={<CheckoutIllustration />}
@@ -78,7 +78,7 @@ export function OverviewBookingView() {
                 }}
               >
                 <BookingTotalIncomes
-                  title="Total incomes"
+                  title="总收入"
                   total={18765}
                   percent={2.6}
                   chart={{
@@ -88,7 +88,7 @@ export function OverviewBookingView() {
                 />
 
                 <BookingBooked
-                  title="Booked"
+                  title="已预订"
                   data={_bookingsOverview}
                   sx={{ boxShadow: { md: 'none' } }}
                 />
@@ -97,8 +97,8 @@ export function OverviewBookingView() {
               <BookingCheckInWidgets
                 chart={{
                   series: [
-                    { label: 'Sold', percent: 73.9, total: 38566 },
-                    { label: 'Pending for payment', percent: 45.6, total: 18472 },
+                    { label: '已售出', percent: 73.9, total: 38566 },
+                    { label: '待支付', percent: 45.6, total: 18472 },
                   ],
                 }}
                 sx={{ boxShadow: { md: 'none' } }}
@@ -106,31 +106,31 @@ export function OverviewBookingView() {
             </Box>
 
             <BookingStatistics
-              title="Statistics"
+              title="统计数据"
               chart={{
                 series: [
                   {
-                    name: 'Weekly',
-                    categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+                    name: '每周',
+                    categories: ['第1周', '第2周', '第3周', '第4周', '第5周'],
                     data: [
-                      { name: 'Sold', data: [24, 41, 35, 151, 49] },
-                      { name: 'Canceled', data: [20, 56, 77, 88, 99] },
+                      { name: '已售出', data: [24, 41, 35, 151, 49] },
+                      { name: '已取消', data: [20, 56, 77, 88, 99] },
                     ],
                   },
                   {
-                    name: 'Monthly',
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    name: '每月',
+                    categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月'],
                     data: [
-                      { name: 'Sold', data: [83, 112, 119, 88, 103, 112, 114, 108, 93] },
-                      { name: 'Canceled', data: [46, 46, 43, 58, 40, 59, 54, 42, 51] },
+                      { name: '已售出', data: [83, 112, 119, 88, 103, 112, 114, 108, 93] },
+                      { name: '已取消', data: [46, 46, 43, 58, 40, 59, 54, 42, 51] },
                     ],
                   },
                   {
-                    name: 'Yearly',
+                    name: '每年',
                     categories: ['2018', '2019', '2020', '2021', '2022', '2023'],
                     data: [
-                      { name: 'Sold', data: [76, 42, 29, 41, 27, 96] },
-                      { name: 'Canceled', data: [46, 44, 24, 43, 44, 43] },
+                      { name: '已售出', data: [76, 42, 29, 41, 27, 96] },
+                      { name: '已取消', data: [46, 44, 24, 43, 44, 43] },
                     ],
                   },
                 ],
@@ -138,24 +138,12 @@ export function OverviewBookingView() {
             />
           </Grid>
 
-          <Grid size={{ xs: 12, md: 5, lg: 4 }}>
-            <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-              <BookingAvailable
-                title="Tours available"
-                chart={{
-                  series: [
-                    { label: 'Sold out', value: 120 },
-                    { label: 'Available', value: 66 },
-                  ],
-                }}
-              />
-
-              <BookingCustomerReviews
-                title="Customer reviews"
-                subheader={`${_bookingReview.length} Reviews`}
-                list={_bookingReview}
-              />
-            </Box>
+          <Grid size={12}>
+            <BookingNewest
+              title="最新预订"
+              subheader={`${_bookingNew.length} 条预订`}
+              list={_bookingNew}
+            />
           </Grid>
         </Grid>
 
@@ -169,14 +157,14 @@ export function OverviewBookingView() {
 
         <Grid size={12}>
           <BookingDetails
-            title="Booking details"
+            title="预订详情"
             tableData={_bookings}
             headCells={[
-              { id: 'destination', label: 'Destination' },
-              { id: 'customer', label: 'Customer' },
-              { id: 'checkIn', label: 'Check in' },
-              { id: 'checkOut', label: 'Check out' },
-              { id: 'status', label: 'Status' },
+              { id: 'destination', label: '目的地' },
+              { id: 'customer', label: '客户' },
+              { id: 'checkIn', label: '入住时间' },
+              { id: 'checkOut', label: '退房时间' },
+              { id: 'status', label: '状态' },
               { id: '' },
             ]}
           />

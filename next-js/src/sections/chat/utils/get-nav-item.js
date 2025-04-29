@@ -20,9 +20,9 @@ export function getNavItem({ currentUserId, conversation }) {
   let displayText = '';
 
   if (lastMessage) {
-    const sender = lastMessage.senderId === currentUserId ? 'You: ' : '';
+    const sender = lastMessage.senderId === currentUserId ? '你: ' : '';
 
-    const message = lastMessage.contentType === 'image' ? 'Sent a photo' : lastMessage.body;
+    const message = lastMessage.contentType === 'image' ? '发送一张相片' : lastMessage.body;
 
     displayText = `${sender}${message}`;
   }

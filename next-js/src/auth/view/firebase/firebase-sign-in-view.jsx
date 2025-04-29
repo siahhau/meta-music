@@ -37,12 +37,12 @@ import {
 export const SignInSchema = zod.object({
   email: zod
     .string()
-    .min(1, { message: 'Email is required!' })
-    .email({ message: 'Email must be a valid email address!' }),
+    .min(1, { message: '必须填写邮箱！' })
+    .email({ message: '邮箱格式无效！' }),
   password: zod
     .string()
-    .min(1, { message: 'Password is required!' })
-    .min(6, { message: 'Password must be at least 6 characters!' }),
+    .min(1, { message: '必须填写密码！' })
+    .min(6, { message: '密码至少需要6个字符！' }),
 });
 
 // ----------------------------------------------------------------------
@@ -110,7 +110,7 @@ export function FirebaseSignInView() {
 
   const renderForm = () => (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-      <Field.Text name="email" label="Email address" slotProps={{ inputLabel: { shrink: true } }} />
+      <Field.Text name="email" label="邮箱地址" slotProps={{ inputLabel: { shrink: true } }} />
 
       <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
         <Link
@@ -120,13 +120,13 @@ export function FirebaseSignInView() {
           color="inherit"
           sx={{ alignSelf: 'flex-end' }}
         >
-          Forgot password?
+          忘记密码？
         </Link>
 
         <Field.Text
           name="password"
-          label="Password"
-          placeholder="6+ characters"
+          label="密码"
+          placeholder="6个字符以上"
           type={showPassword.value ? 'text' : 'password'}
           slotProps={{
             inputLabel: { shrink: true },
@@ -152,9 +152,9 @@ export function FirebaseSignInView() {
         type="submit"
         variant="contained"
         loading={isSubmitting}
-        loadingIndicator="Sign in..."
+        loadingIndicator="正在登录..."
       >
-        Sign in
+        登录
       </Button>
     </Box>
   );
@@ -162,12 +162,12 @@ export function FirebaseSignInView() {
   return (
     <>
       <FormHead
-        title="Sign in to your account"
+        title="登录您的账户"
         description={
           <>
-            {`Don’t have an account? `}
+            {`还没有账户？ `}
             <Link component={RouterLink} href={paths.auth.firebase.signUp} variant="subtitle2">
-              Get started
+              立即注册
             </Link>
           </>
         }

@@ -59,7 +59,7 @@ export function FileManagerActionSelected({
               }),
             ]}
           >
-            {selected.length} Items selected
+            已选择 {selected.length} 个项目
           </Typography>
         )}
 

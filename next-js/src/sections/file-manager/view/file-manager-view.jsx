@@ -77,7 +77,7 @@ export function FileManagerView() {
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      toast.success('Delete success!');
+      toast.success('删除成功！');
 
       setTableData(deleteRow);
 
@@ -89,7 +89,7 @@ export function FileManagerView() {
   const handleDeleteItems = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    toast.success('Delete success!');
+    toast.success('删除成功！');
 
     setTableData(deleteRows);
 
@@ -143,10 +143,10 @@ export function FileManagerView() {
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
+      title="删除"
       content={
         <>
-          Are you sure want to delete <strong> {table.selected.length} </strong> items?
+          您确定要删除 <strong> {table.selected.length} </strong> 个项目吗？
         </>
       }
       action={
@@ -158,7 +158,7 @@ export function FileManagerView() {
             confirmDialog.onFalse();
           }}
         >
-          Delete
+          删除
         </Button>
       }
     />
@@ -186,13 +186,13 @@ export function FileManagerView() {
     <>
       <DashboardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h4">File manager</Typography>
+          <Typography variant="h4">文件管理器</Typography>
           <Button
             variant="contained"
             startIcon={<Iconify icon="eva:cloud-upload-fill" />}
             onClick={newFilesDialog.onTrue}
           >
-            Upload
+            上传
           </Button>
         </Box>
 
@@ -201,7 +201,7 @@ export function FileManagerView() {
           {canReset && renderResults()}
         </Stack>
 
-        {notFound ? <EmptyContent filled sx={{ py: 10 }} /> : renderList()}
+        {notFound ? <EmptyContent filled sx={{ py: 10 }} title="无文件" /> : renderList()}
       </DashboardContent>
 
       {renderNewFilesDialog()}

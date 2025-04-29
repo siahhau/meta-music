@@ -60,11 +60,11 @@ export function FileManagerGridView({ table, dataFiltered, onDeleteItem, onOpenC
     <FileManagerNewFolderDialog
       open={newFolderDialog.value}
       onClose={newFolderDialog.onFalse}
-      title="New Folder"
+      title="新建文件夹"
       onCreate={() => {
         newFolderDialog.onFalse();
         setFolderName('');
-        console.info('CREATE NEW FOLDER', folderName);
+        console.info('创建新文件夹', folderName);
       }}
       folderName={folderName}
       onChangeFolderName={handleChangeFolderName}
@@ -74,8 +74,8 @@ export function FileManagerGridView({ table, dataFiltered, onDeleteItem, onOpenC
   const renderFolders = () => (
     <>
       <FileManagerPanel
-        title="Folders"
-        subtitle={`${dataFiltered.filter((item) => item.type === 'folder').length} folders`}
+        title="文件夹"
+        subtitle={`${dataFiltered.filter((item) => item.type === 'folder').length} 个文件夹`}
         onOpen={newFolderDialog.onTrue}
         collapse={foldersCollapse.value}
         onCollapse={foldersCollapse.onToggle}
@@ -113,8 +113,8 @@ export function FileManagerGridView({ table, dataFiltered, onDeleteItem, onOpenC
   const renderFiles = () => (
     <>
       <FileManagerPanel
-        title="Files"
-        subtitle={`${dataFiltered.filter((item) => item.type !== 'folder').length} files`}
+        title="文件"
+        subtitle={`${dataFiltered.filter((item) => item.type !== 'folder').length} 个文件`}
         onOpen={newFilesDialog.onTrue}
         collapse={filesCollapse.value}
         onCollapse={filesCollapse.onToggle}
@@ -171,7 +171,7 @@ export function FileManagerGridView({ table, dataFiltered, onDeleteItem, onOpenC
               onClick={onOpenConfirm}
               sx={{ mr: 1 }}
             >
-              Delete
+              删除
             </Button>
 
             <Button
@@ -180,8 +180,19 @@ export function FileManagerGridView({ table, dataFiltered, onDeleteItem, onOpenC
               variant="contained"
               startIcon={<Iconify icon="solar:share-bold" />}
               onClick={shareDialog.onTrue}
+              sx={{ mr: 1 }}
             >
-              Share
+              分享
+            </Button>
+
+            <Button
+              color="primary"
+              size="small"
+              variant="contained"
+              startIcon={<Iconify icon="solar:download-bold" />}
+              onClick={shareDialog.onTrue}
+            >
+              下载
             </Button>
           </>
         }

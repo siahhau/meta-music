@@ -24,7 +24,7 @@ export const _appRelated = [
   price: [2, 4].includes(index) ? _mock.number.price(index) : 0,
 }));
 
-export const _appInstalled = ['Germany', 'England', 'France', 'Korean', 'USA'].map(
+export const _appInstalled = ['德国', '英国', '法国', '韩国', '美国'].map(
   (country, index) => ({
     id: _mock.id(index),
     countryName: country,
@@ -45,7 +45,7 @@ export const _appAuthors = Array.from({ length: 3 }, (_, index) => ({
 export const _appInvoices = Array.from({ length: 5 }, (_, index) => {
   const category = ['Android', 'Mac', 'Windows', 'Android', 'Mac'][index];
 
-  const status = ['paid', 'out of date', 'progress', 'paid', 'paid'][index];
+  const status = ['已支付', '过期', '进行中', '已支付', '已支付'][index];
 
   return {
     id: _mock.id(index),
@@ -81,11 +81,11 @@ export const _analyticPosts = Array.from({ length: 5 }, (_, index) => ({
 
 export const _analyticOrderTimeline = Array.from({ length: 5 }, (_, index) => {
   const title = [
-    '1983, orders, $4220',
-    '12 Invoices have been paid',
-    'Order #37745 from September',
-    'New order placed #XF-2356',
-    'New order placed #XF-2346',
+    '1983年，订单，$4220',
+    '12张发票已支付',
+    '9月份的订单 #37745',
+    '新订单 #XF-2356 已下单',
+    '新订单 #XF-2346 已下单',
   ][index];
 
   return {
@@ -109,7 +109,7 @@ export const _analyticTraffic = [
   },
   {
     value: 'linkedin',
-    label: 'Linkedin',
+    label: 'LinkedIn',
     total: _mock.number.nativeL(3),
   },
   {
@@ -122,7 +122,7 @@ export const _analyticTraffic = [
 // ECOMMERCE
 // ----------------------------------------------------------------------
 
-export const _ecommerceSalesOverview = ['Total profit', 'Total income', 'Total expenses'].map(
+export const _ecommerceSalesOverview = ['总利润', '总收入', '总支出'].map(
   (label, index) => ({
     label,
     totalAmount: _mock.number.price(index) * 100,
@@ -131,12 +131,12 @@ export const _ecommerceSalesOverview = ['Total profit', 'Total income', 'Total e
 );
 
 export const _ecommerceBestSalesman = Array.from({ length: 5 }, (_, index) => {
-  const category = ['CAP', 'Branded shoes', 'Headphone', 'Cell phone', 'Earings'][index];
+  const category = ['帽子', '品牌鞋', '耳机', '手机', '耳环'][index];
 
   return {
     id: _mock.id(index),
     category,
-    rank: `Top ${index + 1}`,
+    rank: `排名第 ${index + 1}`,
     email: _mock.email(index),
     name: _mock.fullName(index),
     totalAmount: _mock.number.price(index),
@@ -209,55 +209,55 @@ export const _bankingRecentTransitions = [
     id: _mock.id(2),
     name: _mock.fullName(2),
     avatarUrl: _mock.image.avatar(2),
-    type: 'Income',
-    message: 'Receive money from',
+    type: '收入',
+    message: '收到来自',
     category: 'Annette black',
     date: _mock.time(2),
-    status: 'progress',
+    status: '进行中',
     amount: _mock.number.price(2),
   },
   {
     id: _mock.id(3),
     name: _mock.fullName(3),
     avatarUrl: _mock.image.avatar(3),
-    type: 'Expenses',
-    message: 'Payment for',
+    type: '支出',
+    message: '支付给',
     category: 'Courtney henry',
     date: _mock.time(3),
-    status: 'completed',
+    status: '已完成',
     amount: _mock.number.price(3),
   },
   {
     id: _mock.id(4),
     name: _mock.fullName(4),
     avatarUrl: _mock.image.avatar(4),
-    type: 'Receive',
-    message: 'Payment for',
+    type: '收到',
+    message: '支付给',
     category: 'Theresa webb',
     date: _mock.time(4),
-    status: 'failed',
+    status: '失败',
     amount: _mock.number.price(4),
   },
   {
     id: _mock.id(5),
     name: null,
     avatarUrl: null,
-    type: 'Expenses',
-    message: 'Payment for',
-    category: 'Fast food',
+    type: '支出',
+    message: '支付给',
+    category: '快餐',
     date: _mock.time(5),
-    status: 'completed',
+    status: '已完成',
     amount: _mock.number.price(5),
   },
   {
     id: _mock.id(6),
     name: null,
     avatarUrl: null,
-    type: 'Expenses',
-    message: 'Payment for',
-    category: 'Fitness',
+    type: '支出',
+    message: '支付给',
+    category: '健身',
     date: _mock.time(6),
-    status: 'progress',
+    status: '进行中',
     amount: _mock.number.price(6),
   },
 ];
@@ -266,7 +266,7 @@ export const _bankingRecentTransitions = [
 // ----------------------------------------------------------------------
 
 export const _bookings = Array.from({ length: 5 }, (_, index) => {
-  const status = ['Paid', 'Paid', 'Pending', 'Cancelled', 'Paid'][index];
+  const status = ['已支付', '已支付', '待处理', '已取消', '已支付'][index];
 
   const customer = {
     avatarUrl: _mock.image.avatar(index),
@@ -290,7 +290,7 @@ export const _bookings = Array.from({ length: 5 }, (_, index) => {
 });
 
 export const _bookingsOverview = Array.from({ length: 3 }, (_, index) => ({
-  status: ['Pending', 'Canceled', 'Sold'][index],
+  status: ['待处理', '已取消', '已售出'][index],
   quantity: _mock.number.nativeL(index),
   value: _mock.number.percent(index + 5),
 }));
@@ -302,14 +302,14 @@ export const _bookingReview = Array.from({ length: 5 }, (_, index) => ({
   rating: _mock.number.rating(index),
   avatarUrl: _mock.image.avatar(index),
   description: _mock.description(index),
-  tags: ['Great sevice', 'Recommended', 'Best price'],
+  tags: ['优质服务', '推荐', '最优惠价格'],
 }));
 
 export const _bookingNew = Array.from({ length: 8 }, (_, index) => ({
   guests: '3-5',
   id: _mock.id(index),
   bookedAt: _mock.time(index),
-  duration: '3 days 2 nights',
+  duration: '3天2晚',
   isHot: _mock.boolean(index),
   name: _mock.fullName(index),
   price: _mock.number.price(index),

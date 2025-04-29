@@ -25,25 +25,34 @@ export function InvoiceNewEditStatusDate() {
       <Field.Text
         disabled
         name="invoiceNumber"
-        label="Invoice number"
+        label="发票编号"
         value={values.invoiceNumber}
       />
 
       <Field.Select
         fullWidth
         name="status"
-        label="Status"
+        label="状态"
         slotProps={{ inputLabel: { shrink: true } }}
       >
-        {['paid', 'pending', 'overdue', 'draft'].map((option) => (
-          <MenuItem key={option} value={option} sx={{ textTransform: 'capitalize' }}>
-            {option}
+        {[
+          { value: 'paid', label: '已支付' },
+          { value: 'pending', label: '待处理' },
+          { value: 'overdue', label: '逾期' },
+          { value: 'draft', label: '草稿' },
+        ].map((option) => (
+          <MenuItem
+            key={option.value}
+            value={option.value}
+            sx={{ textTransform: 'capitalize' }}
+          >
+            {option.label}
           </MenuItem>
         ))}
       </Field.Select>
 
-      <Field.DatePicker name="createDate" label="Date create" />
-      <Field.DatePicker name="dueDate" label="Due date" />
+      <Field.DatePicker name="createDate" label="创建日期" />
+      <Field.DatePicker name="dueDate" label="到期日期" />
     </Box>
   );
 }

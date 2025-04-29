@@ -70,7 +70,7 @@ export function JobSearch({ redirectPath, sx }) {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Search..."
+          placeholder="搜索..."
           slotProps={{
             input: {
               ...params.InputProps,

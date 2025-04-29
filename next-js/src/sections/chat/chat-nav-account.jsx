@@ -115,7 +115,7 @@ export function ChatNavAccount() {
 
         <MenuItem>
           <Iconify width={24} icon="solar:settings-bold" />
-          Settings
+          设置
         </MenuItem>
       </MenuList>
     </CustomPopover>

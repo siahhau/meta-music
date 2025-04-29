@@ -38,7 +38,7 @@ export function AboutWhat({ sx, ...other }) {
             <Grid size={6}>
               <m.div variants={varFade('inUp')}>
                 <Image
-                  alt="Our office small"
+                  alt="我们的办公室（小图）"
                   src={`${CONFIG.assetsDir}/assets/images/about/what-small.webp`}
                   ratio="1/1"
                   sx={(theme) => ({
@@ -55,7 +55,7 @@ export function AboutWhat({ sx, ...other }) {
             <Grid size={6}>
               <m.div variants={varFade('inUp')}>
                 <Image
-                  alt="Our office large"
+                  alt="我们的办公室（大图）"
                   src={`${CONFIG.assetsDir}/assets/images/about/what-large.webp`}
                   ratio="3/4"
                   sx={(theme) => ({
@@ -72,7 +72,7 @@ export function AboutWhat({ sx, ...other }) {
 
           <Grid size={{ xs: 12, md: 6, lg: 5 }}>
             <Typography component={m.h2} variants={varFade('inRight')} variant="h2" sx={{ mb: 3 }}>
-              What is Minimal?
+              Minimal 是什么？
             </Typography>
 
             <Typography
@@ -87,10 +87,9 @@ export function AboutWhat({ sx, ...other }) {
                 }),
               ]}
             >
-              Our theme is the most advanced and user-friendly theme you will find on the market, we
-              have documentation and video to help set your site really easily, pre-installed demos
-              you can import in one click and everything from the theme options to page content can
-              be edited from the front-end. This is the theme you are looking for.
+              我们的主题是市场上最先进且用户友好的主题，我们提供文档和视频帮助您轻松设置网站，
+              预装的演示内容可一键导入，从主题选项到页面内容，所有内容都可从前端编辑。
+              这就是您寻找的主题。
             </Typography>
 
             <Box
@@ -135,7 +134,7 @@ export function AboutWhat({ sx, ...other }) {
               size="large"
               endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
             >
-              Our work
+              我们的作品
             </Button>
           </Grid>
         </Grid>
@@ -148,5 +147,5 @@ export function AboutWhat({ sx, ...other }) {
 
 const SKILLS = Array.from({ length: 3 }, (_, index) => ({
   value: [20, 40, 60][index],
-  label: ['Development', 'Design', 'Marketing'][index],
+  label: ['开发', '设计', '营销'][index],
 }));

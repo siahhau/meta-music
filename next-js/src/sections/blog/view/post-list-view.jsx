@@ -45,11 +45,11 @@ export function PostListView() {
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="List"
+        heading="列表"
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Blog', href: paths.dashboard.post.root },
-          { name: 'List' },
+          { name: '仪表板', href: paths.dashboard.root },
+          { name: '博客', href: paths.dashboard.post.root },
+          { name: '列表' },
         ]}
         action={
           <Button
@@ -58,7 +58,7 @@ export function PostListView() {
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
           >
-            New post
+            新增文章
           </Button>
         }
         sx={{ mb: { xs: 3, md: 5 } }}
@@ -89,7 +89,7 @@ export function PostListView() {
             key={tab}
             iconPosition="end"
             value={tab}
-            label={tab}
+            label={tab === 'all' ? '全部' : tab === 'published' ? '已发布' : '草稿'}
             icon={
               <Label
                 variant={((tab === 'all' || tab === state.publish) && 'filled') || 'soft'}

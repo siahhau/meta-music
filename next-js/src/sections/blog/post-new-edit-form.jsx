@@ -31,15 +31,15 @@ import { PostDetailsPreview } from './post-details-preview';
 // ----------------------------------------------------------------------
 
 export const NewPostSchema = zod.object({
-  title: zod.string().min(1, { message: 'Title is required!' }),
-  description: zod.string().min(1, { message: 'Description is required!' }),
+  title: zod.string().min(1, { message: '请输入标题！' }),
+  description: zod.string().min(1, { message: '请输入描述！' }),
   content: schemaHelper
     .editor()
-    .min(100, { message: 'Content must be at least 100 characters' })
-    .max(500, { message: 'Content must be less than 500 characters' }),
-  coverUrl: schemaHelper.file({ message: 'Cover is required!' }),
-  tags: zod.string().array().min(2, { message: 'Must have at least 2 items!' }),
-  metaKeywords: zod.string().array().min(1, { message: 'Meta keywords is required!' }),
+    .min(100, { message: '内容至少为100个字符！' })
+    .max(500, { message: '内容不得超过500个字符！' }),
+  coverUrl: schemaHelper.file({ message: '请上传封面图！' }),
+  tags: zod.string().array().min(2, { message: '至少选择2个标签！' }),
+  metaKeywords: zod.string().array().min(1, { message: '请输入元关键词！' }),
   // Not required
   metaTitle: zod.string(),
   metaDescription: zod.string(),
@@ -87,9 +87,9 @@ export function PostNewEditForm({ currentPost }) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       showPreview.onFalse();
-      toast.success(currentPost ? 'Update success!' : 'Create success!');
+      toast.success(currentPost ? '更新成功！' : '创建成功！');
       router.push(paths.dashboard.post.root);
-      console.info('DATA', data);
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -108,8 +108,8 @@ export function PostNewEditForm({ currentPost }) {
   const renderDetails = () => (
     <Card>
       <CardHeader
-        title="Details"
-        subheader="Title, short description, image..."
+        title="基本信息"
+        subheader="标题、简短描述、图片..."
         action={renderCollapseButton(openDetails.value, openDetails.onToggle)}
         sx={{ mb: 3 }}
       />
@@ -118,17 +118,17 @@ export function PostNewEditForm({ currentPost }) {
         <Divider />
 
         <Stack spacing={3} sx={{ p: 3 }}>
-          <Field.Text name="title" label="Post title" />
+          <Field.Text name="title" label="文章标题" />
 
-          <Field.Text name="description" label="Description" multiline rows={3} />
+          <Field.Text name="description" label="描述" multiline rows={3} />
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Content</Typography>
+            <Typography variant="subtitle2">内容</Typography>
             <Field.Editor name="content" sx={{ maxHeight: 480 }} />
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Cover</Typography>
+            <Typography variant="subtitle2">封面</Typography>
             <Field.Upload name="coverUrl" maxSize={3145728} onDelete={handleRemoveFile} />
           </Stack>
         </Stack>
@@ -139,8 +139,8 @@ export function PostNewEditForm({ currentPost }) {
   const renderProperties = () => (
     <Card>
       <CardHeader
-        title="Properties"
-        subheader="Additional functions and attributes..."
+        title="属性"
+        subheader="附加功能和属性..."
         action={renderCollapseButton(openProperties.value, openProperties.onToggle)}
         sx={{ mb: 3 }}
       />
@@ -151,8 +151,8 @@ export function PostNewEditForm({ currentPost }) {
         <Stack spacing={3} sx={{ p: 3 }}>
           <Field.Autocomplete
             name="tags"
-            label="Tags"
-            placeholder="+ Tags"
+            label="标签"
+            placeholder="+ 添加标签"
             multiple
             freeSolo
             disableCloseOnSelect
@@ -177,11 +177,11 @@ export function PostNewEditForm({ currentPost }) {
             }
           />
 
-          <Field.Text name="metaTitle" label="Meta title" />
+          <Field.Text name="metaTitle" label="元标题" />
 
           <Field.Text
             name="metaDescription"
-            label="Meta description"
+            label="元描述"
             fullWidth
             multiline
             rows={3}
@@ -189,8 +189,8 @@ export function PostNewEditForm({ currentPost }) {
 
           <Field.Autocomplete
             name="metaKeywords"
-            label="Meta keywords"
-            placeholder="+ Keywords"
+            label="元关键词"
+            placeholder="+ 添加关键词"
             multiple
             freeSolo
             disableCloseOnSelect
@@ -216,8 +216,9 @@ export function PostNewEditForm({ currentPost }) {
           />
 
           <FormControlLabel
-            label="Enable comments"
+            label="启用评论"
             control={<Switch defaultChecked slotProps={{ input: { id: 'comments-switch' } }} />}
+            sx={{ pl: 3 }}
           />
         </Stack>
       </Collapse>
@@ -234,14 +235,14 @@ export function PostNewEditForm({ currentPost }) {
       }}
     >
       <FormControlLabel
-        label="Publish"
+        label="发布"
         control={<Switch defaultChecked slotProps={{ input: { id: 'publish-switch' } }} />}
         sx={{ pl: 3, flexGrow: 1 }}
       />
 
       <div>
         <Button color="inherit" variant="outlined" size="large" onClick={showPreview.onTrue}>
-          Preview
+          预览
         </Button>
 
         <Button
@@ -251,7 +252,7 @@ export function PostNewEditForm({ currentPost }) {
           loading={isSubmitting}
           sx={{ ml: 2 }}
         >
-          {!currentPost ? 'Create post' : 'Save changes'}
+          {currentPost ? '保存更改' : '创建文章'}
         </Button>
       </div>
     </Box>

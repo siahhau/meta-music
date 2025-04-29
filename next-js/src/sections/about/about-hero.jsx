@@ -42,7 +42,7 @@ export function AboutHero({ sx, ...other }) {
           <AnimateText
             component="h1"
             variant="h1"
-            textContent={['Who', 'we are?']}
+            textContent={['我们', '是谁？']}
             variants={varFade('inRight', { distance: 24 })}
             sx={{
               color: 'common.white',
@@ -57,8 +57,8 @@ export function AboutHero({ sx, ...other }) {
               variant="h4"
               sx={{ mt: 3, color: 'common.white', fontWeight: 'fontWeightSemiBold' }}
             >
-              Let&apos;s work together and
-              <br /> make awesome site easily
+              让我们一起合作，
+              <br /> 轻松打造精彩网站
             </Typography>
           </m.div>
         </Box>

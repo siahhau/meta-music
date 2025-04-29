@@ -38,7 +38,7 @@ export function InvoiceToolbar({ invoice, currentStatus, statusOptions, onChange
       <Box sx={{ height: 1, display: 'flex', flexDirection: 'column' }}>
         <DialogActions sx={{ p: 1.5 }}>
           <Button color="inherit" variant="contained" onClick={onClose}>
-            Close
+            关闭
           </Button>
         </DialogActions>
         <Box sx={{ flexGrow: 1, height: 1, overflow: 'hidden' }}>
@@ -67,7 +67,7 @@ export function InvoiceToolbar({ invoice, currentStatus, statusOptions, onChange
             display: 'flex',
           }}
         >
-          <Tooltip title="Edit">
+          <Tooltip title="编辑">
             <IconButton
               component={RouterLink}
               href={paths.dashboard.invoice.edit(`${invoice?.id}`)}
@@ -76,7 +76,7 @@ export function InvoiceToolbar({ invoice, currentStatus, statusOptions, onChange
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="View">
+          <Tooltip title="查看">
             <IconButton onClick={onOpen}>
               <Iconify icon="solar:eye-bold" />
             </IconButton>
@@ -84,19 +84,19 @@ export function InvoiceToolbar({ invoice, currentStatus, statusOptions, onChange
 
           {renderDownloadButton()}
 
-          <Tooltip title="Print">
+          <Tooltip title="打印">
             <IconButton>
               <Iconify icon="solar:printer-minimalistic-bold" />
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Send">
+          <Tooltip title="发送">
             <IconButton>
               <Iconify icon="custom:send-fill" />
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Share">
+          <Tooltip title="分享">
             <IconButton>
               <Iconify icon="solar:share-bold" />
             </IconButton>
@@ -106,7 +106,7 @@ export function InvoiceToolbar({ invoice, currentStatus, statusOptions, onChange
         <TextField
           fullWidth
           select
-          label="Status"
+          label="状态"
           value={currentStatus}
           onChange={onChangeStatus}
           sx={{ maxWidth: 160 }}
@@ -117,7 +117,10 @@ export function InvoiceToolbar({ invoice, currentStatus, statusOptions, onChange
         >
           {statusOptions.map((option) => (
             <MenuItem key={option.value} value={option.value}>
-              {option.label}
+              {option.label === 'paid' ? '已支付' :
+               option.label === 'pending' ? '待处理' :
+               option.label === 'overdue' ? '逾期' :
+               option.label === 'draft' ? '草稿' : option.label}
             </MenuItem>
           ))}
         </TextField>

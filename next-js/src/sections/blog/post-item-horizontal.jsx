@@ -36,20 +36,20 @@ export function PostItemHorizontal({ sx, post, editHref, detailsHref, ...other }
         <li>
           <MenuItem component={RouterLink} href={detailsHref} onClick={() => menuActions.onClose()}>
             <Iconify icon="solar:eye-bold" />
-            View
+            查看
           </MenuItem>
         </li>
 
         <li>
           <MenuItem component={RouterLink} href={editHref} onClick={() => menuActions.onClose()}>
             <Iconify icon="solar:pen-bold" />
-            Edit
+            编辑
           </MenuItem>
         </li>
 
         <MenuItem onClick={() => menuActions.onClose()} sx={{ color: 'error.main' }}>
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -76,7 +76,7 @@ export function PostItemHorizontal({ sx, post, editHref, detailsHref, ...other }
             }}
           >
             <Label variant="soft" color={(post.publish === 'published' && 'info') || 'default'}>
-              {post.publish}
+              {post.publish === 'published' ? '已发布' : post.publish === 'draft' ? '草稿' : post.publish}
             </Label>
 
             <Box component="span" sx={{ typography: 'caption', color: 'text.disabled' }}>

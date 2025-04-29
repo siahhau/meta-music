@@ -28,7 +28,7 @@ export function KanbanDetailsCommentInput() {
       </Avatar>
 
       <Paper variant="outlined" sx={{ p: 1, flexGrow: 1, bgcolor: 'transparent' }}>
-        <InputBase fullWidth multiline rows={2} placeholder="Type a message" sx={{ px: 1 }} />
+        <InputBase fullWidth multiline rows={2} placeholder="输入评论" sx={{ px: 1 }} />
 
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
@@ -41,7 +41,7 @@ export function KanbanDetailsCommentInput() {
             </IconButton>
           </Box>
 
-          <Button variant="contained">Comment</Button>
+          <Button variant="contained">评论</Button>
         </Box>
       </Paper>
     </Box>

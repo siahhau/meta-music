@@ -100,7 +100,7 @@ export function PostDetailsView({ post }) {
                   slotProps={{
                     input: {
                       id: 'favorite-checkbox',
-                      'aria-label': 'Favorite checkbox',
+                      'aria-label': '收藏复选框',
                     },
                   }}
                 />
@@ -117,7 +117,7 @@ export function PostDetailsView({ post }) {
         </Stack>
 
         <Box sx={{ mb: 3, mt: 5, display: 'flex' }}>
-          <Typography variant="h4">Comments</Typography>
+          <Typography variant="h4">评论</Typography>
 
           <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
             ({post?.comments.length})

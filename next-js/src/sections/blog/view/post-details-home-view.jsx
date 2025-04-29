@@ -45,8 +45,8 @@ export function PostDetailsHomeView({ post, latestPosts }) {
       >
         <CustomBreadcrumbs
           links={[
-            { name: 'Home', href: '/' },
-            { name: 'Blog', href: paths.post.root },
+            { name: '首页', href: '/' },
+            { name: '博客', href: paths.post.root },
             { name: post?.title },
           ]}
           sx={{ maxWidth: 720, mx: 'auto' }}
@@ -88,7 +88,7 @@ export function PostDetailsHomeView({ post, latestPosts }) {
                     slotProps={{
                       input: {
                         id: 'favorite-checkbox',
-                        'aria-label': 'Favorite checkbox',
+                        'aria-label': '收藏复选框',
                       },
                     }}
                   />
@@ -105,7 +105,7 @@ export function PostDetailsHomeView({ post, latestPosts }) {
           </Stack>
 
           <Box sx={{ mb: 3, mt: 5, display: 'flex' }}>
-            <Typography variant="h4">Comments</Typography>
+            <Typography variant="h4">评论</Typography>
 
             <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
               ({post?.comments.length})
@@ -123,7 +123,7 @@ export function PostDetailsHomeView({ post, latestPosts }) {
       {!!latestPosts?.length && (
         <Container sx={{ pb: 15 }}>
           <Typography variant="h4" sx={{ mb: 5 }}>
-            Recent Posts
+            近期文章
           </Typography>
 
           <Grid container spacing={3}>

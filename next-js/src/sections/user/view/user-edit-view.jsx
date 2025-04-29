@@ -14,11 +14,11 @@ export function UserEditView({ user: currentUser }) {
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading="编辑"
         backHref={paths.dashboard.user.list}
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'User', href: paths.dashboard.user.root },
+          { name: '仪表板', href: paths.dashboard.root },
+          { name: '用户', href: paths.dashboard.user.root },
           { name: currentUser?.name },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}

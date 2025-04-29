@@ -36,12 +36,12 @@ export function OverviewAppView() {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
           <AppWelcome
-            title={`Welcome back 👋 \n ${user?.displayName}`}
-            description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+            title={`欢迎回来 👋 \n ${user?.displayName}`}
+            description="如果您打算使用一段 Lorem Ipsum 文本，您需要确保其中没有令人尴尬的内容。"
             img={<SeoIllustration hideBackground />}
             action={
               <Button variant="contained" color="primary">
-                Go now
+                立即前往
               </Button>
             }
           />
@@ -53,11 +53,11 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <AppWidgetSummary
-            title="Total active users"
+            title="总活跃用户"
             percent={2.6}
             total={18765}
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [15, 18, 12, 51, 68, 11, 39, 37],
             }}
           />
@@ -65,12 +65,12 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <AppWidgetSummary
-            title="Total installed"
+            title="总安装量"
             percent={0.2}
             total={4876}
             chart={{
               colors: [theme.palette.info.main],
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [20, 41, 63, 33, 28, 35, 50, 46],
             }}
           />
@@ -78,12 +78,12 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <AppWidgetSummary
-            title="Total downloads"
+            title="总下载量"
             percent={-0.1}
             total={678}
             chart={{
               colors: [theme.palette.error.main],
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [18, 19, 31, 8, 16, 37, 12, 33],
             }}
           />
@@ -91,12 +91,12 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <AppCurrentDownload
-            title="Current download"
-            subheader="Downloaded by operating system"
+            title="当前下载量"
+            subheader="按操作系统下载"
             chart={{
               series: [
                 { label: 'Mac', value: 12244 },
-                { label: 'Window', value: 53345 },
+                { label: 'Windows', value: 53345 },
                 { label: 'iOS', value: 44313 },
                 { label: 'Android', value: 78343 },
               ],
@@ -106,46 +106,46 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
           <AppAreaInstalled
-            title="Area installed"
-            subheader="(+43%) than last year"
+            title="安装区域"
+            subheader="比去年增加43%"
             chart={{
               categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
+                '一月',
+                '二月',
+                '三月',
+                '四月',
+                '五月',
+                '六月',
+                '七月',
+                '八月',
+                '九月',
+                '十月',
+                '十一月',
+                '十二月',
               ],
               series: [
                 {
                   name: '2022',
                   data: [
-                    { name: 'Asia', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
-                    { name: 'Europe', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
-                    { name: 'Americas', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
+                    { name: '亚洲', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
+                    { name: '欧洲', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
+                    { name: '美洲', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
                   ],
                 },
                 {
                   name: '2023',
                   data: [
-                    { name: 'Asia', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
-                    { name: 'Europe', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
-                    { name: 'Americas', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
+                    { name: '亚洲', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
+                    { name: '欧洲', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
+                    { name: '美洲', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
                   ],
                 },
                 {
                   name: '2024',
                   data: [
-                    { name: 'Asia', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
-                    { name: 'Europe', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
-                    { name: 'Americas', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
+                    { name: '亚洲', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
+                    { name: '欧洲', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
+                    { name: '美洲', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
                   ],
                 },
               ],
@@ -155,41 +155,41 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, lg: 8 }}>
           <AppNewInvoice
-            title="New invoice"
+            title="新发票"
             tableData={_appInvoices}
             headCells={[
-              { id: 'id', label: 'Invoice ID' },
-              { id: 'category', label: 'Category' },
-              { id: 'price', label: 'Price' },
-              { id: 'status', label: 'Status' },
+              { id: 'id', label: '发票ID' },
+              { id: 'category', label: '类别' },
+              { id: 'price', label: '价格' },
+              { id: 'status', label: '状态' },
               { id: '' },
             ]}
           />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AppTopRelated title="Related applications" list={_appRelated} />
+          <AppTopRelated title="相关应用程序" list={_appRelated} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AppTopInstalledCountries title="Top installed countries" list={_appInstalled} />
+          <AppTopInstalledCountries title="安装量最高的国家" list={_appInstalled} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AppTopAuthors title="Top authors" list={_appAuthors} />
+          <AppTopAuthors title="顶级作者" list={_appAuthors} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
             <AppWidget
-              title="Conversion"
+              title="转化率"
               total={38566}
               icon="solar:user-rounded-bold"
               chart={{ series: 48 }}
             />
 
             <AppWidget
-              title="Applications"
+              title="应用程序"
               total={55566}
               icon="solar:letter-bold"
               chart={{

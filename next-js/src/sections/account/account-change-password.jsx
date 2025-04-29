@@ -19,17 +19,17 @@ export const ChangePassWordSchema = zod
   .object({
     oldPassword: zod
       .string()
-      .min(1, { message: 'Password is required!' })
-      .min(6, { message: 'Password must be at least 6 characters!' }),
-    newPassword: zod.string().min(1, { message: 'New password is required!' }),
-    confirmNewPassword: zod.string().min(1, { message: 'Confirm password is required!' }),
+      .min(1, { message: '请输入旧密码！' })
+      .min(6, { message: '密码长度至少为6个字符！' }),
+    newPassword: zod.string().min(1, { message: '请输入新密码！' }),
+    confirmNewPassword: zod.string().min(1, { message: '请输入确认密码！' }),
   })
   .refine((data) => data.oldPassword !== data.newPassword, {
-    message: 'New password must be different than old password',
+    message: '新密码不能与旧密码相同！',
     path: ['newPassword'],
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'Passwords do not match!',
+    message: '两次输入的密码不一致！',
     path: ['confirmNewPassword'],
   });
 
@@ -60,8 +60,8 @@ export function AccountChangePassword() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      toast.success('Update success!');
-      console.info('DATA', data);
+      toast.success('更新成功！');
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -80,7 +80,7 @@ export function AccountChangePassword() {
         <Field.Text
           name="oldPassword"
           type={showPassword.value ? 'text' : 'password'}
-          label="Old password"
+          label="旧密码"
           slotProps={{
             input: {
               endAdornment: (
@@ -98,7 +98,7 @@ export function AccountChangePassword() {
 
         <Field.Text
           name="newPassword"
-          label="New password"
+          label="新密码"
           type={showPassword.value ? 'text' : 'password'}
           slotProps={{
             input: {
@@ -115,7 +115,7 @@ export function AccountChangePassword() {
           }}
           helperText={
             <Box component="span" sx={{ gap: 0.5, display: 'flex', alignItems: 'center' }}>
-              <Iconify icon="solar:info-circle-bold" width={16} /> Password must be minimum 6+
+              <Iconify icon="solar:info-circle-bold" width={16} /> 密码长度至少为6个字符
             </Box>
           }
         />
@@ -123,7 +123,7 @@ export function AccountChangePassword() {
         <Field.Text
           name="confirmNewPassword"
           type={showPassword.value ? 'text' : 'password'}
-          label="Confirm new password"
+          label="确认新密码"
           slotProps={{
             input: {
               endAdornment: (
@@ -140,7 +140,7 @@ export function AccountChangePassword() {
         />
 
         <Button type="submit" variant="contained" loading={isSubmitting} sx={{ ml: 'auto' }}>
-          Save changes
+          保存更改
         </Button>
       </Card>
     </Form>

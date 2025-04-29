@@ -14,11 +14,11 @@ export function InvoiceCreateView() {
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="Create a new invoice"
+        heading="创建新发票"
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Invoice', href: paths.dashboard.invoice.root },
-          { name: 'New invoice' },
+          { name: '仪表板', href: paths.dashboard.root },
+          { name: '发票', href: paths.dashboard.invoice.root },
+          { name: '新发票' },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}
       />

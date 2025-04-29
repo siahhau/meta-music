@@ -39,7 +39,7 @@ export function FileManagerInvitedItem({ person }) {
           }}
         >
           <Iconify icon="solar:eye-bold" />
-          Can view
+          可查看
         </MenuItem>
 
         <MenuItem
@@ -50,14 +50,14 @@ export function FileManagerInvitedItem({ person }) {
           }}
         >
           <Iconify icon="solar:pen-bold" />
-          Can edit
+          可编辑
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={() => menuActions.onClose()} sx={{ color: 'error.main' }}>
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Remove
+          移除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -101,7 +101,7 @@ export function FileManagerInvitedItem({ person }) {
             }),
           ]}
         >
-          Can {permission}
+          {permission === 'view' ? '可查看' : permission === 'edit' ? '可编辑' : permission}
         </Button>
       </Box>
 

@@ -3,9 +3,9 @@ import { HomeView } from 'src/sections/home/view';
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Minimals UI: The starting point for your next project',
+  title: '扒谱吧',
   description:
-    'The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style',
+    '收录全世界所有歌曲的乐谱，不同视角看见音乐',
 };
 
 export default function Page() {

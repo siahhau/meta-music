@@ -45,7 +45,7 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
   }, []);
 
   const handleCopy = useCallback(() => {
-    toast.success('Copied!');
+    toast.success('复制成功！');
     copy(file.url);
   }, [copy, file.url]);
 
@@ -64,7 +64,7 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
           slotProps={{
             input: {
               id: `${file.id}-checkbox`,
-              'aria-label': `${file.id} checkbox`,
+              'aria-label': `${file.id} 复选框`,
             },
           }}
           sx={{ width: 1, height: 1 }}
@@ -94,7 +94,7 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
         slotProps={{
           input: {
             id: `favorite-${file.id}-checkbox`,
-            'aria-label': `Favorite ${file.id} checkbox`,
+            'aria-label': `收藏 ${file.id} 复选框`,
           },
         }}
       />
@@ -212,7 +212,7 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
           }}
         >
           <Iconify icon="eva:link-2-fill" />
-          Copy Link
+          复制链接
         </MenuItem>
 
         <MenuItem
@@ -222,7 +222,7 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
           }}
         >
           <Iconify icon="solar:share-bold" />
-          Share
+          分享
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -235,7 +235,7 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
           sx={{ color: 'error.main' }}
         >
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -245,11 +245,11 @@ export function FileManagerFileItem({ file, selected, onSelect, onDelete, sx, ..
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
-      content="Are you sure want to delete?"
+      title="删除"
+      content="您确定要删除吗？"
       action={
         <Button variant="contained" color="error" onClick={onDelete}>
-          Delete
+          删除
         </Button>
       }
     />

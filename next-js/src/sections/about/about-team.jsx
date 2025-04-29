@@ -37,20 +37,20 @@ export function AboutTeam({ sx, ...other }) {
       <Container component={MotionViewport} sx={{ textAlign: 'center', py: { xs: 10, md: 15 } }}>
         <m.div variants={varFade('inDown')}>
           <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-            Dream team
+            梦之队
           </Typography>
         </m.div>
 
         <m.div variants={varFade('inUp')}>
           <Typography variant="h2" sx={{ my: 3 }}>
-            Great team is the key
+            优秀的团队是关键
           </Typography>
         </m.div>
 
         <m.div variants={varFade('inUp')}>
           <Typography sx={{ mx: 'auto', maxWidth: 640, color: 'text.secondary' }}>
-            Minimal will provide you support if you have any problems, our support team will reply
-            within a day and we also have detailed documentation.
+            如果您遇到任何问题，Minimal将为您提供支持，我们的团队会在一天内回复，
+            我们还提供详细的文档。
           </Typography>
         </m.div>
 
@@ -78,7 +78,7 @@ export function AboutTeam({ sx, ...other }) {
           endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={24} />}
           sx={{ mx: 'auto' }}
         >
-          All members
+          所有成员
         </Button>
       </Container>
     </Box>

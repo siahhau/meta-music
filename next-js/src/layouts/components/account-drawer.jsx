@@ -35,8 +35,11 @@ import { SignOutButton } from './sign-out-button';
 export function AccountDrawer({ data = [], sx, ...other }) {
   const pathname = usePathname();
 
-  const { user } = useMockedUser();
-
+  let { user } = useMockedUser();
+  if (sessionStorage.getItem('user')) {
+    user = JSON.parse(sessionStorage.getItem('user'))
+  }
+  console.log(user)
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
   const renderAvatar = () => (
@@ -149,7 +152,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
             {renderAvatar()}
 
             <Typography variant="subtitle1" noWrap sx={{ mt: 2 }}>
-              {user?.displayName}
+              {user?.username}
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }} noWrap>
@@ -157,7 +160,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
             </Typography>
           </Box>
 
-          <Box
+          {/* <Box
             sx={{
               p: 3,
               gap: 1,
@@ -191,7 +194,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
                 <Iconify icon="mingcute:add-line" />
               </IconButton>
             </Tooltip>
-          </Box>
+          </Box> */}
 
           {renderList()}
 

@@ -35,7 +35,7 @@ export function KanbanContactsDialog({ assignee = [], open, onClose }) {
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
       <DialogTitle sx={{ pb: 0 }}>
-        Contacts <Typography component="span">({_contacts.length})</Typography>
+        联系人 <Typography component="span">({_contacts.length})</Typography>
       </DialogTitle>
 
       <Box sx={{ px: 3, py: 2.5 }}>
@@ -43,7 +43,7 @@ export function KanbanContactsDialog({ assignee = [], open, onClose }) {
           fullWidth
           value={searchContact}
           onChange={handleSearchContacts}
-          placeholder="Search..."
+          placeholder="搜索..."
           slotProps={{
             input: {
               startAdornment: (
@@ -91,7 +91,7 @@ export function KanbanContactsDialog({ assignee = [], open, onClose }) {
                         />
                       }
                     >
-                      {checked ? 'Assigned' : 'Assign'}
+                      {checked ? '已分配' : '分配'}
                     </Button>
                   </Box>
                 );

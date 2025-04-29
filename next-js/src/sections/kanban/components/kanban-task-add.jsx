@@ -19,7 +19,7 @@ export function KanbanTaskAdd({ status, openAddTask, onAddTask, onCloseAddTask }
     () => ({
       id: uuidv4(),
       status,
-      name: taskName.trim() ? taskName : 'Untitled',
+      name: taskName.trim() ? taskName : '未命名',
       priority: 'medium',
       attachments: [],
       labels: [],
@@ -69,7 +69,7 @@ export function KanbanTaskAdd({ status, openAddTask, onAddTask, onCloseAddTask }
           <InputBase
             autoFocus
             fullWidth
-            placeholder="Untitled"
+            placeholder="未命名"
             value={taskName}
             onChange={handleChangeName}
             onKeyUp={handleKeyUpAddTask}
@@ -81,7 +81,7 @@ export function KanbanTaskAdd({ status, openAddTask, onAddTask, onCloseAddTask }
           />
         </Paper>
 
-        <FormHelperText sx={{ mx: 1 }}>Press Enter to create the task.</FormHelperText>
+        <FormHelperText sx={{ mx: 1 }}>按 Enter 键创建任务。</FormHelperText>
       </div>
     </ClickAwayListener>
   );

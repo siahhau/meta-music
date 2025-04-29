@@ -4,33 +4,33 @@ import { Iconify } from 'src/components/iconify';
 
 export const _account = [
   {
-    label: 'Home',
+    label: '首页',
     href: '/',
     icon: <Iconify icon="solar:home-angle-bold-duotone" />,
   },
   {
-    label: 'Profile',
+    label: '个人资料',
     href: '#',
     icon: <Iconify icon="custom:profile-duotone" />,
   },
   {
-    label: 'Projects',
+    label: '项目',
     href: '#',
     icon: <Iconify icon="solar:notes-bold-duotone" />,
     info: '3',
   },
   {
-    label: 'Subscription',
+    label: '订阅',
     href: '#',
     icon: <Iconify icon="custom:invoice-duotone" />,
   },
   {
-    label: 'Security',
+    label: '安全',
     href: '#',
     icon: <Iconify icon="solar:shield-keyhole-bold-duotone" />,
   },
   {
-    label: 'Account settings',
+    label: '账户设置',
     href: '#',
     icon: <Iconify icon="solar:settings-bold-duotone" />,
   },

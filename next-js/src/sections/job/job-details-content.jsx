@@ -31,7 +31,7 @@ export function JobDetailsContent({ job, sx, ...other }) {
       <Markdown children={job?.content} />
 
       <Stack spacing={2}>
-        <Typography variant="h6">Skills</Typography>
+        <Typography variant="h6">技能要求</Typography>
         <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
           {job?.skills.map((skill) => (
             <Chip key={skill} label={skill} variant="soft" />
@@ -40,7 +40,7 @@ export function JobDetailsContent({ job, sx, ...other }) {
       </Stack>
 
       <Stack spacing={2}>
-        <Typography variant="h6">Benefits</Typography>
+        <Typography variant="h6">福利待遇</Typography>
         <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
           {job?.benefits.map((benefit) => (
             <Chip key={benefit} label={benefit} variant="soft" />
@@ -61,27 +61,27 @@ export function JobDetailsContent({ job, sx, ...other }) {
     >
       {[
         {
-          label: 'Date posted',
+          label: '发布日期',
           value: fDate(job?.createdAt),
           icon: <Iconify icon="solar:calendar-date-bold" />,
         },
         {
-          label: 'Expiration date',
+          label: '截止日期',
           value: fDate(job?.expiredDate),
           icon: <Iconify icon="solar:calendar-date-bold" />,
         },
         {
-          label: 'Employment type',
+          label: '工作类型',
           value: job?.employmentTypes,
           icon: <Iconify icon="solar:clock-circle-bold" />,
         },
         {
-          label: 'Offered salary',
-          value: job?.salary.negotiable ? 'Negotiable' : fCurrency(job?.salary.price),
+          label: '薪资待遇',
+          value: job?.salary.negotiable ? '面议' : fCurrency(job?.salary.price),
           icon: <Iconify icon="solar:wad-of-money-bold" />,
         },
         {
-          label: 'Experience',
+          label: '经验要求',
           value: job?.experience,
           icon: <Iconify icon="carbon:skill-level-basic" />,
         },

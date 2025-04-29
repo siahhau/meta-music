@@ -17,8 +17,8 @@ export function InvoiceEditView({ invoice }) {
         heading="Edit"
         backHref={paths.dashboard.invoice.root}
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'Invoice', href: paths.dashboard.invoice.root },
+          { name: '仪表板', href: paths.dashboard.root },
+          { name: '发票', href: paths.dashboard.invoice.root },
           { name: invoice?.invoiceNumber },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}

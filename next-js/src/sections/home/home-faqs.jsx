@@ -22,100 +22,98 @@ import { FloatLine, FloatPlusIcon, FloatTriangleDownIcon } from './components/sv
 
 const FAQs = [
   {
-    question: 'How can I get the update?',
+    question: '如何获取更新？',
     answer: (
       <Typography>
-        You will get 12 months of free
+        购买后您将获得12个月的免费
         <Link
           href="https://support.mui.com/hc/en-us/articles/360008775240-How-do-I-get-access-to-an-item-I-purchased"
           target="_blank"
           rel="noopener"
           sx={{ mx: 0.5 }}
         >
-          updates
+          更新
         </Link>
-        with the purchase. Please renew your license to get updates after that.
+        。之后请续订您的许可证以继续获取更新。
       </Typography>
     ),
   },
   {
-    question: 'Which license is right for you?',
+    question: '哪种许可证适合您？',
     answer: (
       <Box component="ul" sx={{ pl: 3, listStyleType: 'disc' }}>
-        <li> All licenses do not apply to open source.</li>
-        <li> One licenses / one end product (3 licenses / 3 products...).</li>
+        <li>所有许可证均不适用于开源项目。</li>
+        <li>一个许可证对应一个最终产品（3个许可证对应3个产品...）。</li>
         <li>
-          <strong>Standard / Plus</strong> license used in free products (Internal management...).
+          <strong>标准 / 增强</strong> 许可证用于免费产品（内部管理...）。
         </li>
         <li>
-          <strong>Extended</strong> license used in charge products, collect fees from users
-          (SAAS...).
+          <strong>扩展</strong> 许可证用于收费产品，向用户收取费用（SaaS...）。
         </li>
         <li>
-          Learn more about the
+          了解更多关于
           <Link
             href="https://docs.minimals.cc/package/"
             target="_blank"
             rel="noopener"
             sx={{ mx: 0.5 }}
           >
-            package & license
+            套餐和许可证
           </Link>
+          的信息
         </li>
       </Box>
     ),
   },
   {
-    question: 'How long is my license valid for?',
+    question: '我的许可证有效期是多久？',
     answer: (
       <Box component="ul" sx={{ pl: 3, listStyleType: 'disc' }}>
-        <li> The license is lifetime.</li>
-        <li> You get 12 months of free updates.</li>
+        <li>许可证为终身有效。</li>
+        <li>您将获得12个月的免费更新。</li>
       </Box>
     ),
   },
   {
-    question: 'Which platforms will the template support?',
+    question: '模板支持哪些平台？',
     answer: (
       <Typography>
-        {`The components in MUI are designed to work in the latest, stable releases of all major browsers, including Chrome, Firefox, Safari, and Edge. We don't support Internet Explorer 11. `}
-        Learn more about the
+        MUI 的组件设计为在所有主流浏览器的最新稳定版本中运行，包括 Chrome、Firefox、Safari 和 Edge。我们不支持 Internet Explorer 11。
+        了解更多关于
         <Link
           href="https://mui.com/material-ui/getting-started/supported-platforms/"
           target="_blank"
           rel="noopener"
           sx={{ mx: 0.5 }}
         >
-          supported platforms
+          支持的平台
         </Link>
+        的信息
       </Typography>
     ),
   },
   {
-    question: 'For what kind of projects is the Standard license intended?',
+    question: '标准许可证适用于哪些项目？',
     answer: (
       <Typography>
-        The Standard license is designed for internal applications in which staff will access the
-        application. An example could be the back-office dashboard of a public-facing e-commerce
-        website in which staff would sign in and manage inventory, customers, etc.
+        标准许可证适用于员工访问的内部应用程序。例如，一个面向公众的电子商务网站的后台仪表板，员工可登录并管理库存、客户等。
       </Typography>
     ),
   },
   {
-    question: 'Do you have a free demo to review the code before purchasing?',
+    question: '购买前有免费演示可以查看代码吗？',
     answer: (
       <Typography>
-        Yes, you can check out our
+        是的，您可以查看我们的
         <Link
           href="https://mui.com/store/items/minimal-dashboard-free/"
           target="_blank"
           rel="noopener"
           sx={{ mx: 0.5 }}
         >
-          open source
+          开源
         </Link>
-        dashboard template which should give you an overview of the code quality and folder
-        structure. Keep in mind that some aspects may differ from this Paid version.
+        仪表板模板，以了解代码质量和文件夹结构。请注意，部分内容可能与付费版本有所不同。
       </Typography>
     ),
   },
@@ -132,9 +130,9 @@ export function HomeFAQs({ sx, ...other }) {
 
   const renderDescription = () => (
     <SectionTitle
-      caption="FAQs"
-      title="We’ve got the"
-      txtGradient="answers"
+      caption="常见问题"
+      title="我们有"
+      txtGradient="答案"
       sx={{ textAlign: 'center' }}
     />
   );
@@ -214,12 +212,12 @@ export function HomeFAQs({ sx, ...other }) {
       ]}
     >
       <m.div variants={varFade('in')}>
-        <Typography variant="h4">Still have questions?</Typography>
+        <Typography variant="h4">还有疑问？</Typography>
       </m.div>
 
       <m.div variants={varFade('in')}>
         <Typography sx={{ mt: 2, mb: 3, color: 'text.secondary' }}>
-          Please describe your case to receive the most accurate advice
+          请描述您的情况，以便我们提供最准确的建议
         </Typography>
       </m.div>
 
@@ -227,10 +225,10 @@ export function HomeFAQs({ sx, ...other }) {
         <Button
           color="inherit"
           variant="contained"
-          href="mailto:support@minimals.cc?subject=[Feedback] from Customer"
+          href="mailto:support@minimals.cc?subject=[反馈] 来自客户"
           startIcon={<Iconify icon="solar:letter-bold" />}
         >
-          Contact us
+          联系我们
         </Button>
       </m.div>
     </Box>

@@ -3,72 +3,72 @@ import { _mock } from './_mock';
 // ----------------------------------------------------------------------
 
 export const JOB_DETAILS_TABS = [
-  { label: 'Job content', value: 'content' },
-  { label: 'Candidates', value: 'candidates' },
+  { label: '职位内容', value: 'content' },
+  { label: '候选人', value: 'candidates' },
 ];
 
 export const JOB_SKILL_OPTIONS = [
-  'UI',
-  'UX',
-  'Html',
+  '用户界面',
+  '用户体验',
+  'HTML',
   'JavaScript',
   'TypeScript',
-  'Communication',
-  'Problem Solving',
-  'Leadership',
-  'Time Management',
-  'Adaptability',
-  'Collaboration',
-  'Creativity',
-  'Critical Thinking',
-  'Technical Skills',
-  'Customer Service',
-  'Project Management',
-  'Problem Diagnosis',
+  '沟通',
+  '解决问题',
+  '领导力',
+  '时间管理',
+  '适应能力',
+  '协作',
+  '创造力',
+  '批判性思维',
+  '技术技能',
+  '客户服务',
+  '项目管理',
+  '问题诊断',
 ];
 
 export const JOB_WORKING_SCHEDULE_OPTIONS = [
-  'Monday to Friday',
-  'Weekend availability',
-  'Day shift',
+  '周一至周五',
+  '周末可工作',
+  '白班',
 ];
 
 export const JOB_EMPLOYMENT_TYPE_OPTIONS = [
-  { label: 'Full-time', value: 'Full-time' },
-  { label: 'Part-time', value: 'Part-time' },
-  { label: 'On demand', value: 'On demand' },
-  { label: 'Negotiable', value: 'Negotiable' },
+  { label: '全职', value: 'Full-time' },
+  { label: '兼职', value: 'Part-time' },
+  { label: '按需', value: 'On demand' },
+  { label: '可协商', value: 'Negotiable' },
 ];
 
 export const JOB_EXPERIENCE_OPTIONS = [
-  { label: 'No experience', value: 'No experience' },
-  { label: '1 year exp', value: '1 year exp' },
-  { label: '2 year exp', value: '2 year exp' },
-  { label: '> 3 year exp', value: '> 3 year exp' },
+  { label: '无经验', value: 'No experience' },
+  { label: '1年经验', value: '1 year exp' },
+  { label: '2年经验', value: '2 year exp' },
+  { label: '3年以上经验', value: '> 3 year exp' },
 ];
 
 export const JOB_BENEFIT_OPTIONS = [
-  { label: 'Free parking', value: 'Free parking' },
-  { label: 'Bonus commission', value: 'Bonus commission' },
-  { label: 'Travel', value: 'Travel' },
-  { label: 'Device support', value: 'Device support' },
-  { label: 'Health care', value: 'Health care' },
-  { label: 'Training', value: 'Training' },
-  { label: 'Health insurance', value: 'Health insurance' },
-  { label: 'Retirement plans', value: 'Retirement plans' },
-  { label: 'Paid time off', value: 'Paid time off' },
-  { label: 'Flexible work schedule', value: 'Flexible work schedule' },
+  { label: '免费停车', value: 'Free parking' },
+  { label: '奖金提成', value: 'Bonus commission' },
+  { label: '旅行', value: 'Travel' },
+  { label: '设备支持', value: 'Device support' },
+  { label: '医疗保健', value: 'Health care' },
+  { label: '培训', value: 'Training' },
+  { label: '健康保险', value: 'Health insurance' },
+  { label: '退休计划', value: 'Retirement plans' },
+  { label: '带薪休假', value: 'Paid time off' },
+  { label: '弹性工作时间', value: 'Flexible work schedule' },
 ];
 
 export const JOB_PUBLISH_OPTIONS = [
-  { label: 'Published', value: 'published' },
-  { label: 'Draft', value: 'draft' },
+  { label: '已发布', value: 'published' },
+  { label: '草稿', value: 'draft' },
 ];
 
 export const JOB_SORT_OPTIONS = [
-  { label: 'Latest', value: 'latest' },
-  { label: 'Popular', value: 'popular' },
-  { label: 'Oldest', value: 'oldest' },
+  { label: '最新', value: 'latest' },
+  { label: '热门', value: 'popular' },
+  { label: '最旧', value: 'oldest' },
 ];
 
 const CANDIDATES = Array.from({ length: 12 }, (_, index) => ({
@@ -79,32 +79,32 @@ const CANDIDATES = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 const CONTENT = `
-<h6>Job description</h6>
+<h6>职位描述</h6>
 
-<p>Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis.</p>
+<p>偶尔会有些许责难和痛苦。自动产生痛苦的行为本身就是一种快乐。确实是公正的存在，除了那些容易被拒绝的快乐之外。所有的快乐都不会被指责为痛苦，应当被归咎于那些应得的。</p>
 
-<h6>Key responsibilities</h6>
+<h6>主要职责</h6>
 
 <ul>
-  <li>Working with agency for design drawing detail, quotation and local production.</li>
-  <li>Produce window displays, signs, interior displays, floor plans and special promotions displays.</li>
-  <li>Change displays to promote new product launches and reflect festive or seasonal themes.</li>
-  <li>Planning and executing the open/renovation/ closing store procedure.</li>
-  <li>Follow‐up store maintenance procedure and keep updating SKU In &amp; Out.</li>
-  <li>Monitor costs and work within budget.</li>
-  <li>Liaise with suppliers and source elements.</li>
+  <li>与代理商合作进行设计图纸细节、报价和本地生产。</li>
+  <li>制作橱窗展示、标牌、室内展示、平面图和特别促销展示。</li>
+  <li>更改展示以推广新产品发布并反映节日或季节主题。</li>
+  <li>规划和执行开店/翻新/关闭店铺的程序。</li>
+  <li>跟进店铺维护程序并不断更新SKU进出情况。</li>
+  <li>监控成本并在预算范围内工作。</li>
+  <li>与供应商联络并采购元素。</li>
 </ul>
 
-<h6>Why You'll love working here</h6>
+<h6>为什么你会喜欢在这里工作</h6>
 
 <ul>
-  <li>Working with agency for design drawing detail, quotation and local production.</li>
-  <li>Produce window displays, signs, interior displays, floor plans and special promotions displays.</li>
-  <li>Change displays to promote new product launches and reflect festive or seasonal themes.</li>
-  <li>Planning and executing the open/renovation/ closing store procedure.</li>
-  <li>Follow‐up store maintenance procedure and keep updating SKU In &amp; Out.</li>
-  <li>Monitor costs and work within budget.</li>
-  <li>Liaise with suppliers and source elements.</li>
+  <li>与代理商合作进行设计图纸细节、报价和本地生产。</li>
+  <li>制作橱窗展示、标牌、室内展示、平面图和特别促销展示。</li>
+  <li>更改展示以推广新产品发布并反映节日或季节主题。</li>
+  <li>规划和执行开店/翻新/关闭店铺的程序。</li>
+  <li>跟进店铺维护程序并不断更新SKU进出情况。</li>
+  <li>监控成本并在预算范围内工作。</li>
+  <li>与供应商联络并采购元素。</li>
 </ul>
 `;
 

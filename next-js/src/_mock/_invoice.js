@@ -7,10 +7,10 @@ import { _addressBooks } from './_others';
 // ----------------------------------------------------------------------
 
 export const INVOICE_STATUS_OPTIONS = [
-  { value: 'paid', label: 'Paid' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'overdue', label: 'Overdue' },
-  { value: 'draft', label: 'Draft' },
+  { value: 'paid', label: '已支付' },
+  { value: 'pending', label: '待支付' },
+  { value: 'overdue', label: '逾期' },
+  { value: 'draft', label: '草稿' },
 ];
 
 export const INVOICE_SERVICE_OPTIONS = Array.from({ length: 8 }, (_, index) => ({

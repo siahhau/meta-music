@@ -20,22 +20,21 @@ import { useMockedUser } from 'src/auth/hooks';
 // ----------------------------------------------------------------------
 
 export const UpdateUserSchema = zod.object({
-  displayName: zod.string().min(1, { message: 'Name is required!' }),
+  displayName: zod.string().min(1, { message: '请输入姓名！' }),
   email: zod
     .string()
-    .min(1, { message: 'Email is required!' })
-    .email({ message: 'Email must be a valid email address!' }),
-  photoURL: schemaHelper.file({ message: 'Avatar is required!' }),
+    .min(1, { message: '请输入邮箱！' })
+    .email({ message: '请输入有效的邮箱地址！' }),
+  photoURL: schemaHelper.file({ message: '请上传头像！' }),
   phoneNumber: schemaHelper.phoneNumber({ isValid: isValidPhoneNumber }),
-  country: schemaHelper.nullableInput(zod.string().min(1, { message: 'Country is required!' }), {
-    // message for null value
-    message: 'Country is required!',
+  country: schemaHelper.nullableInput(zod.string().min(1, { message: '请选择国家！' }), {
+    message: '请选择国家！',
   }),
-  address: zod.string().min(1, { message: 'Address is required!' }),
-  state: zod.string().min(1, { message: 'State is required!' }),
-  city: zod.string().min(1, { message: 'City is required!' }),
-  zipCode: zod.string().min(1, { message: 'Zip code is required!' }),
-  about: zod.string().min(1, { message: 'About is required!' }),
+  address: zod.string().min(1, { message: '请输入地址！' }),
+  state: zod.string().min(1, { message: '请输入州/省！' }),
+  city: zod.string().min(1, { message: '请输入城市！' }),
+  zipCode: zod.string().min(1, { message: '请输入邮政编码！' }),
+  about: zod.string().min(1, { message: '请输入个人简介！' }),
   // Not required
   isPublic: zod.boolean(),
 });
@@ -88,8 +87,8 @@ export function AccountGeneral() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      toast.success('Update success!');
-      console.info('DATA', data);
+      toast.success('更新成功！');
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -121,8 +120,8 @@ export function AccountGeneral() {
                     color: 'text.disabled',
                   }}
                 >
-                  Allowed *.jpeg, *.jpg, *.png, *.gif
-                  <br /> max size of {fData(3145728)}
+                  允许上传 *.jpeg, *.jpg, *.png, *.gif
+                  <br /> 最大文件大小为 {fData(3145728)}
                 </Typography>
               }
             />
@@ -130,12 +129,12 @@ export function AccountGeneral() {
             <Field.Switch
               name="isPublic"
               labelPlacement="start"
-              label="Public profile"
+              label="公开个人资料"
               sx={{ mt: 5 }}
             />
 
             <Button variant="soft" color="error" sx={{ mt: 3 }}>
-              Delete user
+              删除用户
             </Button>
           </Card>
         </Grid>
@@ -150,23 +149,23 @@ export function AccountGeneral() {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <Field.Text name="displayName" label="Name" />
-              <Field.Text name="email" label="Email address" />
-              <Field.Phone name="phoneNumber" label="Phone number" />
-              <Field.Text name="address" label="Address" />
+              <Field.Text name="displayName" label="姓名" />
+              <Field.Text name="email" label="邮箱地址" />
+              <Field.Phone name="phoneNumber" label="电话号码" />
+              <Field.Text name="address" label="地址" />
 
-              <Field.CountrySelect name="country" label="Country" placeholder="Choose a country" />
+              <Field.CountrySelect name="country" label="国家" placeholder="请选择国家" />
 
-              <Field.Text name="state" label="State/region" />
-              <Field.Text name="city" label="City" />
-              <Field.Text name="zipCode" label="Zip/code" />
+              <Field.Text name="state" label="州/省" />
+              <Field.Text name="city" label="城市" />
+              <Field.Text name="zipCode" label="邮政编码" />
             </Box>
 
             <Stack spacing={3} sx={{ mt: 3, alignItems: 'flex-end' }}>
-              <Field.Text name="about" multiline rows={4} label="About" />
+              <Field.Text name="about" multiline rows={4} label="个人简介" />
 
               <Button type="submit" variant="contained" loading={isSubmitting}>
-                Save changes
+                保存更改
               </Button>
             </Stack>
           </Card>

@@ -44,7 +44,7 @@ export function JobDetailsToolbar({
           >
             {option.value === 'published' && <Iconify icon="eva:cloud-upload-fill" />}
             {option.value === 'draft' && <Iconify icon="solar:file-text-bold" />}
-            {option.label}
+            {option.label === 'Published' ? '已发布' : option.label === 'Draft' ? '草稿' : option.label}
           </MenuItem>
         ))}
       </MenuList>
@@ -62,20 +62,20 @@ export function JobDetailsToolbar({
           href={backHref}
           startIcon={<Iconify icon="eva:arrow-ios-back-fill" width={16} />}
         >
-          Back
+          返回
         </Button>
 
         <Box sx={{ flexGrow: 1 }} />
 
         {publish === 'published' && (
-          <Tooltip title="Go Live">
+          <Tooltip title="查看在线页面">
             <IconButton component={RouterLink} href={liveHref}>
               <Iconify icon="eva:external-link-fill" />
             </IconButton>
           </Tooltip>
         )}
 
-        <Tooltip title="Edit">
+        <Tooltip title="编辑">
           <IconButton component={RouterLink} href={editHref}>
             <Iconify icon="solar:pen-bold" />
           </IconButton>
@@ -85,12 +85,12 @@ export function JobDetailsToolbar({
           color="inherit"
           variant="contained"
           loading={!publish}
-          loadingIndicator="Loading…"
+          loadingIndicator="加载中…"
           endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
           onClick={menuActions.onOpen}
           sx={{ textTransform: 'capitalize' }}
         >
-          {publish}
+          {publish === 'published' ? '已发布' : publish === 'draft' ? '草稿' : publish}
         </Button>
       </Box>
 

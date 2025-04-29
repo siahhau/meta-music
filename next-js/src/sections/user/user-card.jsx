@@ -100,9 +100,9 @@ export function UserCard({ user, sx, ...other }) {
         }}
       >
         {[
-          { label: 'Follower', value: user.totalFollowers },
-          { label: 'Following', value: user.totalFollowing },
-          { label: 'Total post', value: user.totalPosts },
+          { label: '关注者', value: user.totalFollowers },
+          { label: '关注中', value: user.totalFollowing },
+          { label: '总帖子数', value: user.totalPosts },
         ].map((stat) => (
           <Box key={stat.label} sx={{ gap: 0.5, display: 'flex', flexDirection: 'column' }}>
             <Box component="span" sx={{ typography: 'caption', color: 'text.secondary' }}>

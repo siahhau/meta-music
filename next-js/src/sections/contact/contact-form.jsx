@@ -9,8 +9,8 @@ export function ContactForm({ sx, ...other }) {
   return (
     <Box sx={sx} {...other}>
       <Typography variant="h3">
-        Feel free to contact us. <br />
-        We&apos;ll be glad to hear from you buddy.
+        欢迎随时联系我们！ <br />
+        我们很高兴听到您的消息，朋友。
       </Typography>
       <Box
         sx={{
@@ -20,14 +20,14 @@ export function ContactForm({ sx, ...other }) {
           flexDirection: 'column',
         }}
       >
-        <TextField fullWidth label="Name" />
-        <TextField fullWidth label="Email" />
-        <TextField fullWidth label="Subject" />
-        <TextField fullWidth label="Enter your message here." multiline rows={4} />
+        <TextField fullWidth label="姓名" />
+        <TextField fullWidth label="邮箱" />
+        <TextField fullWidth label="主题" />
+        <TextField fullWidth label="在此输入您的消息" multiline rows={4} />
       </Box>
 
       <Button size="large" variant="contained">
-        Submit
+        提交
       </Button>
     </Box>
   );

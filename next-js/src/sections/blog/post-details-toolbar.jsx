@@ -66,20 +66,20 @@ export function PostDetailsToolbar({
           href={backHref}
           startIcon={<Iconify icon="eva:arrow-ios-back-fill" width={16} />}
         >
-          Back
+          返回
         </Button>
 
         <Box sx={{ flexGrow: 1 }} />
 
         {publish === 'published' && (
-          <Tooltip title="Go Live">
+          <Tooltip title="查看发布页面">
             <IconButton component={RouterLink} href={liveHref}>
               <Iconify icon="eva:external-link-fill" />
             </IconButton>
           </Tooltip>
         )}
 
-        <Tooltip title="Edit">
+        <Tooltip title="编辑">
           <IconButton component={RouterLink} href={editHref}>
             <Iconify icon="solar:pen-bold" />
           </IconButton>
@@ -89,12 +89,12 @@ export function PostDetailsToolbar({
           color="inherit"
           variant="contained"
           loading={!publish}
-          loadingIndicator="Loading…"
+          loadingIndicator="加载中..."
           endIcon={<Iconify icon="eva:arrow-ios-downward-fill" />}
           onClick={menuActions.onOpen}
           sx={{ textTransform: 'capitalize' }}
         >
-          {publish}
+          {publish === 'published' ? '已发布' : publish === 'draft' ? '草稿' : publish}
         </Button>
       </Box>
 

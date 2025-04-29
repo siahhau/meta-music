@@ -116,36 +116,37 @@ export function ChatNav({ loading, contacts, collapseNav, conversations, selecte
       const linkTo = (id) => router.push(`${paths.dashboard.chat}?id=${id}`);
 
       try {
-        // Check if the conversation already exists
+        // 检查会话是否已存在
         if (conversations.allIds.includes(result.id)) {
           linkTo(result.id);
           return;
         }
 
-        // Find the recipient in contacts
+        // 在联系人中查找收件人
         const recipient = contacts.find((contact) => contact.id === result.id);
         if (!recipient) {
-          console.error('Recipient not found');
+          console.error('未找到收件人');
           return;
         }
 
-        // Prepare conversation data
+        // 准备会话数据
         const { conversationData } = initialConversation({
           recipients: [recipient],
           me: myContact,
         });
 
-        // Create a new conversation
+        // 创建新会话
         const res = await createConversation(conversationData);
 
         if (!res || !res.conversation) {
-          console.error('Failed to create conversation');
+          console.error('创建会话失败');
+          return;
         }
 
-        // Navigate to the new conversation
+        // 导航到新会话
         linkTo(res.conversation.id);
       } catch (error) {
-        console.error('Error handling click result:', error);
+        console.error('处理点击结果时出错：', error);
       }
     },
     [contacts, conversations.allIds, handleClickAwaySearch, myContact, router]
@@ -183,7 +184,7 @@ export function ChatNav({ loading, contacts, collapseNav, conversations, selecte
         fullWidth
         value={searchContacts.query}
         onChange={(event) => handleSearchContacts(event.target.value)}
-        placeholder="Search contacts..."
+        placeholder="搜索联系人..."
         slotProps={{
           input: {
             startAdornment: (
@@ -269,6 +270,7 @@ export function ChatNav({ loading, contacts, collapseNav, conversations, selecte
       </Box>
 
       <Drawer
+        anchor="left"
         open={openMobile}
         onClose={onCloseMobile}
         slotProps={{

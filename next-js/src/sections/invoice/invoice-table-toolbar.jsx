@@ -70,17 +70,17 @@ export function InvoiceTableToolbar({ filters, options, dateError, onResetPage }
       <MenuList>
         <MenuItem onClick={() => menuActions.onClose()}>
           <Iconify icon="solar:printer-minimalistic-bold" />
-          Print
+          打印
         </MenuItem>
 
         <MenuItem onClick={() => menuActions.onClose()}>
           <Iconify icon="solar:import-bold" />
-          Import
+          导入
         </MenuItem>
 
         <MenuItem onClick={() => menuActions.onClose()}>
           <Iconify icon="solar:export-bold" />
-          Export
+          导出
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -99,12 +99,12 @@ export function InvoiceTableToolbar({ filters, options, dateError, onResetPage }
         }}
       >
         <FormControl sx={{ flexShrink: 0, width: { xs: 1, md: 180 } }}>
-          <InputLabel htmlFor="filter-service-select">Service</InputLabel>
+          <InputLabel htmlFor="filter-service-select">服务</InputLabel>
           <Select
             multiple
             value={currentFilters.service}
             onChange={handleFilterService}
-            input={<OutlinedInput label="Service" />}
+            input={<OutlinedInput label="服务" />}
             renderValue={(selected) => selected.map((value) => value).join(', ')}
             inputProps={{ id: 'filter-service-select' }}
             sx={{ textTransform: 'capitalize' }}
@@ -118,7 +118,7 @@ export function InvoiceTableToolbar({ filters, options, dateError, onResetPage }
                   slotProps={{
                     input: {
                       id: `${option}-checkbox`,
-                      'aria-label': `${option} checkbox`,
+                      'aria-label': `${option} 复选框`,
                     },
                   }}
                 />
@@ -129,22 +129,22 @@ export function InvoiceTableToolbar({ filters, options, dateError, onResetPage }
         </FormControl>
 
         <DatePicker
-          label="Start date"
-          value={currentFilters.endDate}
+          label="开始日期"
+          value={currentFilters.startDate}
           onChange={handleFilterStartDate}
           slotProps={{ textField: { fullWidth: true } }}
           sx={{ maxWidth: { md: 180 } }}
         />
 
         <DatePicker
-          label="End date"
+          label="结束日期"
           value={currentFilters.endDate}
           onChange={handleFilterEndDate}
           slotProps={{
             textField: {
               fullWidth: true,
               error: dateError,
-              helperText: dateError ? 'End date must be later than start date' : null,
+              helperText: dateError ? '结束日期必须晚于开始日期' : null,
             },
           }}
           sx={{
@@ -169,7 +169,7 @@ export function InvoiceTableToolbar({ filters, options, dateError, onResetPage }
             fullWidth
             value={currentFilters.name}
             onChange={handleFilterName}
-            placeholder="Search customer or invoice number..."
+            placeholder="搜索客户或发票编号..."
             slotProps={{
               input: {
                 startAdornment: (

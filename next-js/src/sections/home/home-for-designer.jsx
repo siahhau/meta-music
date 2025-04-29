@@ -67,9 +67,9 @@ export function HomeForDesigner({ sx, ...other }) {
           ]}
         >
           <SectionTitle
-            caption="professional kit"
-            title="For designer"
-            description="Use variables and variants to save time and energy on designs, design systems."
+            caption="专业工具包"
+            title="为设计师打造"
+            description="使用变量和变体节省设计和设计系统的时间和精力。"
             sx={[
               () => ({
                 zIndex: 1,
@@ -149,7 +149,7 @@ const renderActionButton = () => (
       endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
       sx={{ px: 2, borderRadius: 'inherit' }}
     >
-      Checkout workspace
+      查看工作空间
     </Button>
   </AnimateBorder>
 );

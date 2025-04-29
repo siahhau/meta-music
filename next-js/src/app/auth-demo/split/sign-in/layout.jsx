@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   return (
     <AuthSplitLayout
       slotProps={{
-        section: { title: 'Hi, Welcome back' },
+        section: { title: '嗨，欢迎回来' },
       }}
     >
       {children}

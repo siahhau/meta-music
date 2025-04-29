@@ -52,12 +52,12 @@ import { InvoiceTableFiltersResult } from '../invoice-table-filters-result';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Customer' },
-  { id: 'createDate', label: 'Create' },
-  { id: 'dueDate', label: 'Due' },
-  { id: 'price', label: 'Amount' },
-  { id: 'sent', label: 'Sent', align: 'center' },
-  { id: 'status', label: 'Status' },
+  { id: 'invoiceNumber', label: '客户' },
+  { id: 'createDate', label: '创建日期' },
+  { id: 'dueDate', label: '到期日期' },
+  { id: 'price', label: '金额' },
+  { id: 'sent', label: '已发送', align: 'center' },
+  { id: 'status', label: '状态' },
   { id: '' },
 ];
 
@@ -113,31 +113,31 @@ export function InvoiceListView() {
   const TABS = [
     {
       value: 'all',
-      label: 'All',
+      label: '全部',
       color: 'default',
       count: tableData.length,
     },
     {
       value: 'paid',
-      label: 'Paid',
+      label: '已支付',
       color: 'success',
       count: getInvoiceLength('paid'),
     },
     {
       value: 'pending',
-      label: 'Pending',
+      label: '待处理',
       color: 'warning',
       count: getInvoiceLength('pending'),
     },
     {
       value: 'overdue',
-      label: 'Overdue',
+      label: '逾期',
       color: 'error',
       count: getInvoiceLength('overdue'),
     },
     {
       value: 'draft',
-      label: 'Draft',
+      label: '草稿',
       color: 'default',
       count: getInvoiceLength('draft'),
     },
@@ -147,7 +147,7 @@ export function InvoiceListView() {
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      toast.success('Delete success!');
+      toast.success('删除成功！');
 
       setTableData(deleteRow);
 
@@ -159,7 +159,7 @@ export function InvoiceListView() {
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    toast.success('Delete success!');
+    toast.success('删除成功！');
 
     setTableData(deleteRows);
 
@@ -178,10 +178,10 @@ export function InvoiceListView() {
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
+      title="删除"
       content={
         <>
-          Are you sure want to delete <strong> {table.selected.length} </strong> items?
+          您确定要删除 <strong> {table.selected.length} </strong> 条记录吗？
         </>
       }
       action={
@@ -193,7 +193,7 @@ export function InvoiceListView() {
             confirmDialog.onFalse();
           }}
         >
-          Delete
+          删除
         </Button>
       }
     />
@@ -203,11 +203,11 @@ export function InvoiceListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading="List"
+          heading="发票列表"
           links={[
-            { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Invoice', href: paths.dashboard.invoice.root },
-            { name: 'List' },
+            { name: '仪表板', href: paths.dashboard.root },
+            { name: '发票', href: paths.dashboard.invoice.root },
+            { name: '列表' },
           ]}
           action={
             <Button
@@ -216,7 +216,7 @@ export function InvoiceListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New invoice
+              新发票
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -229,7 +229,7 @@ export function InvoiceListView() {
               sx={{ py: 2, flexDirection: 'row' }}
             >
               <InvoiceAnalytic
-                title="Total"
+                title="总数"
                 total={tableData.length}
                 percent={100}
                 price={sumBy(tableData, (invoice) => invoice.totalAmount)}
@@ -238,7 +238,7 @@ export function InvoiceListView() {
               />
 
               <InvoiceAnalytic
-                title="Paid"
+                title="已支付"
                 total={getInvoiceLength('paid')}
                 percent={getPercentByStatus('paid')}
                 price={getTotalAmount('paid')}
@@ -247,7 +247,7 @@ export function InvoiceListView() {
               />
 
               <InvoiceAnalytic
-                title="Pending"
+                title="待处理"
                 total={getInvoiceLength('pending')}
                 percent={getPercentByStatus('pending')}
                 price={getTotalAmount('pending')}
@@ -256,7 +256,7 @@ export function InvoiceListView() {
               />
 
               <InvoiceAnalytic
-                title="Overdue"
+                title="逾期"
                 total={getInvoiceLength('overdue')}
                 percent={getPercentByStatus('overdue')}
                 price={getTotalAmount('overdue')}
@@ -265,7 +265,7 @@ export function InvoiceListView() {
               />
 
               <InvoiceAnalytic
-                title="Draft"
+                title="草稿"
                 total={getInvoiceLength('draft')}
                 percent={getPercentByStatus('draft')}
                 price={getTotalAmount('draft')}
@@ -335,25 +335,25 @@ export function InvoiceListView() {
               }}
               action={
                 <Box sx={{ display: 'flex' }}>
-                  <Tooltip title="Sent">
+                  <Tooltip title="发送">
                     <IconButton color="primary">
                       <Iconify icon="custom:send-fill" />
                     </IconButton>
                   </Tooltip>
 
-                  <Tooltip title="Download">
+                  <Tooltip title="下载">
                     <IconButton color="primary">
                       <Iconify icon="solar:download-bold" />
                     </IconButton>
                   </Tooltip>
 
-                  <Tooltip title="Print">
+                  <Tooltip title="打印">
                     <IconButton color="primary">
                       <Iconify icon="solar:printer-minimalistic-bold" />
                     </IconButton>
                   </Tooltip>
 
-                  <Tooltip title="Delete">
+                  <Tooltip title="删除">
                     <IconButton color="primary" onClick={confirmDialog.onTrue}>
                       <Iconify icon="solar:trash-bin-trash-bold" />
                     </IconButton>

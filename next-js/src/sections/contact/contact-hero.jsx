@@ -43,7 +43,7 @@ export function ContactHero({ sx, ...other }) {
           <AnimateText
             component="h1"
             variant="h1"
-            textContent={['Where', 'to find us?']}
+            textContent={['如何', '找到我们？']}
             variants={varFade('inUp', { distance: 24 })}
             sx={{
               color: 'common.white',
@@ -90,23 +90,23 @@ export function ContactHero({ sx, ...other }) {
 
 const CONTACTS = [
   {
-    country: 'Bali',
-    address: '508 Bridle Avenue Newnan, GA 30263',
+    country: '巴厘岛',
+    address: '中国北京市朝阳区建国路88号',
     phoneNumber: '(239) 555-0108',
   },
   {
-    country: 'London',
-    address: '508 Bridle Avenue Newnan, GA 30263',
+    country: '伦敦',
+    address: '中国上海市浦东新区张江高科技园区',
     phoneNumber: '(319) 555-0115',
   },
   {
-    country: 'Prague',
-    address: '508 Bridle Avenue Newnan, GA 30263',
+    country: '布拉格',
+    address: '中国广州市天河区天河北路233号',
     phoneNumber: '(252) 555-0126',
   },
   {
-    country: 'Moscow',
-    address: '508 Bridle',
+    country: '莫斯科',
+    address: '中国深圳市南山区科技南路18号',
     phoneNumber: '(307) 555-0133',
   },
 ];

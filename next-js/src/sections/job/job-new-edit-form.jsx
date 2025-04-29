@@ -38,30 +38,30 @@ import { Form, Field, schemaHelper } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export const NewJobSchema = zod.object({
-  title: zod.string().min(1, { message: 'Title is required!' }),
-  content: zod.string().min(1, { message: 'Content is required!' }),
-  employmentTypes: zod.string().array().min(1, { message: 'Choose at least one option!' }),
-  role: schemaHelper.nullableInput(zod.string().min(1, { message: 'Role is required!' }), {
+  title: zod.string().min(1, { message: '必须填写标题！' }),
+  content: zod.string().min(1, { message: '必须填写内容！' }),
+  employmentTypes: zod.string().array().min(1, { message: '至少选择一个选项！' }),
+  role: schemaHelper.nullableInput(zod.string().min(1, { message: '必须选择角色！' }), {
     // message for null value
-    message: 'Role is required!',
+    message: '必须选择角色！',
   }),
-  skills: zod.string().array().min(1, { message: 'Choose at least one option!' }),
-  workingSchedule: zod.string().array().min(1, { message: 'Choose at least one option!' }),
-  locations: zod.string().array().min(1, { message: 'Choose at least one option!' }),
-  expiredDate: schemaHelper.date({ message: { required: 'Expired date is required!' } }),
+  skills: zod.string().array().min(1, { message: '至少选择一个选项！' }),
+  workingSchedule: zod.string().array().min(1, { message: '至少选择一个选项！' }),
+  locations: zod.string().array().min(1, { message: '至少选择一个选项！' }),
+  expiredDate: schemaHelper.date({ message: { required: '必须选择截止日期！' } }),
   salary: zod.object({
     price: schemaHelper.nullableInput(
-      zod.number({ coerce: true }).min(1, { message: 'Price is required!' }),
+      zod.number({ coerce: true }).min(1, { message: '必须填写薪资！' }),
       {
         // message for null value
-        message: 'Price is required!',
+        message: '必须填写薪资！',
       }
     ),
     // Not required
     type: zod.string(),
     negotiable: zod.boolean(),
   }),
-  benefits: zod.string().array().min(0, { message: 'Choose at least one option!' }),
+  benefits: zod.string().array().min(0, { message: '至少选择一个选项！' }),
   // Not required
   experience: zod.string(),
 });
@@ -78,13 +78,13 @@ export function JobNewEditForm({ currentJob }) {
     title: '',
     content: '',
     employmentTypes: [],
-    experience: '1 year exp',
+    experience: '1年经验',
     role: _roles[1],
     skills: [],
     workingSchedule: [],
     locations: [],
     expiredDate: null,
-    salary: { type: 'Hourly', price: null, negotiable: false },
+    salary: { type: '按小时', price: null, negotiable: false },
     benefits: [],
   };
 
@@ -106,9 +106,9 @@ export function JobNewEditForm({ currentJob }) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      toast.success(currentJob ? 'Update success!' : 'Create success!');
+      toast.success(currentJob ? '更新成功！' : '创建成功！');
       router.push(paths.dashboard.job.root);
-      console.info('DATA', data);
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -123,8 +123,8 @@ export function JobNewEditForm({ currentJob }) {
   const renderDetails = () => (
     <Card>
       <CardHeader
-        title="Details"
-        subheader="Title, short description, image..."
+        title="职位详情"
+        subheader="标题、简介、图片..."
         action={renderCollapseButton(openDetails.value, openDetails.onToggle)}
         sx={{ mb: 3 }}
       />
@@ -134,12 +134,12 @@ export function JobNewEditForm({ currentJob }) {
 
         <Stack spacing={3} sx={{ p: 3 }}>
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Title</Typography>
-            <Field.Text name="title" placeholder="Ex: Software Engineer..." />
+            <Typography variant="subtitle2">标题</Typography>
+            <Field.Text name="title" placeholder="如：软件工程师..." />
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Content</Typography>
+            <Typography variant="subtitle2">内容</Typography>
             <Field.Editor name="content" sx={{ maxHeight: 480 }} />
           </Stack>
         </Stack>
@@ -150,8 +150,8 @@ export function JobNewEditForm({ currentJob }) {
   const renderProperties = () => (
     <Card>
       <CardHeader
-        title="Properties"
-        subheader="Additional functions and attributes..."
+        title="职位属性"
+        subheader="附加功能和属性..."
         action={renderCollapseButton(openProperties.value, openProperties.onToggle)}
         sx={{ mb: 3 }}
       />
@@ -161,7 +161,7 @@ export function JobNewEditForm({ currentJob }) {
 
         <Stack spacing={3} sx={{ p: 3 }}>
           <Stack spacing={1}>
-            <Typography variant="subtitle2">Employment type</Typography>
+            <Typography variant="subtitle2">工作类型</Typography>
             <Field.MultiCheckbox
               row
               name="employmentTypes"
@@ -171,7 +171,7 @@ export function JobNewEditForm({ currentJob }) {
           </Stack>
 
           <Stack spacing={1}>
-            <Typography variant="subtitle2">Experience</Typography>
+            <Typography variant="subtitle2">经验要求</Typography>
             <Field.RadioGroup
               row
               name="experience"
@@ -181,7 +181,7 @@ export function JobNewEditForm({ currentJob }) {
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Role</Typography>
+            <Typography variant="subtitle2">角色</Typography>
             <Field.Autocomplete
               name="role"
               autoHighlight
@@ -196,10 +196,10 @@ export function JobNewEditForm({ currentJob }) {
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Skills</Typography>
+            <Typography variant="subtitle2">技能</Typography>
             <Field.Autocomplete
               name="skills"
-              placeholder="+ Skills"
+              placeholder="+ 技能"
               multiple
               disableCloseOnSelect
               options={JOB_SKILL_OPTIONS.map((option) => option)}
@@ -225,10 +225,10 @@ export function JobNewEditForm({ currentJob }) {
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Working schedule</Typography>
+            <Typography variant="subtitle2">工作时间</Typography>
             <Field.Autocomplete
               name="workingSchedule"
-              placeholder="+ Schedule"
+              placeholder="+ 时间安排"
               multiple
               disableCloseOnSelect
               options={JOB_WORKING_SCHEDULE_OPTIONS.map((option) => option)}
@@ -254,18 +254,18 @@ export function JobNewEditForm({ currentJob }) {
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Locations</Typography>
-            <Field.CountrySelect multiple name="locations" placeholder="+ Locations" />
+            <Typography variant="subtitle2">地点</Typography>
+            <Field.CountrySelect multiple name="locations" placeholder="+ 地点" />
           </Stack>
 
           <Stack spacing={1.5}>
-            <Typography variant="subtitle2">Expired</Typography>
+            <Typography variant="subtitle2">截止日期</Typography>
 
             <Field.DatePicker name="expiredDate" />
           </Stack>
 
           <Stack spacing={2}>
-            <Typography variant="subtitle2">Salary</Typography>
+            <Typography variant="subtitle2">薪资</Typography>
 
             <Controller
               name="salary.type"
@@ -274,11 +274,11 @@ export function JobNewEditForm({ currentJob }) {
                 <Box sx={{ gap: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
                   {[
                     {
-                      label: 'Hourly',
+                      label: '按小时',
                       icon: <Iconify icon="solar:clock-circle-bold" width={32} sx={{ mb: 2 }} />,
                     },
                     {
-                      label: 'Custom',
+                      label: '自定义',
                       icon: <Iconify icon="solar:wad-of-money-bold" width={32} sx={{ mb: 2 }} />,
                     },
                   ].map((item) => (
@@ -315,7 +315,7 @@ export function JobNewEditForm({ currentJob }) {
                   startAdornment: (
                     <InputAdornment position="start" sx={{ mr: 0.75 }}>
                       <Box component="span" sx={{ color: 'text.disabled' }}>
-                        $
+                        ¥
                       </Box>
                     </InputAdornment>
                   ),
@@ -323,11 +323,11 @@ export function JobNewEditForm({ currentJob }) {
               }}
             />
 
-            <Field.Switch name="salary.negotiable" label="Salary is negotiable" />
+            <Field.Switch name="salary.negotiable" label="薪资可面议" />
           </Stack>
 
           <Stack spacing={1}>
-            <Typography variant="subtitle2">Benefits</Typography>
+            <Typography variant="subtitle2">福利</Typography>
             <Field.MultiCheckbox
               name="benefits"
               options={JOB_BENEFIT_OPTIONS}
@@ -342,13 +342,13 @@ export function JobNewEditForm({ currentJob }) {
   const renderActions = () => (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
       <FormControlLabel
-        label="Publish"
+        label="发布"
         control={<Switch defaultChecked slotProps={{ input: { id: 'publish-switch' } }} />}
         sx={{ flexGrow: 1, pl: 3 }}
       />
 
       <Button type="submit" variant="contained" size="large" loading={isSubmitting} sx={{ ml: 2 }}>
-        {!currentJob ? 'Create job' : 'Save changes'}
+        {!currentJob ? '创建职位' : '保存更改'}
       </Button>
     </Box>
   );

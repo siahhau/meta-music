@@ -38,23 +38,28 @@ export function InvoiceTableFiltersResult({ filters, totalResults, onResetPage, 
 
   return (
     <FiltersResult totalResults={totalResults} onReset={() => resetFilters()} sx={sx}>
-      <FiltersBlock label="Service:" isShow={!!currentFilters.service.length}>
+      <FiltersBlock label="服务：" isShow={!!currentFilters.service.length}>
         {currentFilters.service.map((item) => (
           <Chip {...chipProps} key={item} label={item} onDelete={() => handleRemoveService(item)} />
         ))}
       </FiltersBlock>
 
-      <FiltersBlock label="Status:" isShow={currentFilters.status !== 'all'}>
+      <FiltersBlock label="状态：" isShow={currentFilters.status !== 'all'}>
         <Chip
           {...chipProps}
-          label={currentFilters.status}
+          label={
+            currentFilters.status === 'paid' ? '已支付' :
+            currentFilters.status === 'pending' ? '待处理' :
+            currentFilters.status === 'overdue' ? '逾期' :
+            currentFilters.status === 'draft' ? '草稿' : currentFilters.status
+          }
           onDelete={handleRemoveStatus}
           sx={{ textTransform: 'capitalize' }}
         />
       </FiltersBlock>
 
       <FiltersBlock
-        label="Date:"
+        label="日期："
         isShow={Boolean(currentFilters.startDate && currentFilters.endDate)}
       >
         <Chip
@@ -64,7 +69,7 @@ export function InvoiceTableFiltersResult({ filters, totalResults, onResetPage, 
         />
       </FiltersBlock>
 
-      <FiltersBlock label="Keyword:" isShow={!!currentFilters.name}>
+      <FiltersBlock label="关键词：" isShow={!!currentFilters.name}>
         <Chip {...chipProps} label={currentFilters.name} onDelete={handleRemoveKeyword} />
       </FiltersBlock>
     </FiltersResult>

@@ -52,11 +52,11 @@ export function FileManagerTableRow({ row, selected, onSelectRow, onDeleteRow })
     click: () => {
       detailsDrawer.onTrue();
     },
-    doubleClick: () => console.info('DOUBLE CLICK'),
+    doubleClick: () => console.info('双击'),
   });
 
   const handleCopy = useCallback(() => {
-    toast.success('Copied!');
+    toast.success('复制成功！');
     copy(row.url);
   }, [copy, row.url]);
 
@@ -90,7 +90,7 @@ export function FileManagerTableRow({ row, selected, onSelectRow, onDeleteRow })
           }}
         >
           <Iconify icon="eva:link-2-fill" />
-          Copy Link
+          复制链接
         </MenuItem>
 
         <MenuItem
@@ -100,7 +100,7 @@ export function FileManagerTableRow({ row, selected, onSelectRow, onDeleteRow })
           }}
         >
           <Iconify icon="solar:share-bold" />
-          Share
+          分享
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -113,7 +113,7 @@ export function FileManagerTableRow({ row, selected, onSelectRow, onDeleteRow })
           sx={{ color: 'error.main' }}
         >
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -149,11 +149,11 @@ export function FileManagerTableRow({ row, selected, onSelectRow, onDeleteRow })
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
-      content="Are you sure want to delete?"
+      title="删除"
+      content="您确定要删除吗？"
       action={
         <Button variant="contained" color="error" onClick={onDeleteRow}>
-          Delete
+          删除
         </Button>
       }
     />
@@ -190,7 +190,7 @@ export function FileManagerTableRow({ row, selected, onSelectRow, onDeleteRow })
           <Checkbox
             checked={selected}
             onClick={onSelectRow}
-            onDoubleClick={() => console.info('ON DOUBLE CLICK')}
+            onDoubleClick={() => console.info('双击')}
             slotProps={{
               input: {
                 id: `${row.id}-checkbox`,

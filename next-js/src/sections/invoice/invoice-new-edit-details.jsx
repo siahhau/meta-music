@@ -60,7 +60,7 @@ export function InvoiceNewEditDetails() {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h6" sx={{ color: 'text.disabled', mb: 3 }}>
-        Details:
+        详情：
       </Typography>
 
       <Stack divider={<Divider flexItem sx={{ borderStyle: 'dashed' }} />} spacing={3}>
@@ -90,7 +90,7 @@ export function InvoiceNewEditDetails() {
           onClick={() => append(defaultItem)}
           sx={{ flexShrink: 0 }}
         >
-          Add Item
+          添加项目
         </Button>
 
         <Box
@@ -104,7 +104,7 @@ export function InvoiceNewEditDetails() {
         >
           <Field.Text
             size="small"
-            label="Shipping($)"
+            label="运费（￥）"
             name="shipping"
             type="number"
             sx={{ maxWidth: { md: 120 } }}
@@ -113,7 +113,7 @@ export function InvoiceNewEditDetails() {
 
           <Field.Text
             size="small"
-            label="Discount($)"
+            label="折扣（￥）"
             name="discount"
             type="number"
             sx={{ maxWidth: { md: 120 } }}
@@ -122,7 +122,7 @@ export function InvoiceNewEditDetails() {
 
           <Field.Text
             size="small"
-            label="Taxes(%)"
+            label="税率（%）"
             name="taxes"
             type="number"
             sx={{ maxWidth: { md: 120 } }}
@@ -191,7 +191,7 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
         <Field.Text
           size="small"
           name={fieldNames.title}
-          label="Title"
+          label="标题"
           slotProps={{ inputLabel: { shrink: true } }}
         />
 
@@ -200,14 +200,14 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
           maxRows={3}
           size="small"
           name={fieldNames.description}
-          label="Description"
+          label="描述"
           slotProps={{ inputLabel: { shrink: true } }}
         />
 
         <Field.Select
           size="small"
           name={fieldNames.service}
-          label="Service"
+          label="服务"
           slotProps={{ inputLabel: { shrink: true } }}
           sx={{ maxWidth: { md: 160 } }}
         >
@@ -216,7 +216,7 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
             onClick={handleClearService}
             sx={{ fontStyle: 'italic', color: 'text.secondary' }}
           >
-            None
+            无
           </MenuItem>
 
           <Divider sx={{ borderStyle: 'dashed' }} />
@@ -236,7 +236,7 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
           size="small"
           type="number"
           name={fieldNames.quantity}
-          label="Quantity"
+          label="数量"
           placeholder="0"
           slotProps={{ inputLabel: { shrink: true } }}
           sx={{ maxWidth: { md: 96 } }}
@@ -246,13 +246,13 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
           size="small"
           type="number"
           name={fieldNames.price}
-          label="Price"
+          label="单价"
           placeholder="0.00"
           slotProps={{
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>$</Box>
+                  <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>￥</Box>
                 </InputAdornment>
               ),
             },
@@ -265,13 +265,13 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
           size="small"
           name={fieldNames.total}
           type="number"
-          label="Total"
+          label="总计"
           placeholder="0.00"
           slotProps={{
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>$</Box>
+                  <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>￥</Box>
                 </InputAdornment>
               ),
             },
@@ -289,7 +289,7 @@ export function InvoiceItem({ onRemoveItem, fieldNames }) {
         startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
         onClick={onRemoveItem}
       >
-        Remove
+        删除
       </Button>
     </Box>
   );

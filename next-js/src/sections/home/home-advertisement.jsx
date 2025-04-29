@@ -83,8 +83,8 @@ const renderDescription = () => (
         typography: { xs: 'h2', md: 'h1' },
       }}
     >
-      Get started with
-      <br /> Minimal kit
+      立即开始使用
+      <br /> Minimal 工具包
       <Box
         component="span"
         sx={(theme) => ({
@@ -94,7 +94,7 @@ const renderDescription = () => (
           ml: 1,
         })}
       >
-        today
+        今天
       </Box>
     </Box>
 
@@ -115,7 +115,7 @@ const renderDescription = () => (
           rel="noopener"
           href={paths.minimalStore}
         >
-          Purchase now
+          立即购买
         </Button>
       </m.div>
 
@@ -134,7 +134,7 @@ const renderDescription = () => (
             '&:hover': { borderColor: 'currentColor' },
           }}
         >
-          Get free version
+          获取免费版本
         </Button>
       </m.div>
     </Box>
@@ -147,7 +147,7 @@ const renderImage = () => (
       component={m.img}
       animate={{ y: [-20, 0, -20] }}
       transition={{ duration: 4, repeat: Infinity }}
-      alt="Rocket"
+      alt="火箭"
       src={`${CONFIG.assetsDir}/assets/illustrations/illustration-rocket-large.webp`}
       sx={{
         zIndex: 9,

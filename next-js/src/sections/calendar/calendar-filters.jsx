@@ -65,10 +65,10 @@ export function CalendarFilters({
         }}
       >
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Filters
+          筛选
         </Typography>
 
-        <Tooltip title="Reset">
+        <Tooltip title="重置">
           <IconButton onClick={() => resetFilters()}>
             <Badge color="error" variant="dot" invisible={!canReset}>
               <Iconify icon="solar:restart-bold" />
@@ -95,7 +95,7 @@ export function CalendarFilters({
       }}
     >
       <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        Colors
+        颜色
       </Typography>
       <ColorPicker
         options={colorOptions}
@@ -115,24 +115,24 @@ export function CalendarFilters({
       }}
     >
       <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
-        Range
+        日期范围
       </Typography>
 
       <DatePicker
-        label="Start date"
+        label="开始日期"
         value={currentFilters.startDate}
         onChange={handleFilterStartDate}
         sx={{ mb: 2.5 }}
       />
 
       <DatePicker
-        label="End date"
+        label="结束日期"
         value={currentFilters.endDate}
         onChange={handleFilterEndDate}
         slotProps={{
           textField: {
             error: dateError,
-            helperText: dateError ? 'End date must be later than start date' : null,
+            helperText: dateError ? '结束日期必须晚于开始日期' : null,
           },
         }}
       />
@@ -142,7 +142,7 @@ export function CalendarFilters({
   const renderEvents = () => (
     <>
       <Typography variant="subtitle2" sx={{ px: 2.5, mb: 1 }}>
-        Events ({events.length})
+        事件 ({events.length})
       </Typography>
 
       <Box component="ul">

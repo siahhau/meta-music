@@ -15,21 +15,21 @@ import { Form } from 'src/components/hook-form';
 
 const NOTIFICATIONS = [
   {
-    subheader: 'Activity',
-    caption: 'Donec mi odio, faucibus at, scelerisque quis',
+    subheader: '活动',
+    caption: '当有人评论、回复或关注时通知我',
     items: [
-      { id: 'activity_comments', label: 'Email me when someone comments onmy article' },
-      { id: 'activity_answers', label: 'Email me when someone answers on my form' },
-      { id: 'activityFollows', label: 'Email me hen someone follows me' },
+      { id: 'activity_comments', label: '有人评论我的文章时发送邮件通知' },
+      { id: 'activity_answers', label: '有人回复我的表单时发送邮件通知' },
+      { id: 'activityFollows', label: '有人关注我时发送邮件通知' },
     ],
   },
   {
-    subheader: 'Application',
-    caption: 'Donec mi odio, faucibus at, scelerisque quis',
+    subheader: '应用',
+    caption: '关于新闻、产品更新和博客的通知',
     items: [
-      { id: 'application_news', label: 'News and announcements' },
-      { id: 'application_product', label: 'Weekly product updates' },
-      { id: 'application_blog', label: 'Weekly blog digest' },
+      { id: 'application_news', label: '新闻和公告' },
+      { id: 'application_product', label: '每周产品更新' },
+      { id: 'application_blog', label: '每周博客摘要' },
     ],
   },
 ];
@@ -53,8 +53,8 @@ export function AccountNotifications({ sx, ...other }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      toast.success('Update success!');
-      console.info('DATA', data);
+      toast.success('更新成功！');
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -120,7 +120,7 @@ export function AccountNotifications({ sx, ...other }) {
                               slotProps={{
                                 input: {
                                   id: `${item.label}-switch`,
-                                  'aria-label': `${item.label} switch`,
+                                  'aria-label': `${item.label} 开关`,
                                 },
                               }}
                             />
@@ -137,7 +137,7 @@ export function AccountNotifications({ sx, ...other }) {
         ))}
 
         <Button type="submit" variant="contained" loading={isSubmitting} sx={{ ml: 'auto' }}>
-          Save changes
+          保存更改
         </Button>
       </Card>
     </Form>

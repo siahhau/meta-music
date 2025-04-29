@@ -3,10 +3,10 @@ import { _mock } from './_mock';
 // ----------------------------------------------------------------------
 
 export const ORDER_STATUS_OPTIONS = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'cancelled', label: 'Cancelled' },
-  { value: 'refunded', label: 'Refunded' },
+  { value: 'pending', label: '待处理' },
+  { value: 'completed', label: '已完成' },
+  { value: 'cancelled', label: '已取消' },
+  { value: 'refunded', label: '已退款' },
 ];
 
 const ITEMS = Array.from({ length: 3 }, (_, index) => ({
@@ -41,7 +41,7 @@ export const _orders = Array.from({ length: 20 }, (_, index) => {
     ipAddress: '192.158.1.38',
   };
 
-  const delivery = { shipBy: 'DHL', speedy: 'Standard', trackingNumber: 'SPX037739199373' };
+  const delivery = { shipBy: 'DHL', speedy: '标准', trackingNumber: 'SPX037739199373' };
 
   const history = {
     orderTime: _mock.time(1),
@@ -49,11 +49,11 @@ export const _orders = Array.from({ length: 20 }, (_, index) => {
     deliveryTime: _mock.time(3),
     completionTime: _mock.time(4),
     timeline: [
-      { title: 'Delivery successful', time: _mock.time(1) },
-      { title: 'Transporting to [2]', time: _mock.time(2) },
-      { title: 'Transporting to [1]', time: _mock.time(3) },
-      { title: 'The shipping unit has picked up the goods', time: _mock.time(4) },
-      { title: 'Order has been created', time: _mock.time(5) },
+      { title: '交付成功', time: _mock.time(1) },
+      { title: '运输至 [2]', time: _mock.time(2) },
+      { title: '运输至 [1]', time: _mock.time(3) },
+      { title: '物流单位已取货', time: _mock.time(4) },
+      { title: '订单已创建', time: _mock.time(5) },
     ],
   };
 
@@ -72,7 +72,7 @@ export const _orders = Array.from({ length: 20 }, (_, index) => {
     totalAmount,
     totalQuantity,
     shippingAddress: {
-      fullAddress: '19034 Verna Unions Apt. 164 - Honolulu, RI / 87535',
+      fullAddress: '19034 维尔纳联合公寓 164 号 - 檀香山，罗德岛 / 87535',
       phoneNumber: '365-374-4961',
     },
     payment: { cardType: 'mastercard', cardNumber: '**** **** **** 5678' },

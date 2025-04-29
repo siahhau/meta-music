@@ -70,10 +70,10 @@ export function ChatMessageInput({
 
       try {
         if (selectedConversationId) {
-          // If the conversation already exists
+          // 如果会话已存在
           await sendMessage(selectedConversationId, messageData);
         } else {
-          // If the conversation does not exist
+          // 如果会话不存在
           const res = await createConversation(conversationData);
           router.push(`${paths.dashboard.chat}?id=${res.conversation.id}`);
 
@@ -96,7 +96,7 @@ export function ChatMessageInput({
         value={message}
         onKeyUp={handleSendMessage}
         onChange={handleChangeMessage}
-        placeholder="Type a message"
+        placeholder="输入消息"
         disabled={disabled}
         startAdornment={
           <IconButton>

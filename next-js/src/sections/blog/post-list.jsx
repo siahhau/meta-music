@@ -83,7 +83,7 @@ export function PostList({ posts, loading }) {
             variant="outlined"
             startIcon={<CircularProgress size={18} color="inherit" />}
           >
-            Load more
+            加载更多
           </Button>
         </Stack>
       )}

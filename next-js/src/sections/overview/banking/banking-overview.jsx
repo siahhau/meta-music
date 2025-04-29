@@ -1,3 +1,5 @@
+'use client';
+
 import { useTabs } from 'minimal-shared/hooks';
 
 import Box from '@mui/material/Box';
@@ -19,14 +21,14 @@ import { CustomTabs } from 'src/components/custom-tabs';
 const TABS = [
   {
     value: 'income',
-    label: 'Income',
+    label: '收入',
     percent: 8.2,
     total: 9990,
     chart: { series: [{ data: [5, 31, 33, 50, 99, 76, 72, 76, 89] }] },
   },
   {
     value: 'expenses',
-    label: 'Expenses',
+    label: '支出',
     percent: -6.6,
     total: 1989,
     chart: { series: [{ data: [10, 41, 35, 51, 49, 62, 69, 91, 148] }] },
@@ -43,7 +45,7 @@ export function BankingOverview({ sx, ...other }) {
 
   const chartOptions = useChart({
     colors: chartColors,
-    xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'] },
+    xaxis: { categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月'] },
     stroke: { width: 3 },
     tooltip: {
       y: { formatter: (value) => fCurrency(value), title: { formatter: () => '' } },
@@ -62,7 +64,7 @@ export function BankingOverview({ sx, ...other }) {
           typography: 'subtitle2',
         }}
       >
-        Total balance
+        总余额
         <Tooltip title="Vestibulum ullamcorper mauris">
           <Iconify width={16} icon="eva:info-outline" sx={{ color: 'text.disabled' }} />
         </Tooltip>
@@ -79,21 +81,21 @@ export function BankingOverview({ sx, ...other }) {
         size="small"
         startIcon={<Iconify width={16} icon="eva:arrow-upward-fill" />}
       >
-        Send
+        发送
       </Button>
       <Button
         variant="soft"
         size="small"
         startIcon={<Iconify width={16} icon="mingcute:add-line" />}
       >
-        Add card
+        添加卡
       </Button>
       <Button
         variant="soft"
         size="small"
         startIcon={<Iconify width={16} icon="eva:arrow-downward-fill" />}
       >
-        Request
+        请求
       </Button>
     </Box>
   );

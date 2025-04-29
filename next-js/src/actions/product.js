@@ -1,3 +1,4 @@
+// next-js/src/actions/product.js
 import useSWR from 'swr';
 import { useMemo } from 'react';
 

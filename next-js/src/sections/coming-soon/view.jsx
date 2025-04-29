@@ -26,11 +26,11 @@ export function ComingSoonView() {
   return (
     <Container>
       <Typography variant="h3" sx={{ mb: 2 }}>
-        Coming soon!
+        即将上线！
       </Typography>
 
       <Typography sx={{ color: 'text.secondary' }}>
-        We are currently working hard on this page!
+        我们正在努力完善这个页面！
       </Typography>
 
       <ComingSoonIllustration sx={{ my: { xs: 5, sm: 10 } }} />
@@ -39,21 +39,21 @@ export function ComingSoonView() {
         divider={<Box sx={{ mx: { xs: 1, sm: 2.5 } }}>:</Box>}
         sx={{ typography: 'h2', justifyContent: 'center', flexDirection: 'row' }}
       >
-        <TimeBlock label="days" value={countdown.days} />
-        <TimeBlock label="hours" value={countdown.hours} />
-        <TimeBlock label="minutes" value={countdown.minutes} />
-        <TimeBlock label="seconds" value={countdown.seconds} />
+        <TimeBlock label="天" value={countdown.days} />
+        <TimeBlock label="小时" value={countdown.hours} />
+        <TimeBlock label="分钟" value={countdown.minutes} />
+        <TimeBlock label="秒" value={countdown.seconds} />
       </Stack>
 
       <TextField
         fullWidth
-        placeholder="Enter your email"
+        placeholder="请输入您的邮箱"
         slotProps={{
           input: {
             endAdornment: (
               <InputAdornment position="end">
                 <Button variant="contained" size="large">
-                  Notify me
+                  通知我
                 </Button>
               </InputAdornment>
             ),

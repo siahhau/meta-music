@@ -91,7 +91,7 @@ export function JobDetailsCandidates({ candidates, sx, ...other }) {
                   <Iconify width={18} icon="solar:letter-bold" />
                 </IconButton>
 
-                <Tooltip title="Download CV">
+                <Tooltip title="下载简历">
                   <IconButton
                     size="small"
                     color="secondary"

@@ -38,7 +38,7 @@ export function KanbanColumn({ children, column, tasks, disabled, sx }) {
         if (column.name !== columnName) {
           updateColumn(column.id, columnName);
 
-          toast.success('Update success!', { position: 'top-center' });
+          toast.success('更新成功！', { position: 'top-center' });
         }
       } catch (error) {
         console.error(error);
@@ -59,7 +59,7 @@ export function KanbanColumn({ children, column, tasks, disabled, sx }) {
     try {
       deleteColumn(column.id);
 
-      toast.success('Delete success!', { position: 'top-center' });
+      toast.success('删除成功！', { position: 'top-center' });
     } catch (error) {
       console.error(error);
     }

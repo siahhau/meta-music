@@ -20,11 +20,11 @@ import { FileManagerTableRow } from './file-manager-table-row';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'size', label: 'Size', width: 120 },
-  { id: 'type', label: 'Type', width: 120 },
-  { id: 'modifiedAt', label: 'Modified', width: 140 },
-  { id: 'shared', label: 'Shared', align: 'right', width: 140 },
+  { id: 'name', label: '名称' },
+  { id: 'size', label: '大小', width: 120 },
+  { id: 'type', label: '类型', width: 120 },
+  { id: 'modifiedAt', label: '修改时间', width: 140 },
+  { id: 'shared', label: '共享', align: 'right', width: 140 },
   { id: '', width: 88 },
 ];
 
@@ -77,13 +77,13 @@ export function FileManagerTable({
           }
           action={
             <>
-              <Tooltip title="Share">
+              <Tooltip title="分享">
                 <IconButton color="primary">
                   <Iconify icon="solar:share-bold" />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Delete">
+              <Tooltip title="删除">
                 <IconButton color="primary" onClick={onOpenConfirm}>
                   <Iconify icon="solar:trash-bin-trash-bold" />
                 </IconButton>

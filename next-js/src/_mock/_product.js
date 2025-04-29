@@ -1,12 +1,12 @@
 export const PRODUCT_GENDER_OPTIONS = [
-  { label: 'Men', value: 'Men' },
-  { label: 'Women', value: 'Women' },
-  { label: 'Kids', value: 'Kids' },
+  { label: '男士', value: 'Men' },
+  { label: '女士', value: 'Women' },
+  { label: '儿童', value: 'Kids' },
 ];
 
-export const PRODUCT_CATEGORY_OPTIONS = ['Shose', 'Apparel', 'Accessories'];
+export const PRODUCT_CATEGORY_OPTIONS = ['鞋类', '服装', '配件'];
 
-export const PRODUCT_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
+export const PRODUCT_RATING_OPTIONS = ['4星以上', '3星以上', '2星以上', '1星以上'];
 
 export const PRODUCT_COLOR_OPTIONS = [
   '#FF4842',
@@ -20,14 +20,14 @@ export const PRODUCT_COLOR_OPTIONS = [
 ];
 
 export const PRODUCT_COLOR_NAME_OPTIONS = [
-  { value: '#FF4842', label: 'Red' },
-  { value: '#1890FF', label: 'Blue' },
-  { value: '#FFC0CB', label: 'Pink' },
-  { value: '#00AB55', label: 'Green' },
-  { value: '#FFC107', label: 'Yellow' },
-  { value: '#7F00FF', label: 'Violet' },
-  { value: '#000000', label: 'Black' },
-  { value: '#FFFFFF', label: 'White' },
+  { value: '#FF4842', label: '红色' },
+  { value: '#1890FF', label: '蓝色' },
+  { value: '#FFC0CB', label: '粉色' },
+  { value: '#00AB55', label: '绿色' },
+  { value: '#FFC107', label: '黄色' },
+  { value: '#7F00FF', label: '紫色' },
+  { value: '#000000', label: '黑色' },
+  { value: '#FFFFFF', label: '白色' },
 ];
 
 export const PRODUCT_SIZE_OPTIONS = [
@@ -45,25 +45,25 @@ export const PRODUCT_SIZE_OPTIONS = [
 ];
 
 export const PRODUCT_STOCK_OPTIONS = [
-  { value: 'in stock', label: 'In stock' },
-  { value: 'low stock', label: 'Low stock' },
-  { value: 'out of stock', label: 'Out of stock' },
+  { value: 'in stock', label: '有货' },
+  { value: 'low stock', label: '低库存' },
+  { value: 'out of stock', label: '缺货' },
 ];
 
 export const PRODUCT_PUBLISH_OPTIONS = [
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
+  { value: 'published', label: '已发布' },
+  { value: 'draft', label: '草稿' },
 ];
 
 export const PRODUCT_SORT_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High - Low' },
-  { value: 'priceAsc', label: 'Price: Low - High' },
+  { value: 'featured', label: '精选' },
+  { value: 'newest', label: '最新' },
+  { value: 'priceDesc', label: '价格：高到低' },
+  { value: 'priceAsc', label: '价格：低到高' },
 ];
 
 export const PRODUCT_CATEGORY_GROUP_OPTIONS = [
-  { group: 'Clothing', classify: ['Shirts', 'T-shirts', 'Jeans', 'Leather', 'Accessories'] },
-  { group: 'Tailored', classify: ['Suits', 'Blazers', 'Trousers', 'Waistcoats', 'Apparel'] },
-  { group: 'Accessories', classify: ['Shoes', 'Backpacks and bags', 'Bracelets', 'Face masks'] },
+  { group: '服装', classify: ['衬衫', 'T恤', '牛仔裤', '皮革', '配件'] },
+  { group: '定制', classify: ['西装', '西装外套', '裤子', '背心', '服装'] },
+  { group: '配件', classify: ['鞋子', '背包和袋子', '手镯', '面罩'] },
 ];

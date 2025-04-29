@@ -31,7 +31,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
@@ -122,6 +122,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3032",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",  # Vite 默认端口

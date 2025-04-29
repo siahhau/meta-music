@@ -80,10 +80,10 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
         }}
       >
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Filters
+          筛选
         </Typography>
 
-        <Tooltip title="Reset">
+        <Tooltip title="重置">
           <IconButton onClick={() => resetFilters()}>
             <Badge color="error" variant="dot" invisible={!canReset}>
               <Iconify icon="solar:restart-bold" />
@@ -103,7 +103,7 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
   const renderEmploymentTypes = () => (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        Employment types
+        工作类型
       </Typography>
       {options.employmentTypes.map((option) => (
         <FormControlLabel
@@ -123,7 +123,7 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
   const renderExperience = () => (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        Experience
+        经验要求
       </Typography>
       {options.experiences.map((option) => (
         <FormControlLabel
@@ -144,7 +144,7 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
   const renderRoles = () => (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
-        Roles
+        职位角色
       </Typography>
       <Autocomplete
         multiple
@@ -153,7 +153,7 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
         getOptionLabel={(option) => option}
         value={currentFilters.roles}
         onChange={(event, newValue) => handleFilterRoles(newValue)}
-        renderInput={(params) => <TextField placeholder="Select Roles" {...params} />}
+        renderInput={(params) => <TextField placeholder="选择角色" {...params} />}
         renderOption={(props, option) => (
           <li {...props} key={option}>
             {option}
@@ -177,14 +177,14 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
   const renderLocations = () => (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
-        Locations
+        工作地点
       </Typography>
 
       <CountrySelect
         id="multiple-locations"
         multiple
         fullWidth
-        placeholder={currentFilters.locations.length ? '+ Locations' : 'Select Locations'}
+        placeholder={currentFilters.locations.length ? '+ 地点' : '选择地点'}
         value={currentFilters.locations}
         onChange={(event, newValue) => handleFilterLocations(newValue)}
       />
@@ -194,7 +194,7 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
   const renderBenefits = () => (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        Benefits
+        福利待遇
       </Typography>
       {options.benefits.map((option) => (
         <FormControlLabel
@@ -223,7 +223,7 @@ export function JobFilters({ open, canReset, onOpen, onClose, filters, options }
         }
         onClick={onOpen}
       >
-        Filters
+        筛选
       </Button>
 
       <Drawer

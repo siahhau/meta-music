@@ -61,7 +61,7 @@ export function FileManagerFileDetails({
       }}
     >
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Info
+        信息
       </Typography>
 
       <Checkbox
@@ -73,7 +73,7 @@ export function FileManagerFileDetails({
         slotProps={{
           input: {
             id: `favorite-${file.id}-checkbox`,
-            'aria-label': `Favorite ${file.id} checkbox`,
+            'aria-label': `收藏 ${file.id} 复选框`,
           },
         }}
       />
@@ -90,7 +90,7 @@ export function FileManagerFileDetails({
           justifyContent: 'space-between',
         }}
       >
-        Properties
+        属性
         <IconButton size="small" onClick={showProperties.onToggle}>
           <Iconify
             icon={
@@ -104,7 +104,7 @@ export function FileManagerFileDetails({
         <>
           <Box sx={{ display: 'flex', typography: 'caption', textTransform: 'capitalize' }}>
             <Box component="span" sx={{ width: 80, color: 'text.secondary', mr: 2 }}>
-              Size
+              大小
             </Box>
 
             {fData(file?.size)}
@@ -112,7 +112,7 @@ export function FileManagerFileDetails({
 
           <Box sx={{ display: 'flex', typography: 'caption', textTransform: 'capitalize' }}>
             <Box component="span" sx={{ width: 80, color: 'text.secondary', mr: 2 }}>
-              Modified
+              修改时间
             </Box>
 
             {fDateTime(file?.modifiedAt)}
@@ -120,7 +120,7 @@ export function FileManagerFileDetails({
 
           <Box sx={{ display: 'flex', typography: 'caption', textTransform: 'capitalize' }}>
             <Box component="span" sx={{ width: 80, color: 'text.secondary', mr: 2 }}>
-              Type
+              类型
             </Box>
 
             {fileFormat(file?.type)}
@@ -140,7 +140,7 @@ export function FileManagerFileDetails({
           justifyContent: 'space-between',
         }}
       >
-        Tags
+        标签
         <IconButton size="small" onClick={showTags.onToggle}>
           <Iconify
             icon={showTags.value ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'}
@@ -175,7 +175,7 @@ export function FileManagerFileDetails({
               />
             ))
           }
-          renderInput={(params) => <TextField {...params} placeholder="#Add a tags" />}
+          renderInput={(params) => <TextField {...params} placeholder="#添加标签" />}
         />
       )}
     </Stack>
@@ -192,7 +192,7 @@ export function FileManagerFileDetails({
           justifyContent: 'space-between',
         }}
       >
-        Share with
+        分享给
         <IconButton
           size="small"
           color="primary"
@@ -270,7 +270,7 @@ export function FileManagerFileDetails({
             startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
             onClick={onDelete}
           >
-            Delete
+            删除
           </Button>
         </Box>
       </Drawer>

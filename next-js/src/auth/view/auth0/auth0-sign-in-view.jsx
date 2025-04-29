@@ -59,7 +59,7 @@ export function Auth0SignInView() {
   return (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
       <Typography variant="h5" sx={{ textAlign: 'center' }}>
-        Sign in to your account
+        登录您的账户
       </Typography>
 
       <Button
@@ -69,7 +69,7 @@ export function Auth0SignInView() {
         variant="contained"
         onClick={handleSignInWithRedirect}
       >
-        Sign in with Redirect
+        使用重定向登录
       </Button>
 
       <Button
@@ -79,7 +79,7 @@ export function Auth0SignInView() {
         variant="soft"
         onClick={handleSignUpWithRedirect}
       >
-        Sign up with Redirect
+        使用重定向注册
       </Button>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
@@ -91,10 +91,10 @@ export function Auth0SignInView() {
         variant="contained"
         onClick={handleSignInWithPopup}
       >
-        Sign in with Popup
+        使用弹窗登录
       </Button>
       <Button fullWidth color="inherit" size="large" variant="soft" onClick={handleSignUpWithPopup}>
-        Sign up with Popup
+        使用弹窗注册
       </Button>
     </Box>
   );

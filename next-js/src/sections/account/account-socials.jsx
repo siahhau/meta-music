@@ -31,8 +31,8 @@ export function AccountSocials({ socialLinks }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      toast.success('Update success!');
-      console.info('DATA', data);
+      toast.success('更新成功！');
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -68,7 +68,7 @@ export function AccountSocials({ socialLinks }) {
         ))}
 
         <Button type="submit" variant="contained" loading={isSubmitting} sx={{ ml: 'auto' }}>
-          Save changes
+          保存更改
         </Button>
       </Card>
     </Form>

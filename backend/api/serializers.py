@@ -6,17 +6,41 @@ from django.contrib.auth.password_validation import validate_password
 import logging
 logger = logging.getLogger(__name__)
 class UserSerializer(serializers.ModelSerializer):
+    firstName = serializers.CharField(write_only=True, required=False)
+    lastName = serializers.CharField(write_only=True, required=False)
+    username = serializers.CharField(write_only=True, required=True)
+    email = serializers.EmailField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True, required=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']
+        fields = ['id', 'username', 'email', 'password', 'firstName', 'lastName']
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_password(self, value):
         validate_password(value)
         return value
 
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("用户名已被占用")
+        return value
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("邮箱已被注册")
+        return value
+
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        first_name = validated_data.pop('firstName')
+        last_name = validated_data.pop('lastName')
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            first_name=first_name,
+            last_name=last_name
+        )
         Profile.objects.create(user=user)
         return user
 
@@ -200,3 +224,4 @@ class ScoreSerializer(serializers.ModelSerializer):
         instance.save()
         logger.info(f"Updated score {instance.id} with score_data: {instance.score_data}")
         return instance
+    

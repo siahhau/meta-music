@@ -44,14 +44,14 @@ import { UserTableFiltersResult } from '../user-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: '全部' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'phoneNumber', label: 'Phone number', width: 180 },
-  { id: 'company', label: 'Company', width: 220 },
-  { id: 'role', label: 'Role', width: 180 },
-  { id: 'status', label: 'Status', width: 100 },
+  { id: 'name', label: '姓名' },
+  { id: 'phoneNumber', label: '电话号码', width: 180 },
+  { id: 'company', label: '公司', width: 220 },
+  { id: 'role', label: '角色', width: 180 },
+  { id: 'status', label: '状态', width: 100 },
   { id: '', width: 88 },
 ];
 
@@ -84,7 +84,7 @@ export function UserListView() {
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
 
-      toast.success('Delete success!');
+      toast.success('删除成功！');
 
       setTableData(deleteRow);
 
@@ -96,7 +96,7 @@ export function UserListView() {
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    toast.success('Delete success!');
+    toast.success('删除成功！');
 
     setTableData(deleteRows);
 
@@ -115,10 +115,10 @@ export function UserListView() {
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
+      title="删除"
       content={
         <>
-          Are you sure want to delete <strong> {table.selected.length} </strong> items?
+          您确定要删除 <strong> {table.selected.length} </strong> 项吗？
         </>
       }
       action={
@@ -130,7 +130,7 @@ export function UserListView() {
             confirmDialog.onFalse();
           }}
         >
-          Delete
+          删除
         </Button>
       }
     />
@@ -140,11 +140,11 @@ export function UserListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading="List"
+          heading="列表"
           links={[
-            { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'User', href: paths.dashboard.user.root },
-            { name: 'List' },
+            { name: '仪表板', href: paths.dashboard.root },
+            { name: '用户', href: paths.dashboard.user.root },
+            { name: '列表' },
           ]}
           action={
             <Button
@@ -153,7 +153,7 @@ export function UserListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New user
+              新用户
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -225,7 +225,7 @@ export function UserListView() {
                 )
               }
               action={
-                <Tooltip title="Delete">
+                <Tooltip title="删除">
                   <IconButton color="primary" onClick={confirmDialog.onTrue}>
                     <Iconify icon="solar:trash-bin-trash-bold" />
                   </IconButton>

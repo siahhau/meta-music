@@ -47,8 +47,8 @@ export function CheckoutCart() {
 
   const renderEmpty = () => (
     <EmptyContent
-      title="Cart is empty!"
-      description="Look like you have no items in your shopping cart."
+      title="购物车为空！"
+      description="看起来您的购物车中没有任何商品。"
       imgUrl={`${CONFIG.assetsDir}/assets/icons/empty/ic-cart.svg`}
       sx={{ height: 340 }}
     />
@@ -61,9 +61,9 @@ export function CheckoutCart() {
           <CardHeader
             title={
               <Typography variant="h6">
-                {`Cart `}
+                {`购物车 `}
                 <Typography component="span" sx={{ color: 'text.secondary' }}>
-                  ({checkoutState.totalItems} items)
+                  ({checkoutState.totalItems} 件商品)
                 </Typography>
               </Typography>
             }
@@ -93,7 +93,7 @@ export function CheckoutCart() {
           color="inherit"
           startIcon={<Iconify icon="eva:arrow-ios-back-fill" />}
         >
-          Continue shopping
+          继续购物
         </Button>
       </Grid>
 
@@ -108,7 +108,7 @@ export function CheckoutCart() {
           disabled={isCartEmpty}
           onClick={() => onChangeStep('next')}
         >
-          Check out
+          去结算
         </Button>
       </Grid>
     </Grid>

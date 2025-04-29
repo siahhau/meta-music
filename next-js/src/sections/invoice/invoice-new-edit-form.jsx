@@ -25,15 +25,15 @@ import { defaultItem, InvoiceNewEditDetails } from './invoice-new-edit-details';
 export const NewInvoiceSchema = zod
   .object({
     invoiceTo: schemaHelper.nullableInput(zod.custom(), {
-      message: 'Invoice to is required!',
+      message: '必须选择收票人！',
     }),
-    createDate: schemaHelper.date({ message: { required: 'Create date is required!' } }),
-    dueDate: schemaHelper.date({ message: { required: 'Due date is required!' } }),
+    createDate: schemaHelper.date({ message: { required: '必须选择创建日期！' } }),
+    dueDate: schemaHelper.date({ message: { required: '必须选择到期日期！' } }),
     items: zod.array(
       zod.object({
-        title: zod.string().min(1, { message: 'Title is required!' }),
-        service: zod.string().min(1, { message: 'Service is required!' }),
-        quantity: zod.number().int().positive().min(1, { message: 'Quantity must be more than 0' }),
+        title: zod.string().min(1, { message: '必须填写标题！' }),
+        service: zod.string().min(1, { message: '必须选择服务！' }),
+        quantity: zod.number().int().positive().min(1, { message: '数量必须大于0！' }),
         // Not required
         price: zod.number(),
         total: zod.number(),
@@ -51,7 +51,7 @@ export const NewInvoiceSchema = zod
     invoiceFrom: zod.custom().nullable(),
   })
   .refine((data) => !fIsAfter(data.createDate, data.dueDate), {
-    message: 'Due date cannot be earlier than create date!',
+    message: '到期日期不能早于创建日期！',
     path: ['dueDate'],
   });
 
@@ -99,7 +99,7 @@ export function InvoiceNewEditForm({ currentInvoice }) {
       reset();
       loadingSave.onFalse();
       router.push(paths.dashboard.invoice.root);
-      console.info('DATA', JSON.stringify(data, null, 2));
+      console.info('数据', JSON.stringify(data, null, 2));
     } catch (error) {
       console.error(error);
       loadingSave.onFalse();
@@ -114,7 +114,7 @@ export function InvoiceNewEditForm({ currentInvoice }) {
       reset();
       loadingSend.onFalse();
       router.push(paths.dashboard.invoice.root);
-      console.info('DATA', JSON.stringify(data, null, 2));
+      console.info('数据', JSON.stringify(data, null, 2));
     } catch (error) {
       console.error(error);
       loadingSend.onFalse();
@@ -146,7 +146,7 @@ export function InvoiceNewEditForm({ currentInvoice }) {
           loading={loadingSave.value && isSubmitting}
           onClick={handleSaveAsDraft}
         >
-          Save as draft
+          保存为草稿
         </Button>
 
         <Button
@@ -155,7 +155,7 @@ export function InvoiceNewEditForm({ currentInvoice }) {
           loading={loadingSend.value && isSubmitting}
           onClick={handleCreateAndSend}
         >
-          {currentInvoice ? 'Update' : 'Create'} & send
+          {currentInvoice ? '更新' : '创建'}并发送
         </Button>
       </Box>
     </Form>

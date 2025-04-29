@@ -16,15 +16,15 @@ import { Form, Field, schemaHelper } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export const NewAddressSchema = zod.object({
-  city: zod.string().min(1, { message: 'City is required!' }),
-  state: zod.string().min(1, { message: 'State is required!' }),
-  name: zod.string().min(1, { message: 'Name is required!' }),
-  address: zod.string().min(1, { message: 'Address is required!' }),
-  zipCode: zod.string().min(1, { message: 'Zip code is required!' }),
+  city: zod.string().min(1, { message: '请输入城市！' }),
+  state: zod.string().min(1, { message: '请输入州/省！' }),
+  name: zod.string().min(1, { message: '请输入姓名！' }),
+  address: zod.string().min(1, { message: '请输入地址！' }),
+  zipCode: zod.string().min(1, { message: '请输入邮政编码！' }),
   phoneNumber: schemaHelper.phoneNumber({ isValid: isValidPhoneNumber }),
-  country: schemaHelper.nullableInput(zod.string().min(1, { message: 'Country is required!' }), {
+  country: schemaHelper.nullableInput(zod.string().min(1, { message: '请选择国家！' }), {
     // message for null value
-    message: 'Country is required!',
+    message: '请选择国家！',
   }),
   // Not required
   primary: zod.boolean(),
@@ -75,7 +75,7 @@ export function AddressNewForm({ open, onClose, onCreate }) {
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
       <Form methods={methods} onSubmit={onSubmit}>
-        <DialogTitle>New address</DialogTitle>
+        <DialogTitle>新增地址</DialogTitle>
 
         <DialogContent dividers>
           <Stack spacing={3}>
@@ -83,8 +83,8 @@ export function AddressNewForm({ open, onClose, onCreate }) {
               row
               name="addressType"
               options={[
-                { label: 'Home', value: 'Home' },
-                { label: 'Office', value: 'Office' },
+                { label: '家庭', value: 'Home' },
+                { label: '办公室', value: 'Office' },
               ]}
             />
 
@@ -96,12 +96,12 @@ export function AddressNewForm({ open, onClose, onCreate }) {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <Field.Text name="name" label="Full name" />
+              <Field.Text name="name" label="姓名" />
 
-              <Field.Phone name="phoneNumber" label="Phone number" country="US" />
+              <Field.Phone name="phoneNumber" label="电话号码" country="CN" />
             </Box>
 
-            <Field.Text name="address" label="Address" />
+            <Field.Text name="address" label="地址" />
 
             <Box
               sx={{
@@ -111,26 +111,26 @@ export function AddressNewForm({ open, onClose, onCreate }) {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' },
               }}
             >
-              <Field.Text name="city" label="Town/city" />
+              <Field.Text name="city" label="城市" />
 
-              <Field.Text name="state" label="State" />
+              <Field.Text name="state" label="州/省" />
 
-              <Field.Text name="zipCode" label="Zip/code" />
+              <Field.Text name="zipCode" label="邮政编码" />
             </Box>
 
-            <Field.CountrySelect name="country" label="Country" placeholder="Choose a country" />
+            <Field.CountrySelect name="country" label="国家" placeholder="请选择国家" />
 
-            <Field.Checkbox name="primary" label="Use this address as default." />
+            <Field.Checkbox name="primary" label="设为默认地址" />
           </Stack>
         </DialogContent>
 
         <DialogActions>
           <Button color="inherit" variant="outlined" onClick={onClose}>
-            Cancel
+            取消
           </Button>
 
           <Button type="submit" variant="contained" loading={isSubmitting}>
-            Deliver to this address
+            配送至此地址
           </Button>
         </DialogActions>
       </Form>

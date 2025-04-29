@@ -31,7 +31,7 @@ export function PostListHomeView({ posts }) {
   return (
     <Container sx={{ mb: 10 }}>
       <Typography variant="h4" sx={[{ my: { xs: 3, md: 5 } }]}>
-        Blog
+        博客
       </Typography>
 
       <Box
@@ -46,7 +46,7 @@ export function PostListHomeView({ posts }) {
           },
         ]}
       >
-        <PostSearch redirectPath={(title) => paths.post.details(title)} />
+        <PostSearch redirectPath={(title) => pathsorbay.post.details(title)} />
 
         <PostSort
           sort={sortBy}

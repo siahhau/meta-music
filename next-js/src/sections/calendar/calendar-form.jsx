@@ -26,12 +26,12 @@ import { ColorPicker } from 'src/components/color-utils';
 export const EventSchema = zod.object({
   title: zod
     .string()
-    .min(1, { message: 'Title is required!' })
-    .max(100, { message: 'Title must be less than 100 characters' }),
+    .min(1, { message: '请输入标题！' })
+    .max(100, { message: '标题不得超过100个字符！' }),
   description: zod
     .string()
-    .min(1, { message: 'Description is required!' })
-    .min(50, { message: 'Description must be at least 50 characters' }),
+    .min(1, { message: '请输入描述！' })
+    .min(50, { message: '描述至少为50个字符！' }),
   // Not required
   color: zod.string(),
   allDay: zod.boolean(),
@@ -75,10 +75,10 @@ export function CalendarForm({ currentEvent, colorOptions, onClose }) {
       if (!dateError) {
         if (currentEvent?.id) {
           await updateEvent(eventData);
-          toast.success('Update success!');
+          toast.success('更新成功！');
         } else {
           await createEvent(eventData);
-          toast.success('Create success!');
+          toast.success('创建成功！');
         }
         onClose();
         reset();
@@ -91,7 +91,7 @@ export function CalendarForm({ currentEvent, colorOptions, onClose }) {
   const onDelete = useCallback(async () => {
     try {
       await deleteEvent(`${currentEvent?.id}`);
-      toast.success('Delete success!');
+      toast.success('删除成功！');
       onClose();
     } catch (error) {
       console.error(error);
@@ -102,21 +102,21 @@ export function CalendarForm({ currentEvent, colorOptions, onClose }) {
     <Form methods={methods} onSubmit={onSubmit}>
       <Scrollbar sx={{ p: 3, bgcolor: 'background.neutral' }}>
         <Stack spacing={3}>
-          <Field.Text name="title" label="Title" />
+          <Field.Text name="title" label="标题" />
 
-          <Field.Text name="description" label="Description" multiline rows={3} />
+          <Field.Text name="description" label="描述" multiline rows={3} />
 
-          <Field.Switch name="allDay" label="All day" />
+          <Field.Switch name="allDay" label="全天" />
 
-          <Field.MobileDateTimePicker name="start" label="Start date" />
+          <Field.MobileDateTimePicker name="start" label="开始日期" />
 
           <Field.MobileDateTimePicker
             name="end"
-            label="End date"
+            label="结束日期"
             slotProps={{
               textField: {
                 error: dateError,
-                helperText: dateError ? 'End date must be later than start date' : null,
+                helperText: dateError ? '结束日期必须晚于开始日期' : null,
               },
             }}
           />
@@ -137,7 +137,7 @@ export function CalendarForm({ currentEvent, colorOptions, onClose }) {
 
       <DialogActions sx={{ flexShrink: 0 }}>
         {!!currentEvent?.id && (
-          <Tooltip title="Delete event">
+          <Tooltip title="删除事件">
             <IconButton color="error" onClick={onDelete}>
               <Iconify icon="solar:trash-bin-trash-bold" />
             </IconButton>
@@ -147,11 +147,11 @@ export function CalendarForm({ currentEvent, colorOptions, onClose }) {
         <Box sx={{ flexGrow: 1 }} />
 
         <Button variant="outlined" color="inherit" onClick={onClose}>
-          Cancel
+          取消
         </Button>
 
         <Button type="submit" variant="contained" loading={isSubmitting} disabled={dateError}>
-          Save changes
+          保存更改
         </Button>
       </DialogActions>
     </Form>

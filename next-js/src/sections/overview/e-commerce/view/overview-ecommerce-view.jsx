@@ -37,12 +37,12 @@ export function OverviewEcommerceView() {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
           <EcommerceWelcome
-            title={`Congratulations 🎉  \n ${user?.displayName}`}
-            description="Best seller of the month you have done 57.6% more sales today."
+            title={`恭喜 🎉 \n ${user?.displayName}`}
+            description="本月最佳销售，您今天的销售额增长了57.6%。"
             img={<MotivationIllustration hideBackground />}
             action={
               <Button variant="contained" color="primary">
-                Go now
+                立即前往
               </Button>
             }
           />
@@ -54,11 +54,11 @@ export function OverviewEcommerceView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <EcommerceWidgetSummary
-            title="Product sold"
+            title="已售产品"
             percent={2.6}
             total={765}
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [22, 8, 35, 50, 82, 84, 77, 12],
             }}
           />
@@ -66,12 +66,12 @@ export function OverviewEcommerceView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <EcommerceWidgetSummary
-            title="Total balance"
+            title="总余额"
             percent={-0.1}
             total={18765}
             chart={{
               colors: [theme.palette.warning.light, theme.palette.warning.main],
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [56, 47, 40, 62, 73, 30, 23, 54],
             }}
           />
@@ -79,12 +79,12 @@ export function OverviewEcommerceView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <EcommerceWidgetSummary
-            title="Sales profit"
+            title="销售利润"
             percent={0.6}
             total={4876}
             chart={{
               colors: [theme.palette.error.light, theme.palette.error.main],
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [40, 70, 75, 70, 50, 28, 7, 64],
             }}
           />
@@ -92,13 +92,13 @@ export function OverviewEcommerceView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <EcommerceSaleByGender
-            title="Sale by gender"
+            title="按性别销售"
             total={2324}
             chart={{
               series: [
-                { label: 'Mens', value: 25 },
-                { label: 'Womens', value: 50 },
-                { label: 'Kids', value: 75 },
+                { label: '男士', value: 25 },
+                { label: '女士', value: 50 },
+                { label: '儿童', value: 75 },
               ],
             }}
           />
@@ -106,33 +106,33 @@ export function OverviewEcommerceView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
           <EcommerceYearlySales
-            title="Yearly sales"
-            subheader="(+43%) than last year"
+            title="年度销售"
+            subheader="比去年增加43%"
             chart={{
               categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
+                '一月',
+                '二月',
+                '三月',
+                '四月',
+                '五月',
+                '六月',
+                '七月',
+                '八月',
+                '九月',
+                '十月',
+                '十一月',
+                '十二月',
               ],
               series: [
                 {
                   name: '2022',
                   data: [
                     {
-                      name: 'Total income',
+                      name: '总收入',
                       data: [10, 41, 35, 51, 49, 62, 69, 91, 148, 35, 51, 49],
                     },
                     {
-                      name: 'Total expenses',
+                      name: '总支出',
                       data: [10, 34, 13, 56, 77, 88, 99, 77, 45, 13, 56, 77],
                     },
                   ],
@@ -141,11 +141,11 @@ export function OverviewEcommerceView() {
                   name: '2023',
                   data: [
                     {
-                      name: 'Total income',
+                      name: '总收入',
                       data: [51, 35, 41, 10, 91, 69, 62, 148, 91, 69, 62, 49],
                     },
                     {
-                      name: 'Total expenses',
+                      name: '总支出',
                       data: [56, 13, 34, 10, 77, 99, 88, 45, 77, 99, 88, 77],
                     },
                   ],
@@ -156,12 +156,12 @@ export function OverviewEcommerceView() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
-          <EcommerceSalesOverview title="Sales overview" data={_ecommerceSalesOverview} />
+          <EcommerceSalesOverview title="销售概览" data={_ecommerceSalesOverview} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <EcommerceCurrentBalance
-            title="Current balance"
+            title="当前余额"
             earning={25500}
             refunded={1600}
             orderTotal={287650}
@@ -171,20 +171,20 @@ export function OverviewEcommerceView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
           <EcommerceBestSalesman
-            title="Best salesman"
+            title="最佳销售员"
             tableData={_ecommerceBestSalesman}
             headCells={[
-              { id: 'name', label: 'Seller' },
-              { id: 'category', label: 'Product' },
-              { id: 'country', label: 'Country', align: 'center' },
-              { id: 'totalAmount', label: 'Total', align: 'right' },
-              { id: 'rank', label: 'Rank', align: 'right' },
+              { id: 'name', label: '销售员' },
+              { id: 'category', label: '产品' },
+              { id: 'country', label: '国家', align: 'center' },
+              { id: 'totalAmount', label: '总额', align: 'right' },
+              { id: 'rank', label: '排名', align: 'right' },
             ]}
           />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <EcommerceLatestProducts title="Latest products" list={_ecommerceLatestProducts} />
+          <EcommerceLatestProducts title="最新产品" list={_ecommerceLatestProducts} />
         </Grid>
       </Grid>
     </DashboardContent>

@@ -56,7 +56,7 @@ export function PostCommentItem({ name, avatarUrl, message, tagUser, postedAt, h
         </Typography>
 
         {reply.value && (
-          <TextField fullWidth autoFocus placeholder="Write comment..." sx={{ mt: 2 }} />
+          <TextField fullWidth autoFocus placeholder="请输入回复..." sx={{ mt: 2 }} />
         )}
       </Box>
 
@@ -68,7 +68,7 @@ export function PostCommentItem({ name, avatarUrl, message, tagUser, postedAt, h
           onClick={reply.onToggle}
           sx={{ right: 0, position: 'absolute' }}
         >
-          Reply
+          回复
         </Button>
       )}
     </Box>

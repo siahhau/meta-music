@@ -25,7 +25,7 @@ export function KanbanColumnAdd({ sx, ...other }) {
 
   const handleCreateColumn = useCallback(async () => {
     try {
-      const columnData = { id: uuidv4(), name: columnName.trim() ? columnName : 'Untitled' };
+      const columnData = { id: uuidv4(), name: columnName.trim() ? columnName : '未命名' };
 
       createColumn(columnData);
 
@@ -68,11 +68,11 @@ export function KanbanColumnAdd({ sx, ...other }) {
             <TextField
               autoFocus
               fullWidth
-              placeholder="Untitled"
+              placeholder="未命名"
               value={columnName}
               onChange={handleChangeName}
               onKeyUp={handleKeyUpCreateColumn}
-              helperText="Press Enter to create the column."
+              helperText="按 Enter 键创建栏目。"
               sx={{ [`& .${inputBaseClasses.input}`]: { typography: 'h6' } }}
             />
           </ClickAwayListener>
@@ -85,7 +85,7 @@ export function KanbanColumnAdd({ sx, ...other }) {
             startIcon={<Iconify icon="mingcute:add-line" sx={{ mr: -0.5 }} />}
             onClick={openAddColumn.onTrue}
           >
-            Add column
+            添加栏目
           </Button>
         )}
       </Box>

@@ -30,22 +30,22 @@ import { ProfileFollowers } from '../profile-followers';
 const NAV_ITEMS = [
   {
     value: '',
-    label: 'Profile',
+    label: '个人资料',
     icon: <Iconify width={24} icon="solar:user-id-bold" />,
   },
   {
     value: 'followers',
-    label: 'Followers',
+    label: '关注者',
     icon: <Iconify width={24} icon="solar:heart-bold" />,
   },
   {
     value: 'friends',
-    label: 'Friends',
+    label: '朋友',
     icon: <Iconify width={24} icon="solar:users-group-rounded-bold" />,
   },
   {
     value: 'gallery',
-    label: 'Gallery',
+    label: '相册',
     icon: <Iconify width={24} icon="solar:gallery-wide-bold" />,
   },
 ];
@@ -75,10 +75,10 @@ export function UserProfileView() {
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="Profile"
+        heading="个人资料"
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'User', href: paths.dashboard.user.root },
+          { name: '仪表板', href: paths.dashboard.root },
+          { name: '用户', href: paths.dashboard.user.root },
           { name: user?.displayName },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}

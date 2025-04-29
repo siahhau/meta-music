@@ -60,6 +60,10 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }) {
         secondary={
           singleParticipant?.status === 'offline'
             ? fToNow(singleParticipant?.lastActivity)
+            : singleParticipant?.status === 'online'
+            ? '在线'
+            : singleParticipant?.status === 'away'
+            ? '离开'
             : singleParticipant?.status
         }
       />
@@ -79,24 +83,24 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }) {
       <MenuList>
         <MenuItem onClick={() => menuActions.onClose()}>
           <Iconify icon="solar:bell-off-bold" />
-          Hide notifications
+          关闭通知
         </MenuItem>
 
         <MenuItem onClick={() => menuActions.onClose()}>
           <Iconify icon="solar:forbidden-circle-bold" />
-          Block
+          屏蔽
         </MenuItem>
 
         <MenuItem onClick={() => menuActions.onClose()}>
           <Iconify icon="solar:danger-triangle-bold" />
-          Report
+          举报
         </MenuItem>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={() => menuActions.onClose()} sx={{ color: 'error.main' }}>
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>

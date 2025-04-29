@@ -19,6 +19,9 @@ const nextConfig = {
   env: {
     BUILD_STATIC_EXPORT: JSON.stringify(isStaticExport),
   },
+  images: {
+    domains: ['i.scdn.co'], // 添加 Spotify 图片域名
+  },
   // Without "next dev --turbopack"
   webpack(config) {
     config.module.rules.push({

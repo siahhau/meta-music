@@ -27,7 +27,7 @@ export function ChatHeaderCompose({ contacts, onAddRecipients }) {
   return (
     <>
       <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2 }}>
-        To:
+        收件人：
       </Typography>
 
       <Autocomplete
@@ -43,7 +43,7 @@ export function ChatHeaderCompose({ contacts, onAddRecipients }) {
         options={contacts}
         getOptionLabel={(recipient) => recipient.name}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        renderInput={(params) => <TextField {...params} placeholder="+ Recipients" />}
+        renderInput={(params) => <TextField {...params} placeholder="+ 添加收件人" />}
         renderOption={(props, recipient, { selected }) => (
           <li {...props} key={recipient.id}>
             <Box

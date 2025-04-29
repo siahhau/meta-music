@@ -79,7 +79,7 @@ export function FileManagerFilters({
     <TextField
       value={currentFilters.name}
       onChange={handleFilterName}
-      placeholder="Search..."
+      placeholder="搜索..."
       slotProps={{
         input: {
           startAdornment: (

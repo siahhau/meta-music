@@ -24,7 +24,7 @@ import { varFade, MotionViewport } from 'src/components/animate';
 export function AboutTestimonials({ sx, ...other }) {
   const renderLink = () => (
     <Button color="primary" endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}>
-      Read more
+      阅读更多
     </Button>
   );
 
@@ -32,22 +32,21 @@ export function AboutTestimonials({ sx, ...other }) {
     <Box sx={{ maxWidth: { md: 360 }, textAlign: { xs: 'center', md: 'unset' } }}>
       <m.div variants={varFade('inUp')}>
         <Typography variant="overline" sx={{ color: 'common.white', opacity: 0.48 }}>
-          Testimonials
+          用户评价
         </Typography>
       </m.div>
 
       <m.div variants={varFade('inUp')}>
         <Typography variant="h2" sx={{ my: 3, color: 'common.white' }}>
-          Who love <br />
-          my work
+          谁爱 <br />
+          我们的作品
         </Typography>
       </m.div>
 
       <m.div variants={varFade('inUp')}>
         <Typography sx={{ color: 'common.white' }}>
-          Our goal is to create a product and service that you’re satisfied with and use it every
-          day. This is why we’re constantly working on our services to make it better every day and
-          really listen to what our users has to say.
+          我们的目标是打造让您满意的产品和服务，并让您每天都能使用。
+          这就是为什么我们不断优化服务，每天改进，并真诚倾听用户的声音。
         </Typography>
       </m.div>
 

@@ -14,7 +14,7 @@ export function CheckoutDelivery({ name, options, onApplyShipping, sx, ...other 
 
   return (
     <Card sx={sx} {...other}>
-      <CardHeader title="Delivery" />
+      <CardHeader title="配送方式" />
       <Controller
         name={name}
         control={control}
@@ -72,8 +72,8 @@ function OptionItem({ option, selected, sx, ...other }) {
       <Iconify
         width={28}
         icon={
-          (option.label === 'Standard' && 'carbon:delivery') ||
-          (option.label === 'Express' && 'carbon:rocket') ||
+          (option.label === '标准配送' && 'carbon:delivery') ||
+          (option.label === '快递' && 'carbon:rocket') ||
           'carbon:bicycle'
         }
       />
@@ -87,17 +87,19 @@ function OptionItem({ option, selected, sx, ...other }) {
           }}
         >
           <Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
-            {option.label}
+            {option.label === 'Standard' ? '标准配送' : option.label === 'Express' ? '快递' : option.label}
           </Box>
 
-          {`$${option.value}`}
+          {`￥${option.value}`}
         </Box>
 
         <Box
           component="span"
           sx={{ display: 'flex', typography: 'body2', color: 'text.secondary' }}
         >
-          {option.description}
+          {option.description === 'Delivery in 3-5 days' ? '3-5天内送达' :
+           option.description === 'Delivery within 24 hours' ? '24小时内送达' :
+           option.description}
         </Box>
       </Box>
     </Box>

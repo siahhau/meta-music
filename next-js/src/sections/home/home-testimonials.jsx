@@ -72,9 +72,9 @@ export function HomeTestimonials({ sx, ...other }) {
 
   const renderDescription = () => (
     <SectionTitle
-      caption="testimonials"
-      title="Rumors are flying"
-      txtGradient="that..."
+      caption="用户评价"
+      title="传言四起"
+      txtGradient="说..."
       sx={{ mb: { xs: 5, md: 8 }, textAlign: 'center' }}
     />
   );
@@ -123,7 +123,10 @@ export function HomeTestimonials({ sx, ...other }) {
           <Stack key={item.id} component={m.div} variants={varFade('in')}>
             <Stack spacing={1} sx={{ typography: 'subtitle2' }}>
               <Rating size="small" name="read-only" value={item.rating} precision={0.5} readOnly />
-              {item.category}
+              {item.category === 'Design Quality' ? '设计质量' :
+               item.category === 'Code Quality' ? '代码质量' :
+               item.category === 'Customer Support' ? '客户支持' :
+               item.category === 'Customizability' ? '可定制性' : item.category}
             </Stack>
 
             <Typography
@@ -179,16 +182,16 @@ export function HomeTestimonials({ sx, ...other }) {
         sx={{ gap: 5, flexDirection: { xs: 'column', md: 'row' } }}
       >
         {[
-          { label: 'Purchased order', value: 12.121 },
-          { label: 'Happy customers', value: 160 },
-          { label: 'Review rate', value: 4.9 },
+          { label: '已购订单', value: 12.121 },
+          { label: '满意客户', value: 160 },
+          { label: '评价评分', value: 4.9 },
         ].map((item) => (
           <Stack key={item.label} spacing={2} sx={{ textAlign: 'center', width: 1 }}>
             <m.div variants={varFade('inUp', { distance: 24 })}>
               <AnimateCountUp
                 to={item.value}
-                unit={item.label === 'Purchased order' ? 'k+' : '+'}
-                toFixed={item.label === 'Happy customers' ? 0 : 1}
+                unit={item.label === '已购订单' ? '千+' : '+'}
+                toFixed={item.label === '满意客户' ? 0 : 1}
                 sx={[
                   (theme) => ({
                     fontWeight: 'fontWeightBold',
@@ -255,53 +258,50 @@ const createReview = (index) => ({
 const TESTIMONIALS = [
   {
     ...createReview(1),
-    category: 'Design Quality',
-    content: `The quality of this template is very good, the TypeScript files are neat and the communication with the team behind this template is very good! I would recommend this template for any kind of project, as they implement new features every now and then and enhance their design. I will definitely be using more templates from this team and re-purchasing this template for other projects.`,
-    postedAt: 'April 20, 2024 23:15:30',
+    category: '设计质量',
+    content: `这个模板的质量非常高，TypeScript 文件整洁，与模板团队的沟通非常顺畅！我推荐这个模板用于任何类型的项目，因为他们不时添加新功能并改进设计。我肯定会再次使用这个团队的模板，并为其他项目重新购买此模板。`,
+    postedAt: '2024年4月20日 23:15:30',
   },
   {
     ...createReview(2),
-    category: 'Design Quality',
-    content: `Amazing. I've never purchased complete front ends before, but I'll definitely be doing this again!`,
-    postedAt: 'March 19, 2024 23:15:30',
+    category: '设计质量',
+    content: `太棒了。我以前从未购买过完整的前端界面，但以后我肯定会再次这样做！`,
+    postedAt: '2024年3月19日 23:15:30',
   },
   {
     ...createReview(3),
-    category: 'Code Quality',
-    content: `Clean & Complete (Design & Code). Thansk Minimal team :)`,
-    postedAt: 'April 19, 2023 23:15:30',
+    category: '代码质量',
+    content: `整洁且完整（设计与代码）。感谢 Minimal 团队 :)`,
+    postedAt: '2023年4月19日 23:15:30',
   },
   {
     ...createReview(4),
-    category: 'Customer Support',
-    content: `Thanks to Minimal for customer support with email. I solved the problem. And the code quality is good, too.`,
-    postedAt: 'May 19, 2023 23:15:30',
+    category: '客户支持',
+    content: `感谢 Minimal 团队通过电子邮件提供的客户支持。我解决了问题，代码质量也很好。`,
+    postedAt: '2023年5月19日 23:15:30',
   },
   {
     ...createReview(5),
-    category: 'Customer Support',
-    content:
-      'Great UI kit, really beautiful as well. Also the customer support is very warm-hearted. However, I hope the components and themes can be provided as a separated project (package).',
-    postedAt: 'June 19, 2023 23:15:30',
+    category: '客户支持',
+    content: `出色的 UI 工具包，设计非常美观。客户支持也非常热情。不过，我希望组件和主题可以作为单独的项目（包）提供。`,
+    postedAt: '2023年6月19日 23:15:30',
   },
   {
     ...createReview(6),
-    category: 'Design Quality',
-    content: 'I would never have been able to create all these beautifull components myself!',
-    postedAt: 'July 19, 2023 23:15:30',
+    category: '设计质量',
+    content: `我自己绝对无法创建这么多漂亮的组件！`,
+    postedAt: '2023年7月19日 23:15:30',
   },
   {
     ...createReview(7),
-    category: 'Code Quality',
-    content:
-      'The quality of this template is excellent. However, as an individual, the cost of obtaining the TypeScript Source version is beyond my means. Despite my strong desire to acquire it, my limited personal budget does not allow me to do so.',
-    postedAt: 'August 19, 2023 23:15:30',
+    category: '代码质量',
+    content: `这个模板的质量非常优秀。然而，作为个人用户，获取 TypeScript 源代码版本的成本超出了我的承受能力。尽管我非常想购买，但个人预算有限，无法做到。`,
+    postedAt: '2023年8月19日 23:15:30',
   },
   {
     ...createReview(8),
-    category: 'Customizability',
-    content:
-      'The design and code quality are impressive. Regular updates and excellent customer support are major advantages.',
-    postedAt: 'September 19, 2023 23:15:30',
+    category: '可定制性',
+    content: `设计和代码质量令人印象深刻。定期更新和出色的客户支持是主要优势。`,
+    postedAt: '2023年9月19日 23:15:30',
   },
 ];

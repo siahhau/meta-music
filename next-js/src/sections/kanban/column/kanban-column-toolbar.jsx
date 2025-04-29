@@ -69,7 +69,7 @@ export function KanbanColumnToolBar({
       <MenuList>
         <MenuItem onClick={menuActions.onClose}>
           <Iconify icon="solar:pen-bold" />
-          Rename
+          重命名
         </MenuItem>
 
         <MenuItem
@@ -79,7 +79,7 @@ export function KanbanColumnToolBar({
           }}
         >
           <Iconify icon="solar:eraser-bold" />
-          Clear
+          清空
         </MenuItem>
 
         <MenuItem
@@ -90,7 +90,7 @@ export function KanbanColumnToolBar({
           sx={{ color: 'error.main' }}
         >
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -100,12 +100,12 @@ export function KanbanColumnToolBar({
     <ConfirmDialog
       open={confirmDialog.value}
       onClose={confirmDialog.onFalse}
-      title="Delete"
+      title="删除"
       content={
         <>
-          Are you sure want to delete column?
+          您确定要删除该栏目吗？
           <Box sx={{ typography: 'caption', color: 'error.main', mt: 2 }}>
-            <strong> NOTE: </strong> All tasks related to this category will also be deleted.
+            <strong>注意：</strong> 与该栏目相关的所有任务也将被删除。
           </Box>
         </>
       }
@@ -118,7 +118,7 @@ export function KanbanColumnToolBar({
             confirmDialog.onFalse();
           }}
         >
-          Delete
+          删除
         </Button>
       }
     />
@@ -140,7 +140,7 @@ export function KanbanColumnToolBar({
 
         <KanbanInputName
           inputRef={renameRef}
-          placeholder="Column name"
+          placeholder="栏目名称"
           value={name}
           onChange={handleChangeName}
           onKeyUp={handleKeyUpUpdateColumn}

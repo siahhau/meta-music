@@ -16,9 +16,9 @@ export function AuthSplitSection({
   method,
   methods,
   layoutQuery = 'md',
-  title = 'Manage the job',
+  title = '管理职位',
   imgUrl = `${CONFIG.assetsDir}/assets/illustrations/illustration-dashboard.webp`,
-  subtitle = 'More effectively with optimized workflows.',
+  subtitle = '通过优化的工作流程更高效地管理。',
   ...other
 }) {
   return (
@@ -64,7 +64,7 @@ export function AuthSplitSection({
 
       <Box
         component="img"
-        alt="Dashboard illustration"
+        alt="仪表板插图"
         src={imgUrl}
         sx={{ width: 1, aspectRatio: '4/3', objectFit: 'cover' }}
       />

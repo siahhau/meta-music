@@ -21,7 +21,7 @@ export function AccountBillingHistory({ invoices, sx, ...other }) {
 
   return (
     <Card sx={sx} {...other}>
-      <CardHeader title="Invoice history" />
+      <CardHeader title="发票历史" />
 
       <Box
         sx={{
@@ -71,7 +71,7 @@ export function AccountBillingHistory({ invoices, sx, ...other }) {
           }
           onClick={showMore.onToggle}
         >
-          Show {showMore.value ? `less` : `more`}
+          显示{showMore.value ? `更少` : `更多`}
         </Button>
       </Box>
     </Card>

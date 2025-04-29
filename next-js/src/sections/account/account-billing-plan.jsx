@@ -22,7 +22,6 @@ import { PaymentCardListDialog } from '../payment/payment-card-list-dialog';
 
 export function AccountBillingPlan({ cardList, addressBook, plans }) {
   const openAddress = useBoolean();
-
   const openCards = useBoolean();
 
   const primaryCard = cardList.find((card) => card.primary) || null;
@@ -75,7 +74,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
               startIcon={<Iconify icon="eva:star-fill" />}
               sx={{ position: 'absolute', top: 8, right: 8 }}
             >
-              Current
+              当前套餐
             </Label>
           )}
 
@@ -95,11 +94,11 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
           </Box>
 
           <Box sx={{ display: 'flex', typography: 'h4', alignItems: 'center' }}>
-            {plan.price || 'Free'}
+            {plan.price || '免费'}
 
             {!!plan.price && (
               <Box component="span" sx={{ typography: 'body2', color: 'text.disabled', ml: 0.5 }}>
-                /mo
+                /月
               </Box>
             )}
           </Box>
@@ -110,7 +109,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
   return (
     <>
       <Card>
-        <CardHeader title="Plan" />
+        <CardHeader title="套餐" />
 
         <Grid container spacing={2} sx={{ p: 3 }}>
           {renderPlans()}
@@ -119,7 +118,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
         <Stack spacing={2} sx={{ p: 3, pt: 0, typography: 'body2' }}>
           <Grid container spacing={{ xs: 0.5, md: 2 }}>
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 4 }}>
-              Plan
+              套餐
             </Grid>
 
             <Grid
@@ -132,7 +131,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
 
           <Grid container spacing={{ xs: 0.5, md: 2 }}>
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 4 }}>
-              Billing name
+              账单姓名
             </Grid>
 
             <Grid size={{ xs: 12, md: 8 }}>
@@ -148,7 +147,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
 
           <Grid container spacing={{ xs: 0.5, md: 2 }}>
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 4 }}>
-              Billing address
+              账单地址
             </Grid>
 
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 8 }}>
@@ -158,7 +157,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
 
           <Grid container spacing={{ xs: 0.5, md: 2 }}>
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 4 }}>
-              Billing phone number
+              账单电话
             </Grid>
 
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 8 }}>
@@ -168,7 +167,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
 
           <Grid container spacing={{ xs: 0.5, md: 2 }}>
             <Grid sx={{ color: 'text.secondary' }} size={{ xs: 12, md: 4 }}>
-              Payment method
+              支付方式
             </Grid>
 
             <Grid size={{ xs: 12, md: 8 }}>
@@ -193,8 +192,8 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
             justifyContent: 'flex-end',
           }}
         >
-          <Button variant="outlined">Cancel plan</Button>
-          <Button variant="contained">Upgrade plan</Button>
+          <Button variant="outlined">取消套餐</Button>
+          <Button variant="contained">升级套餐</Button>
         </Box>
       </Card>
 
@@ -218,7 +217,7 @@ export function AccountBillingPlan({ cardList, addressBook, plans }) {
             startIcon={<Iconify icon="mingcute:add-line" />}
             sx={{ alignSelf: 'flex-end' }}
           >
-            New
+            新增
           </Button>
         }
       />

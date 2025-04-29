@@ -23,7 +23,7 @@ export function AccountBillingAddress({ addressBook }) {
   const [addressId, setAddressId] = useState('');
 
   const handleAddNewAddress = useCallback((address) => {
-    console.info('ADDRESS', address);
+    console.info('地址', address);
   }, []);
 
   const handleSelectedId = useCallback(
@@ -45,32 +45,32 @@ export function AccountBillingAddress({ addressBook }) {
         <MenuItem
           onClick={() => {
             handleClose();
-            console.info('SET AS PRIMARY', addressId);
+            console.info('设为主要地址', addressId);
           }}
         >
           <Iconify icon="eva:star-fill" />
-          Set as primary
+          设为主要地址
         </MenuItem>
 
         <MenuItem
           onClick={() => {
             handleClose();
-            console.info('EDIT', addressId);
+            console.info('编辑', addressId);
           }}
         >
           <Iconify icon="solar:pen-bold" />
-          Edit
+          编辑
         </MenuItem>
 
         <MenuItem
           onClick={() => {
             handleClose();
-            console.info('DELETE', addressId);
+            console.info('删除', addressId);
           }}
           sx={{ color: 'error.main' }}
         >
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -88,7 +88,7 @@ export function AccountBillingAddress({ addressBook }) {
     <>
       <Card>
         <CardHeader
-          title="Address book"
+          title="地址簿"
           action={
             <Button
               size="small"
@@ -96,7 +96,7 @@ export function AccountBillingAddress({ addressBook }) {
               startIcon={<Iconify icon="mingcute:add-line" />}
               onClick={newAddressForm.onTrue}
             >
-              Address
+              添加地址
             </Button>
           }
         />

@@ -85,7 +85,7 @@ export function PaymentCardListDialog({ open, list, onClose, selected, onSelect 
         <TextField
           value={searchCard}
           onChange={handleSearchAddress}
-          placeholder="Search..."
+          placeholder="搜索..."
           slotProps={{
             input: {
               startAdornment: (

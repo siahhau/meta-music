@@ -4,67 +4,67 @@ import { _tags } from './assets';
 // ----------------------------------------------------------------------
 
 export const TOUR_DETAILS_TABS = [
-  { label: 'Tour content', value: 'content' },
-  { label: 'Booker', value: 'bookers' },
+  { label: '旅游内容', value: 'content' },
+  { label: '预订者', value: 'bookers' },
 ];
 
 export const TOUR_SORT_OPTIONS = [
-  { label: 'Latest', value: 'latest' },
-  { label: 'Popular', value: 'popular' },
-  { label: 'Oldest', value: 'oldest' },
+  { label: '最新', value: 'latest' },
+  { label: '热门', value: 'popular' },
+  { label: '最旧', value: 'oldest' },
 ];
 
 export const TOUR_PUBLISH_OPTIONS = [
-  { label: 'Published', value: 'published' },
-  { label: 'Draft', value: 'draft' },
+  { label: '已发布', value: 'published' },
+  { label: '草稿', value: 'draft' },
 ];
 
 export const TOUR_SERVICE_OPTIONS = [
-  { label: 'Audio guide', value: 'Audio guide' },
-  { label: 'Food and drinks', value: 'Food and drinks' },
-  { label: 'Lunch', value: 'Lunch' },
-  { label: 'Private tour', value: 'Private tour' },
-  { label: 'Special activities', value: 'Special activities' },
-  { label: 'Entrance fees', value: 'Entrance fees' },
-  { label: 'Gratuities', value: 'Gratuities' },
-  { label: 'Pick-up and drop off', value: 'Pick-up and drop off' },
-  { label: 'Professional guide', value: 'Professional guide' },
-  { label: 'Transport by air-conditioned', value: 'Transport by air-conditioned' },
+  { label: '语音导览', value: 'Audio guide' },
+  { label: '餐饮', value: 'Food and drinks' },
+  { label: '午餐', value: 'Lunch' },
+  { label: '私人旅游', value: 'Private tour' },
+  { label: '特别活动', value: 'Special activities' },
+  { label: '门票', value: 'Entrance fees' },
+  { label: '小费', value: 'Gratuities' },
+  { label: '接送服务', value: 'Pick-up and drop off' },
+  { label: '专业导游', value: 'Professional guide' },
+  { label: '空调交通', value: 'Transport by air-conditioned' },
 ];
 
 const CONTENT = `
-<h6>Description</h6>
+<h6>描述</h6>
 
-<p>Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis.</p>
+<p>偶尔会有些许责难和痛苦。自动产生痛苦的行为本身就是一种快乐。确实是公正的存在，除了那些容易被拒绝的快乐之外。所有的快乐都不会被指责为痛苦，应当被归咎于那些应得的。</p>
 
-<h6>Highlights</h6>
+<h6>亮点</h6>
 
 <ul>
-  <li>A fermentum in morbi pretium aliquam adipiscing donec tempus.</li>
-  <li>Vulputate placerat amet pulvinar lorem nisl.</li>
-  <li>Consequat feugiat habitant gravida quisque elit bibendum id adipiscing sed.</li>
-  <li>Etiam duis lobortis in fames ultrices commodo nibh.</li>
+  <li>发酵工艺在莫比预设的装饰性设计中，完成临时任务。</li>
+  <li>普尔维纳放置在阿梅特，洛雷姆尼塞尔。</li>
+  <li>结果是习惯性怀孕的奎斯克精英书目ID装饰性设计。</li>
+  <li>埃蒂亚姆杜伊斯狼人在名声中，优越的舒适感。</li>
 </ul>
 
-<h6>Program</h6>
+<h6>行程</h6>
 
 <p>
-  <strong>Day 1</strong>
+  <strong>第一天</strong>
 </p>
 
-<p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
+<p>阿梅特最小化莫利特非描述性乌拉姆科，坐在阿利夸痛苦中做阿梅特辛特。维利特官方结果杜伊斯恩尼姆维利特莫利特。运动结果圣诺斯特鲁德阿梅特。</p>
 
 <p>
-  <strong>Day 2</strong>
+  <strong>第二天</strong>
 </p>
 
-<p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
+<p>阿梅特最小化莫利特非描述性乌拉姆科，坐在阿利夸痛苦中做阿梅特辛特。维利特官方结果杜伊斯恩尼姆维利特莫利特。运动结果圣诺斯特鲁德阿梅特。</p>
 
 <p>
-  <strong>Day 3</strong>
+  <strong>第三天</strong>
 </p>
 
-<p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.</p>
+<p>阿梅特最小化莫利特非描述性乌拉姆科，坐在阿利夸痛苦中做阿梅特辛特。维利特官方结果杜伊斯恩尼姆维利特莫利特。运动结果圣诺斯特鲁德阿梅特。</p>
 `;
 
 const BOOKER = Array.from({ length: 12 }, (_, index) => ({
@@ -88,13 +88,13 @@ export const _tours = Array.from({ length: 12 }, (_, index) => {
 
   const publish = index % 3 ? 'published' : 'draft';
 
-  const services = (index % 2 && ['Audio guide', 'Food and drinks']) ||
-    (index % 3 && ['Lunch', 'Private tour']) ||
-    (index % 4 && ['Special activities', 'Entrance fees']) || [
-      'Gratuities',
-      'Pick-up and drop off',
-      'Professional guide',
-      'Transport by air-conditioned',
+  const services = (index % 2 && ['语音导览', '餐饮']) ||
+    (index % 3 && ['午餐', '私人旅游']) ||
+    (index % 4 && ['特别活动', '门票']) || [
+      '小费',
+      '接送服务',
+      '专业导游',
+      '空调交通',
     ];
 
   const tourGuides =
@@ -118,7 +118,7 @@ export const _tours = Array.from({ length: 12 }, (_, index) => {
     tags: _tags.slice(0, 5),
     name: _mock.tourName(index),
     createdAt: _mock.time(index),
-    durations: '4 days 3 nights',
+    durations: '4天3晚',
     price: _mock.number.price(index),
     destination: _mock.countryNames(index),
     priceSale: _mock.number.price(index),

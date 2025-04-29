@@ -58,7 +58,7 @@ export function HomeHighlightFeatures({ sx, ...other }) {
               },
             ]}
           >
-            <SectionTitle caption="App Features" title="Highlight" txtGradient="features" />
+            <SectionTitle caption="应用功能" title="亮点" txtGradient="功能" />
 
             <SvgIcon
               component={m.svg}
@@ -89,14 +89,14 @@ export function HomeHighlightFeatures({ sx, ...other }) {
 
 const ITEMS = [
   {
-    title: 'Dark mode',
-    subtitle: 'A dark theme that feels easier on the eyes.',
+    title: '深色模式',
+    subtitle: '对眼睛更友好的深色主题。',
     icon: 'solar:cloudy-moon-bold-duotone',
     imgUrl: [`${CONFIG.assetsDir}/assets/images/home/highlight-darkmode.webp`],
   },
   {
-    title: 'Color presets',
-    subtitle: 'Express your own style with just one click.',
+    title: '颜色预设',
+    subtitle: '一键展现您的独特风格。',
     icon: 'solar:pallete-2-bold-duotone',
     imgUrl: [
       `${CONFIG.assetsDir}/assets/images/home/highlight-presets-1.webp`,
@@ -107,8 +107,8 @@ const ITEMS = [
     ],
   },
   {
-    title: 'Right-to-left',
-    subtitle: 'Support languages such as Arabic, Persian, and Hebrew.',
+    title: '从右到左',
+    subtitle: '支持阿拉伯语、波斯语和希伯来语等语言。',
     icon: 'solar:align-right-bold-duotone',
     imgUrl: [`${CONFIG.assetsDir}/assets/images/home/highlight-rtl.webp`],
   },

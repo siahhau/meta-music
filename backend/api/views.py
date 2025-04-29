@@ -15,6 +15,7 @@ from decimal import Decimal
 from django_filters.rest_framework import DjangoFilterBackend  # type: ignore # Correct import
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
 logger = logging.getLogger(__name__)
 def get_chord_similarity(chords1, chords2, n=10):
     """Calculate similarity between two chord sequences."""
@@ -182,11 +183,29 @@ class SearchView(APIView):
 
 # 用户注册
 class RegisterView(APIView):
+    permission_classes = [AllowAny]  # Allow una प्रसuthenticated users
+
     def post(self, request):
+        logger.info(f"Register request received: {request.data}")
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            return Response({"id": user.id, "username": user.username}, status=status.HTTP_201_CREATED)
+            # Generate JWT token
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name
+                },
+                "tokens": {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token)
+                }
+            }, status=status.HTTP_201_CREATED)
+        logger.error(f"Registration failed: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # 当前用户信息

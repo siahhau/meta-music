@@ -21,14 +21,14 @@ export function CheckoutBillingInfo({ checkoutState, onChangeStep, loading, sx, 
   return (
     <Card sx={[{ mb: 3 }, ...(Array.isArray(sx) ? sx : [sx])]} {...other}>
       <CardHeader
-        title="Address"
+        title="地址"
         action={
           <Button
             size="small"
             startIcon={<Iconify icon="solar:pen-bold" />}
             onClick={() => onChangeStep('back')}
           >
-            Edit
+            编辑
           </Button>
         }
       />
@@ -41,7 +41,7 @@ export function CheckoutBillingInfo({ checkoutState, onChangeStep, loading, sx, 
             <Box sx={{ typography: 'subtitle2' }}>
               {`${billing?.name} `}
               <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-                ({billing?.addressType})
+                ({billing?.addressType === 'Home' ? '家庭' : billing?.addressType === 'Office' ? '办公室' : billing?.addressType})
               </Box>
             </Box>
 

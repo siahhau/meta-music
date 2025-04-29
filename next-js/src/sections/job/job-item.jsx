@@ -35,14 +35,14 @@ export function JobItem({ job, editHref, detailsHref, onDelete, sx, ...other }) 
         <li>
           <MenuItem component={RouterLink} href={detailsHref} onClick={() => menuActions.onClose()}>
             <Iconify icon="solar:eye-bold" />
-            View
+            查看
           </MenuItem>
         </li>
 
         <li>
           <MenuItem component={RouterLink} href={editHref} onClick={() => menuActions.onClose()}>
             <Iconify icon="solar:pen-bold" />
-            Edit
+            编辑
           </MenuItem>
         </li>
 
@@ -54,7 +54,7 @@ export function JobItem({ job, editHref, detailsHref, onDelete, sx, ...other }) 
           sx={{ color: 'error.main' }}
         >
           <Iconify icon="solar:trash-bin-trash-bold" />
-          Delete
+          删除
         </MenuItem>
       </MenuList>
     </CustomPopover>
@@ -82,7 +82,7 @@ export function JobItem({ job, editHref, detailsHref, onDelete, sx, ...other }) 
                 {job.title}
               </Link>
             }
-            secondary={`Posted date: ${fDate(job.createdAt)}`}
+            secondary={`发布日期：${fDate(job.createdAt)}`}
             slotProps={{
               primary: { sx: { typography: 'subtitle1' } },
               secondary: {
@@ -101,7 +101,7 @@ export function JobItem({ job, editHref, detailsHref, onDelete, sx, ...other }) 
             }}
           >
             <Iconify width={16} icon="solar:users-group-rounded-bold" />
-            {job.candidates.length} candidates
+            {job.candidates.length} 名候选人
           </Box>
         </Box>
 
@@ -121,11 +121,11 @@ export function JobItem({ job, editHref, detailsHref, onDelete, sx, ...other }) 
               icon: <Iconify width={16} icon="carbon:skill-level-basic" sx={{ flexShrink: 0 }} />,
             },
             {
-              label: job.employmentTypes.join(', '),
+              label: job.employmentTypes.join('，'),
               icon: <Iconify width={16} icon="solar:clock-circle-bold" sx={{ flexShrink: 0 }} />,
             },
             {
-              label: job.salary.negotiable ? 'Negotiable' : fCurrency(job.salary.price),
+              label: job.salary.negotiable ? '面议' : fCurrency(job.salary.price),
               icon: <Iconify width={16} icon="solar:wad-of-money-bold" sx={{ flexShrink: 0 }} />,
             },
             {

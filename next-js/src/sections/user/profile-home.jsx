@@ -40,14 +40,14 @@ export function ProfileHome({ info, posts }) {
         <Stack sx={{ width: 1 }}>
           {fNumber(info.totalFollowers)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            Follower
+            关注者
           </Box>
         </Stack>
 
         <Stack sx={{ width: 1 }}>
           {fNumber(info.totalFollowing)}
           <Box component="span" sx={{ color: 'text.secondary', typography: 'body2' }}>
-            Following
+            关注中
           </Box>
         </Stack>
       </Stack>
@@ -56,7 +56,7 @@ export function ProfileHome({ info, posts }) {
 
   const renderAbout = () => (
     <Card>
-      <CardHeader title="About" />
+      <CardHeader title="关于" />
 
       <Box
         sx={{
@@ -72,9 +72,9 @@ export function ProfileHome({ info, posts }) {
         <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
           <Iconify width={24} icon="mingcute:location-fill" />
           <span>
-            Live at
+            居住在
             <Link variant="subtitle2" color="inherit">
-              &nbsp;{info.country}
+              {info.country}
             </Link>
           </span>
         </Box>
@@ -87,19 +87,20 @@ export function ProfileHome({ info, posts }) {
         <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
           <Iconify width={24} icon="solar:case-minimalistic-bold" />
           <span>
-            {info.role} at
+            在
             <Link variant="subtitle2" color="inherit">
-              &nbsp;{info.company}
+              {info.company}
             </Link>
+            担任{info.role}
           </span>
         </Box>
 
         <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
           <Iconify width={24} icon="solar:case-minimalistic-bold" />
           <span>
-            Studied at
+            就读于
             <Link variant="subtitle2" color="inherit">
-              &nbsp;{info.school}
+              {info.school}
             </Link>
           </span>
         </Box>
@@ -113,7 +114,7 @@ export function ProfileHome({ info, posts }) {
         multiline
         fullWidth
         rows={4}
-        placeholder="Share what you are thinking here..."
+        placeholder="在这里分享你的想法..."
         inputProps={{ id: 'post-input' }}
         sx={[
           (theme) => ({
@@ -142,16 +143,16 @@ export function ProfileHome({ info, posts }) {
         >
           <Fab size="small" color="inherit" variant="softExtended" onClick={handleAttach}>
             <Iconify icon="solar:gallery-wide-bold" width={24} sx={{ color: 'success.main' }} />
-            Image/Video
+            图片/视频
           </Fab>
 
           <Fab size="small" color="inherit" variant="softExtended">
             <Iconify icon="solar:videocamera-record-bold" width={24} sx={{ color: 'error.main' }} />
-            Streaming
+            直播
           </Fab>
         </Box>
 
-        <Button variant="contained">Post</Button>
+        <Button variant="contained">发布</Button>
       </Box>
 
       <input ref={fileRef} type="file" style={{ display: 'none' }} />
@@ -160,15 +161,15 @@ export function ProfileHome({ info, posts }) {
 
   const renderSocials = () => (
     <Card>
-      <CardHeader title="Social" />
+      <CardHeader title="社交" />
 
       <Box
         sx={{
           p: 3,
           gap: 2,
+          typography: 'body2',
           display: 'flex',
           flexDirection: 'column',
-          typography: 'body2',
         }}
       >
         {_socials.map((social) => (

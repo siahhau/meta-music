@@ -19,11 +19,11 @@ export function UserCardsView() {
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="User cards"
+        heading="用户卡片"
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'User', href: paths.dashboard.user.root },
-          { name: 'Cards' },
+          { name: '仪表板', href: paths.dashboard.root },
+          { name: '用户', href: paths.dashboard.user.root },
+          { name: '卡片' },
         ]}
         action={
           <Button
@@ -32,7 +32,7 @@ export function UserCardsView() {
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
           >
-            New user
+            新用户
           </Button>
         }
         sx={{ mb: { xs: 3, md: 5 } }}

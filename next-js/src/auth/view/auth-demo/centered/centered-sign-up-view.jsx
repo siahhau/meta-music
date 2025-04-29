@@ -26,16 +26,16 @@ import { SignUpTerms } from '../../../components/sign-up-terms';
 // ----------------------------------------------------------------------
 
 export const SignUpSchema = zod.object({
-  firstName: zod.string().min(1, { message: 'First name is required!' }),
-  lastName: zod.string().min(1, { message: 'Last name is required!' }),
+  firstName: zod.string().min(1, { message: '必须填写名字！' }),
+  lastName: zod.string().min(1, { message: '必须填写姓氏！' }),
   email: zod
     .string()
-    .min(1, { message: 'Email is required!' })
-    .email({ message: 'Email must be a valid email address!' }),
+    .min(1, { message: '必须填写邮箱！' })
+    .email({ message: '邮箱格式无效！' }),
   password: zod
     .string()
-    .min(1, { message: 'Password is required!' })
-    .min(6, { message: 'Password must be at least 6 characters!' }),
+    .min(1, { message: '必须填写密码！' })
+    .min(6, { message: '密码至少需要6个字符！' }),
 });
 
 // ----------------------------------------------------------------------
@@ -63,7 +63,7 @@ export function CenteredSignUpView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      console.info('DATA', data);
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -86,22 +86,22 @@ export function CenteredSignUpView() {
       >
         <Field.Text
           name="firstName"
-          label="First name"
+          label="名字"
           slotProps={{ inputLabel: { shrink: true } }}
         />
         <Field.Text
           name="lastName"
-          label="Last name"
+          label="姓氏"
           slotProps={{ inputLabel: { shrink: true } }}
         />
       </Box>
 
-      <Field.Text name="email" label="Email address" slotProps={{ inputLabel: { shrink: true } }} />
+      <Field.Text name="email" label="邮箱地址" slotProps={{ inputLabel: { shrink: true } }} />
 
       <Field.Text
         name="password"
-        label="Password"
-        placeholder="6+ characters"
+        label="密码"
+        placeholder="6个字符以上"
         type={showPassword.value ? 'text' : 'password'}
         slotProps={{
           inputLabel: { shrink: true },
@@ -124,9 +124,9 @@ export function CenteredSignUpView() {
         type="submit"
         variant="contained"
         loading={isSubmitting}
-        loadingIndicator="Create account..."
+        loadingIndicator="正在创建账户..."
       >
-        Create account
+        创建账户
       </Button>
     </Box>
   );
@@ -136,12 +136,12 @@ export function CenteredSignUpView() {
       <AnimateLogoRotate sx={{ mb: 3, mx: 'auto' }} />
 
       <FormHead
-        title="Get started absolutely free"
+        title="免费开始使用"
         description={
           <>
-            {`Already have an account? `}
+            {`已有账户？ `}
             <Link component={RouterLink} href={paths.authDemo.centered.signIn} variant="subtitle2">
-              Get started
+              登录
             </Link>
           </>
         }

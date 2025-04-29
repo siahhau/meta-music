@@ -35,11 +35,11 @@ import { KanbanContactsDialog } from '../components/kanban-contacts-dialog';
 // ----------------------------------------------------------------------
 
 const SUBTASKS = [
-  'Complete project proposal',
-  'Conduct market research',
-  'Design user interface mockups',
-  'Develop backend api',
-  'Implement authentication system',
+  '完成项目提案',
+  '进行市场调研',
+  '设计用户界面模型',
+  '开发后端API',
+  '实现认证系统',
 ];
 
 const BlockLabel = styled('span')(({ theme }) => ({
@@ -119,9 +119,9 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
       slotProps={{ tab: { sx: { px: 0 } } }}
     >
       {[
-        { value: 'overview', label: 'Overview' },
-        { value: 'subTasks', label: 'Subtasks' },
-        { value: 'comments', label: `Comments (${task.comments.length})` },
+        { value: 'overview', label: '概览' },
+        { value: 'subTasks', label: '子任务' },
+        { value: 'comments', label: `评论 (${task.comments.length})` },
       ].map((tab) => (
         <Tab key={tab.value} value={tab.value} label={tab.label} />
       ))}
@@ -130,31 +130,31 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
 
   const renderTabOverview = () => (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-      {/* Task name */}
+      {/* 任务名称 */}
       <KanbanInputName
-        placeholder="Task name"
+        placeholder="任务名称"
         value={taskName}
         onChange={handleChangeTaskName}
         onKeyUp={handleUpdateTask}
         inputProps={{ id: `${taskName}-task-input` }}
       />
 
-      {/* Reporter */}
+      {/* 报告人 */}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <BlockLabel>Reporter</BlockLabel>
+        <BlockLabel>报告人</BlockLabel>
         <Avatar alt={task.reporter.name} src={task.reporter.avatarUrl} />
       </Box>
 
-      {/* Assignee */}
+      {/* 分配人 */}
       <Box sx={{ display: 'flex' }}>
-        <BlockLabel sx={{ height: 40, lineHeight: '40px' }}>Assignee</BlockLabel>
+        <BlockLabel sx={{ height: 40, lineHeight: '40px' }}>分配人</BlockLabel>
 
         <Box sx={{ gap: 1, display: 'flex', flexWrap: 'wrap' }}>
-          {task.assignee.map((user) => (
+          {task.assignee && task.assignee.map((user) => (
             <Avatar key={user.id} alt={user.name} src={user.avatarUrl} />
           ))}
 
-          <Tooltip title="Add assignee">
+          <Tooltip title="添加分配人">
             <IconButton
               onClick={contactsDialog.onTrue}
               sx={[
@@ -176,9 +176,9 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
         </Box>
       </Box>
 
-      {/* Label */}
+      {/* 标签 */}
       <Box sx={{ display: 'flex' }}>
-        <BlockLabel sx={{ height: 24, lineHeight: '24px' }}>Labels</BlockLabel>
+        <BlockLabel sx={{ height: 24, lineHeight: '24px' }}>标签</BlockLabel>
 
         {!!task.labels.length && (
           <Box sx={{ gap: 1, display: 'flex', flexWrap: 'wrap' }}>
@@ -189,16 +189,16 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
         )}
       </Box>
 
-      {/* Due date */}
+      {/* 截止日期 */}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <BlockLabel> Due date </BlockLabel>
+        <BlockLabel>截止日期</BlockLabel>
 
         {rangePicker.selected ? (
           <Button size="small" onClick={rangePicker.onOpen}>
             {rangePicker.shortLabel}
           </Button>
         ) : (
-          <Tooltip title="Add due date">
+          <Tooltip title="添加截止日期">
             <IconButton
               onClick={rangePicker.onOpen}
               sx={[
@@ -215,7 +215,7 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
 
         <CustomDateRangePicker
           variant="calendar"
-          title="Choose due date"
+          title="选择截止日期"
           startDate={rangePicker.startDate}
           endDate={rangePicker.endDate}
           onChangeStartDate={rangePicker.onChangeStartDate}
@@ -227,15 +227,15 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
         />
       </Box>
 
-      {/* Priority */}
+      {/* 优先级 */}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <BlockLabel>Priority</BlockLabel>
+        <BlockLabel>优先级</BlockLabel>
         <KanbanDetailsPriority priority={priority} onChangePriority={handleChangePriority} />
       </Box>
 
-      {/* Description */}
+      {/* 描述 */}
       <Box sx={{ display: 'flex' }}>
-        <BlockLabel> Description </BlockLabel>
+        <BlockLabel>描述</BlockLabel>
         <TextField
           fullWidth
           multiline
@@ -247,9 +247,9 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
         />
       </Box>
 
-      {/* Attachments */}
+      {/* 附件 */}
       <Box sx={{ display: 'flex' }}>
-        <BlockLabel>Attachments</BlockLabel>
+        <BlockLabel>附件</BlockLabel>
         <KanbanDetailsAttachments attachments={task.attachments} />
       </Box>
     </Box>
@@ -259,7 +259,7 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
       <div>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          {subtaskCompleted.length} of {SUBTASKS.length}
+          {subtaskCompleted.length} / {SUBTASKS.length}
         </Typography>
 
         <LinearProgress
@@ -290,7 +290,7 @@ export function KanbanDetails({ task, open, onUpdateTask, onDeleteTask, onClose 
         startIcon={<Iconify icon="mingcute:add-line" />}
         sx={{ alignSelf: 'flex-start' }}
       >
-        Subtask
+        子任务
       </Button>
     </Box>
   );

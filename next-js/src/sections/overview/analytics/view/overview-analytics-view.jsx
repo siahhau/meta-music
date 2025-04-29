@@ -28,23 +28,23 @@ export function OverviewAnalyticsView() {
   return (
     <DashboardContent maxWidth="xl">
       <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
-        Hi, Welcome back 👋
+        嗨，欢迎回来 👋
       </Typography>
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
-            title="Weekly sales"
+            title="周销售额"
             percent={2.6}
             total={714000}
             icon={
               <img
-                alt="Weekly sales"
+                alt="周销售额"
                 src={`${CONFIG.assetsDir}/assets/icons/glass/ic-glass-bag.svg`}
               />
             }
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [22, 8, 35, 50, 82, 84, 77, 12],
             }}
           />
@@ -52,18 +52,18 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
-            title="New users"
+            title="新用户"
             percent={-0.1}
             total={1352831}
             color="secondary"
             icon={
               <img
-                alt="New users"
+                alt="新用户"
                 src={`${CONFIG.assetsDir}/assets/icons/glass/ic-glass-users.svg`}
               />
             }
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [56, 47, 40, 62, 73, 30, 23, 54],
             }}
           />
@@ -71,18 +71,18 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
-            title="Purchase orders"
+            title="购买订单"
             percent={2.8}
             total={1723315}
             color="warning"
             icon={
               <img
-                alt="Purchase orders"
+                alt="购买订单"
                 src={`${CONFIG.assetsDir}/assets/icons/glass/ic-glass-buy.svg`}
               />
             }
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [40, 70, 50, 28, 70, 75, 7, 64],
             }}
           />
@@ -90,18 +90,18 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <AnalyticsWidgetSummary
-            title="Messages"
+            title="消息"
             percent={3.6}
             total={234}
             color="error"
             icon={
               <img
-                alt="Messages"
+                alt="消息"
                 src={`${CONFIG.assetsDir}/assets/icons/glass/ic-glass-message.svg`}
               />
             }
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月'],
               series: [56, 30, 23, 54, 47, 40, 62, 73],
             }}
           />
@@ -109,13 +109,13 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <AnalyticsCurrentVisits
-            title="Current visits"
+            title="当前访问量"
             chart={{
               series: [
-                { label: 'America', value: 3500 },
-                { label: 'Asia', value: 2500 },
-                { label: 'Europe', value: 1500 },
-                { label: 'Africa', value: 500 },
+                { label: '美洲', value: 3500 },
+                { label: '亚洲', value: 2500 },
+                { label: '欧洲', value: 1500 },
+                { label: '非洲', value: 500 },
               ],
             }}
           />
@@ -123,13 +123,13 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
           <AnalyticsWebsiteVisits
-            title="Website visits"
-            subheader="(+43%) than last year"
+            title="网站访问量"
+            subheader="比去年增加43%"
             chart={{
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+              categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月'],
               series: [
-                { name: 'Team A', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
-                { name: 'Team B', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
+                { name: '团队 A', data: [43, 33, 22, 37, 67, 68, 37, 24, 55] },
+                { name: '团队 B', data: [51, 70, 47, 67, 40, 37, 24, 70, 24] },
               ],
             }}
           />
@@ -137,10 +137,10 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
           <AnalyticsConversionRates
-            title="Conversion rates"
-            subheader="(+43%) than last year"
+            title="转化率"
+            subheader="比去年增加43%"
             chart={{
-              categories: ['Italy', 'Japan', 'China', 'Canada', 'France'],
+              categories: ['意大利', '日本', '中国', '加拿大', '法国'],
               series: [
                 { name: '2022', data: [44, 55, 41, 64, 22] },
                 { name: '2023', data: [53, 32, 33, 52, 13] },
@@ -151,32 +151,32 @@ export function OverviewAnalyticsView() {
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <AnalyticsCurrentSubject
-            title="Current subject"
+            title="当前科目"
             chart={{
-              categories: ['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math'],
+              categories: ['英语', '历史', '物理', '地理', '中文', '数学'],
               series: [
-                { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-                { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-                { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] },
+                { name: '系列 1', data: [80, 50, 30, 40, 100, 20] },
+                { name: '系列 2', data: [20, 30, 40, 80, 20, 80] },
+                { name: '系列 3', data: [44, 76, 78, 13, 43, 10] },
               ],
             }}
           />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
-          <AnalyticsNews title="News" list={_analyticPosts} />
+          <AnalyticsNews title="新闻" list={_analyticPosts} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AnalyticsOrderTimeline title="Order timeline" list={_analyticOrderTimeline} />
+          <AnalyticsOrderTimeline title="订单时间线" list={_analyticOrderTimeline} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AnalyticsTrafficBySite title="Traffic by site" list={_analyticTraffic} />
+          <AnalyticsTrafficBySite title="按站点流量" list={_analyticTraffic} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }}>
-          <AnalyticsTasks title="Tasks" list={_analyticTasks} />
+          <AnalyticsTasks title="任务" list={_analyticTasks} />
         </Grid>
       </Grid>
     </DashboardContent>

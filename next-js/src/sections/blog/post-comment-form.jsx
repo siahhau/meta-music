@@ -12,7 +12,7 @@ import { Form, Field } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export const CommentSchema = zod.object({
-  comment: zod.string().min(1, { message: 'Comment is required!' }),
+  comment: zod.string().min(1, { message: '请输入评论！' }),
 });
 
 // ----------------------------------------------------------------------
@@ -37,7 +37,7 @@ export function PostCommentForm() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      console.info('DATA', data);
+      console.info('数据', data);
     } catch (error) {
       console.error(error);
     }
@@ -48,7 +48,7 @@ export function PostCommentForm() {
       <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
         <Field.Text
           name="comment"
-          placeholder="Write some of your comments..."
+          placeholder="请输入您的评论..."
           multiline
           rows={4}
         />
@@ -69,7 +69,7 @@ export function PostCommentForm() {
           </Box>
 
           <Button type="submit" variant="contained" loading={isSubmitting}>
-            Post comment
+            发布评论
           </Button>
         </Box>
       </Box>

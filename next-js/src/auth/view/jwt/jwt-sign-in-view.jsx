@@ -28,14 +28,11 @@ import { signInWithPassword } from '../../context/jwt';
 // ----------------------------------------------------------------------
 
 export const SignInSchema = zod.object({
-  email: zod
-    .string()
-    .min(1, { message: 'Email is required!' })
-    .email({ message: 'Email must be a valid email address!' }),
+  username: zod.string().min(1, { message: '必须填写用户名！' }), // 修改为 username
   password: zod
     .string()
-    .min(1, { message: 'Password is required!' })
-    .min(6, { message: 'Password must be at least 6 characters!' }),
+    .min(1, { message: '必须填写密码！' })
+    .min(6, { message: '密码至少需要6个字符！' }),
 });
 
 // ----------------------------------------------------------------------
@@ -50,8 +47,8 @@ export function JwtSignInView() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: '@2Minimal',
+    username: '', // 修改默认值
+    password: '',
   };
 
   const methods = useForm({
@@ -66,10 +63,9 @@ export function JwtSignInView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await signInWithPassword({ email: data.email, password: data.password });
+      await signInWithPassword({ username: data.username, password: data.password }); // 修改为 username
       await checkUserSession?.();
-
-      router.refresh();
+      router.push(paths.dashboard.root); // 跳转到仪表盘
     } catch (error) {
       console.error(error);
       const feedbackMessage = getErrorMessage(error);
@@ -79,7 +75,7 @@ export function JwtSignInView() {
 
   const renderForm = () => (
     <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
-      <Field.Text name="email" label="Email address" slotProps={{ inputLabel: { shrink: true } }} />
+      <Field.Text name="username" label="用户名" slotProps={{ inputLabel: { shrink: true } }} /> {/* 修改为用户名 */}
 
       <Box sx={{ gap: 1.5, display: 'flex', flexDirection: 'column' }}>
         <Link
@@ -89,13 +85,13 @@ export function JwtSignInView() {
           color="inherit"
           sx={{ alignSelf: 'flex-end' }}
         >
-          Forgot password?
+          忘记密码？
         </Link>
 
         <Field.Text
           name="password"
-          label="Password"
-          placeholder="6+ characters"
+          label="密码"
+          placeholder="6个字符以上"
           type={showPassword.value ? 'text' : 'password'}
           slotProps={{
             inputLabel: { shrink: true },
@@ -121,9 +117,9 @@ export function JwtSignInView() {
         type="submit"
         variant="contained"
         loading={isSubmitting}
-        loadingIndicator="Sign in..."
+        loadingIndicator="正在登录..."
       >
-        Sign in
+        登录
       </Button>
     </Box>
   );
@@ -131,23 +127,17 @@ export function JwtSignInView() {
   return (
     <>
       <FormHead
-        title="Sign in to your account"
+        title="登录您的账户"
         description={
           <>
-            {`Don’t have an account? `}
+            {`还没有账户？ `}
             <Link component={RouterLink} href={paths.auth.jwt.signUp} variant="subtitle2">
-              Get started
+              立即注册
             </Link>
           </>
         }
         sx={{ textAlign: { xs: 'center', md: 'left' } }}
       />
-
-      <Alert severity="info" sx={{ mb: 3 }}>
-        Use <strong>{defaultValues.email}</strong>
-        {' with password '}
-        <strong>{defaultValues.password}</strong>
-      </Alert>
 
       {!!errorMessage && (
         <Alert severity="error" sx={{ mb: 3 }}>
