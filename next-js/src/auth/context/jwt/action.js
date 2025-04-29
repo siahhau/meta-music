@@ -65,7 +65,7 @@ export const signUp = async ({ email, username, password, firstName, lastName })
   };
 
   try {
-    const res = await axios.post(`${API_URL}/register/`, params);
+    const res = await axios.post(`${API_URL}/user/register/`, params);
     const { tokens, user } = res.data;
     if (!tokens) {
       throw new Error('用户 tokens 没有返回');
