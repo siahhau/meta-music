@@ -5,8 +5,8 @@ import packageJson from '../package.json';
 // ----------------------------------------------------------------------
 
 export const CONFIG = {
-  appName: 'Minimal UI',
-  appVersion: packageJson.version,
+  appName: '元音乐',
+  appVersion: "1.01",
   serverUrl: process.env.NEXT_PUBLIC_SERVER_URL ?? '',
   assetsDir: process.env.NEXT_PUBLIC_ASSETS_DIR ?? '',
   isStaticExport: JSON.parse(process.env.BUILD_STATIC_EXPORT ?? 'false'),
@@ -16,7 +16,7 @@ export const CONFIG = {
    */
   auth: {
     method: 'jwt',
-    skip: false,
+    skip: true,
     redirectPath: paths.dashboard.root,
   },
   /**
