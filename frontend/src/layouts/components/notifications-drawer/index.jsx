@@ -150,7 +150,7 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth size="large">
-            View all
+            查看更多
           </Button>
         </Box>
       </Drawer>

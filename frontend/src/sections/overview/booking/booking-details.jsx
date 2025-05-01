@@ -51,7 +51,7 @@ export function BookingDetails({ title, subheader, headCells, tableData, sx, ...
           color="inherit"
           endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
         >
-          View all
+          查看更多
         </Button>
       </Box>
     </Card>

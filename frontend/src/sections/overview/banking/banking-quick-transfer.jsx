@@ -200,7 +200,7 @@ export function BankingQuickTransfer({ title, subheader, list, sx, ...other }) {
               endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
               sx={{ mr: -1 }}
             >
-              View all
+              查看更多
             </Button>
           </Box>
 
