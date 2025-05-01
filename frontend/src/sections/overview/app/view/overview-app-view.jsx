@@ -36,12 +36,12 @@ export function OverviewAppView() {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
           <AppWelcome
-            title={`Welcome back 👋 \n ${user?.displayName}`}
-            description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+            title={`推出最新，最强大的音乐模型`}
+            description="等待结束了！MusicBank 已发展成为一个综合音乐智能平台，为音乐家、作曲人和Dj以及歌手提供人工智能驱动的实时洞察。"
             img={<SeoIllustration hideBackground />}
             action={
               <Button variant="contained" color="primary">
-                Go now
+                申请早期访问
               </Button>
             }
           />
@@ -53,7 +53,7 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <AppWidgetSummary
-            title="Total active users"
+            title="累计歌曲"
             percent={2.6}
             total={18765}
             chart={{
@@ -65,7 +65,7 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <AppWidgetSummary
-            title="Total installed"
+            title="累计专辑"
             percent={0.2}
             total={4876}
             chart={{
@@ -78,7 +78,7 @@ export function OverviewAppView() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <AppWidgetSummary
-            title="Total downloads"
+            title="累计歌谱"
             percent={-0.1}
             total={678}
             chart={{
@@ -89,86 +89,22 @@ export function OverviewAppView() {
           />
         </Grid>
 
-        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AppCurrentDownload
-            title="Current download"
-            subheader="Downloaded by operating system"
-            chart={{
-              series: [
-                { label: 'Mac', value: 12244 },
-                { label: 'Window', value: 53345 },
-                { label: 'iOS', value: 44313 },
-                { label: 'Android', value: 78343 },
-              ],
-            }}
-          />
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 6, lg: 8 }}>
-          <AppAreaInstalled
-            title="Area installed"
-            subheader="(+43%) than last year"
-            chart={{
-              categories: [
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
-              ],
-              series: [
-                {
-                  name: '2022',
-                  data: [
-                    { name: 'Asia', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
-                    { name: 'Europe', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
-                    { name: 'Americas', data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 15, 16] },
-                  ],
-                },
-                {
-                  name: '2023',
-                  data: [
-                    { name: 'Asia', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
-                    { name: 'Europe', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
-                    { name: 'Americas', data: [6, 18, 14, 9, 20, 6, 22, 19, 8, 22, 8, 17] },
-                  ],
-                },
-                {
-                  name: '2024',
-                  data: [
-                    { name: 'Asia', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
-                    { name: 'Europe', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
-                    { name: 'Americas', data: [6, 20, 15, 18, 7, 24, 6, 10, 12, 17, 18, 10] },
-                  ],
-                },
-              ],
-            }}
-          />
-        </Grid>
-
         <Grid size={{ xs: 12, lg: 8 }}>
           <AppNewInvoice
-            title="New invoice"
+            title="任务大厅"
             tableData={_appInvoices}
             headCells={[
-              { id: 'id', label: 'Invoice ID' },
-              { id: 'category', label: 'Category' },
-              { id: 'price', label: 'Price' },
-              { id: 'status', label: 'Status' },
+              { id: 'id', label: '歌曲ID' },
+              { id: 'category', label: '歌曲名' },
+              { id: 'price', label: '价格' },
+              { id: 'status', label: '状态' },
               { id: '' },
             ]}
           />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
-          <AppTopRelated title="Related applications" list={_appRelated} />
+          <AppTopRelated title="单曲排行榜" list={_appRelated} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>

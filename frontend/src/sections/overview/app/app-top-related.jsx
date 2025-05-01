@@ -20,9 +20,9 @@ import { CustomTabs } from 'src/components/custom-tabs';
 // ----------------------------------------------------------------------
 
 const TABS = [
-  { value: '7days', label: 'Top 7 days' },
-  { value: '30days', label: 'Top 30 days' },
-  { value: 'all', label: 'All times' },
+  { value: '7days', label: '周榜' },
+  { value: '30days', label: '月榜' },
+  { value: 'all', label: '年榜' },
 ];
 // ----------------------------------------------------------------------
 

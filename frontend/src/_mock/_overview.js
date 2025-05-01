@@ -8,11 +8,11 @@ import { _mock } from './_mock';
 // ----------------------------------------------------------------------
 
 export const _appRelated = [
-  'Microsoft office 365',
-  'Opera',
-  'Adobe acrobat reader DC',
-  'Joplin',
-  'Topaz photo AI',
+  '一丝不挂 - 陈奕迅',
+  '安静 - 周杰伦',
+  '江南 - 林俊杰',
+  '爱拼才会赢 - 卓依婷',
+  '喜欢你 - Beyond',
 ].map((name, index) => ({
   id: _mock.id(index),
   name,
@@ -20,7 +20,7 @@ export const _appRelated = [
   ratingNumber: _mock.number.rating(index),
   size: _mock.number.nativeL(index) * 1024,
   totalReviews: _mock.number.nativeL(index),
-  shortcut: `${CONFIG.assetsDir}/assets/icons/apps/ic-app-${index + 1}.webp`,
+  // shortcut: `${CONFIG.assetsDir}/assets/icons/apps/ic-app-${index + 1}.webp`,
   price: [2, 4].includes(index) ? _mock.number.price(index) : 0,
 }));
 
@@ -43,9 +43,9 @@ export const _appAuthors = Array.from({ length: 3 }, (_, index) => ({
 }));
 
 export const _appInvoices = Array.from({ length: 5 }, (_, index) => {
-  const category = ['Android', 'Mac', 'Windows', 'Android', 'Mac'][index];
+  const category = ['拥抱 - 五月天', '好想你 - 朱主爱', 'Red - Taylor Swift', '故乡 - 许巍', '一起学猫叫'][index];
 
-  const status = ['paid', 'out of date', 'progress', 'paid', 'paid'][index];
+  const status = ['已支付', '过期', '进行中', '已支付', '发布中'][index];
 
   return {
     id: _mock.id(index),

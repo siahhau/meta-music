@@ -156,7 +156,7 @@ export function WorkspacesPopover({ data = [], sx, ...other }) {
           },
         }}
       >
-        Create workspace
+        创建新的身份
       </Button>
     </CustomPopover>
   );
