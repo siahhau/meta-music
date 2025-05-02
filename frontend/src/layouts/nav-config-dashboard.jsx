@@ -63,7 +63,7 @@ export const navData = [
     subheader: '总览',
     items: [
       { title: '统计', path: paths.dashboard.root, icon: ICONS.dashboard },
-      { title: '歌曲库', path: paths.dashboard.general.ecommerce, icon: ICONS.ecommerce },
+      { title: '歌曲库', path: paths.dashboard.general.track, icon: ICONS.ecommerce },
       { title: '任务大厅', path: paths.dashboard.general.banking, icon: ICONS.banking },
       { title: '乐谱库', path: paths.dashboard.general.file, icon: ICONS.file },
       { title: '乐理课程', path: paths.dashboard.general.course, icon: ICONS.course },
