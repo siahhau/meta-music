@@ -25,10 +25,11 @@ DB_PWD = os.getenv("DB_PWD")
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{DB_USER}:{DB_PWD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'pool_size': 5,
-    'max_overflow': 10,
-    'pool_timeout': 30,
-    'pool_pre_ping': True
+    'pool_size': 10,          # 增加到 10 个连接
+    'max_overflow': 20,       # 允许 20 个溢出连接
+    'pool_timeout': 60,       # 等待 60 秒
+    'pool_recycle': 1800,     # 每 30 分钟回收连接
+    'pool_pre_ping': True     # 每次借用连接时检查其有效性
 }
 
 # 验证环境变量

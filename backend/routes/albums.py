@@ -4,6 +4,8 @@ import logging
 
 from models.album import Album
 from models.track import Track
+from models.comment import Comment
+from models.rating import Rating
 from database import db
 
 # 配置日志
@@ -72,7 +74,7 @@ def get_album_tracks(spotify_id):
         per_page = request.args.get('per_page', 10, type=int)
 
         # 查询专辑下的歌曲
-        pagination = Track.query.filter_by(alnum_id=spotify_id).paginate(page=page, per_page=per_page, error_out=False)
+        pagination = Track.query.filter_by(album_id=spotify_id).paginate(page=page, per_page=per_page, error_out=False)
         tracks = pagination.items
 
         # 构造分页响应
@@ -93,6 +95,63 @@ def get_album_tracks(spotify_id):
     except Exception as e:
         logger.error(f"获取 album {spotify_id} 的 tracks 失败: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+# 获取专辑的评论（通过 spotify_id）
+@albums_bp.route('/spotify/<string:spotify_id>/comments', methods=['GET'])
+def get_album_comments(spotify_id):
+    try:
+        comments = Comment.query.filter_by(album_id=spotify_id).all()
+        return jsonify({
+            'count': len(comments),
+            'items': [comment.to_dict() for comment in comments]
+        }), 200
+    except Exception as e:
+        logger.error(f"获取 album {spotify_id} 的 comments 失败: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+# 发布新评论
+@albums_bp.route('/spotify/<string:spotify_id>/comments', methods=['POST'])
+def create_album_comment(spotify_id):
+    data = request.get_json()
+    if not data or not all(key in data for key in ['content', 'user']):
+        return jsonify({'error': 'content 和 user 为必填项'}), 400
+
+    try:
+        comment = Comment(
+            album_id=spotify_id,
+            content=data['content'],
+            user=data['user'],
+            score=data.get('score', 0)  # 支持评分
+        )
+        db.session.add(comment)
+        db.session.commit()
+        return jsonify(comment.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"创建 comment 失败: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+
+# 发布评分和评测
+@albums_bp.route('/spotify/<string:spotify_id>/ratings', methods=['POST'])
+def create_album_rating(spotify_id):
+    data = request.get_json()
+    if not data or not all(key in data for key in ['score', 'user']):
+        return jsonify({'error': 'score 和 user 为必填项'}), 400
+
+    try:
+        rating = Rating(
+            album_id=spotify_id,
+            score=data['score'],
+            review=data.get('review', ''),
+            user=data['user']
+        )
+        db.session.add(rating)
+        db.session.commit()
+        return jsonify(rating.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"创建 rating 失败: {str(e)}")
+        return jsonify({'error': str(e)}), 400
 
 # 添加新专辑（album）
 @albums_bp.route('/', methods=['POST'])

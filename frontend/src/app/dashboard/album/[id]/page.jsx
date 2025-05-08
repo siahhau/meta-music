@@ -1,75 +1,257 @@
 import axios from 'axios';
 import { CONFIG } from 'src/global-config';
-import { AlbumView } from 'src/sections/album/view';
+import {
+  Card,
+  Box,
+  Typography,
+  Divider,
+  Link,
+  Grid,
+  CardHeader,
+  TableContainer,
+  Table,
+  TableHead,
+  TableCell,
+  TableBody,
+  TableRow,
+  Stack,
+} from '@mui/material';
+import { RouterLink } from 'src/routes/components';
+import { ProfileCoverClient } from 'src/sections/album/profile-cover-client';
+import { Iconify } from 'src/components/iconify';
+import { DashboardContent } from 'src/layouts/dashboard';
+import { CommentInput } from 'src/sections/album/comment-input';
+import { RatingInput } from 'src/sections/album/rating-input';
+import { ProfilePostItem } from 'src/sections/album/profile-post-item';
+import TabHeader from 'src/sections/album/tab-header';
+import styles from './album-page.module.css';
 
 // ----------------------------------------------------------------------
 
-export const metadata = { title: `专辑加载中... - ${CONFIG.appName}` };
+// 转换毫秒为分钟:秒格式
+const formatDuration = (ms) => {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+};
+
+// ----------------------------------------------------------------------
+
+export async function generateMetadata({ params }) {
+  const id = params?.id || '';
+  try {
+    const res = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (res.status !== 200) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    const album = res.data;
+    return {
+      title: `${album.name} | Dashboard - ${CONFIG.appName}`,
+    };
+  } catch (error) {
+    return {
+      title: `专辑 | Dashboard - ${CONFIG.appName}`,
+    };
+  }
+}
 
 export default async function Page({ params }) {
-  const id = params.id; // 动态路由参数，例如 '5iT3F2EhjVQVrO4PKhsP8c'
-  console.log('请求的 id:', id); // 调试：打印实际 id
+  const id = params?.id || '';
 
+  // 获取专辑数据
+  let album;
   try {
-    // 获取当前专辑
-    const albumResponse = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const res = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
+      headers: { 'Content-Type': 'application/json' },
     });
-
-    if (albumResponse.status !== 200) {
-      throw new Error(`HTTP error! Status: ${albumResponse.status}`);
+    if (res.status !== 200) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
     }
-
-    const album = albumResponse.data;
-    console.log('专辑信息:', album);
-
-    // 获取歌曲详情
-    const trackIds = album.tracks || []; // 假设 tracks 是 ["id1", "id2", ...]
-    const tracks = [];
-    for (const trackId of trackIds) {
-      try {
-        const trackResponse = await axios.get(`http://localhost:8000/tracks/spotify/${trackId}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (trackResponse.status === 200) {
-          tracks.push(trackResponse.data);
-        }
-      } catch (error) {
-        console.error(`获取歌曲 ${trackId} 失败:`, error);
-      }
-    }
-    console.log('歌曲列表:', tracks);
-
-    // 获取专辑列表
-    const albumsResponse = await axios.get(`http://localhost:8000/albums/?page=1&per_page=10`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (albumsResponse.status !== 200) {
-      throw new Error(`HTTP error! Status: ${albumsResponse.status}`);
-    }
-
-    const albums = albumsResponse.data.albums;
-    console.log('专辑列表:', albums);
-
-    return <AlbumView album={album} albums={albums} tracks={tracks} />;
+    album = res.data;
   } catch (error) {
-    console.error('获取数据失败:', error);
     return (
-      <div>
-        <h1>错误</h1>
-        <p>无法加载数据：{error.message}</p>
-        {error.response && (
-          <p>后端错误详情：{JSON.stringify(error.response.data)}</p>
-        )}
-      </div>
+      <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
+        <Typography variant="h4" color="error" gutterBottom>
+          错误
+        </Typography>
+        <Typography variant="body1">无法加载专辑信息：{error.message}</Typography>
+      </Box>
     );
   }
+
+  // 获取评论数据
+  let comments = { count: 0, items: [] };
+  try {
+    const res = await axios.get(`http://localhost:8000/albums/spotify/${id}/comments`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (res.status !== 200) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    comments = res.data;
+  } catch (error) {
+    comments = { count: 0, items: [], error: error.message };
+  }
+
+  // 处理 tracks 数据
+  const tracks = album?.tracks?.tracks?.items || [];
+
+  return (
+    <DashboardContent maxWidth="xl">
+      <Card sx={{ mb: 3, height: 290 }}>
+        <ProfileCoverClient
+          role={album.release_date}
+          name={album.name}
+          coverUrl={album.image_url}
+          avatarUrl={album.image_url}
+        />
+      </Card>
+      <TabHeader commentsCount={comments.count} />
+      <div className={styles.sections}>
+        {/* 模块 1: 详情 */}
+        <div id="details" className={styles.section}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
+              <Card>
+                <CardHeader title="基础信息" />
+                <Box
+                  sx={{
+                    p: 3,
+                    gap: 2,
+                    display: 'flex',
+                    typography: 'body2',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
+                    <Iconify width={24} icon="material-symbols-light:artist" />
+                    <span>{album.artist_name}</span>
+                  </Box>
+                  <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
+                    <Iconify width={24} icon="mynaui:label-solid" />
+                    <span>{album.label}</span>
+                  </Box>
+                  <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
+                    <Iconify width={24} icon="ic:round-album" />
+                    <span>歌曲总数：{album.total_tracks}</span>
+                  </Box>
+                  <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
+                    <Iconify width={24} icon="ic:round-category" />
+                    <span>专辑类型：{album.album_type}</span>
+                  </Box>
+                  <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
+                    <Iconify width={24} icon="material-symbols:date-range-outline-rounded" />
+                    <span>{album.release_date}</span>
+                  </Box>
+                </Box>
+              </Card>
+            </Grid>
+            <Grid size={{ xs: 12, md: 8 }} sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
+              <RatingInput album={album} />
+            </Grid>
+          </Grid>
+        </div>
+
+        {/* 模块 2: 歌单 */}
+        <div id="tracks" className={styles.section}>
+          <TableContainer component={Card}>
+            <Table sx={{ minWidth: 650 }} aria-label="tracks table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>歌曲名称</TableCell>
+                  <TableCell>艺术家</TableCell>
+                  <TableCell>专辑</TableCell>
+                  <TableCell>时长</TableCell>
+                  <TableCell>曲目编号</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {tracks.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      <Typography>暂无歌曲</Typography>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  tracks.map((track, index) => (
+                    <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableCell component="th" scope="row">
+                        <Link
+                          component={RouterLink}
+                          href={`/dashboard/track/${track.id}`}
+                          sx={{
+                            color: 'primary.main',
+                            textDecoration: 'none',
+                            '&:hover': { textDecoration: 'underline' },
+                          }}
+                        >
+                          {track.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        {track.artists?.map((artist, idx) => (
+                          <span key={idx}>
+                            <Link
+                              component={RouterLink}
+                              href={`/dashboard/artist/${artist.id}`}
+                              sx={{
+                                color: 'primary.main',
+                                textDecoration: 'none',
+                                '&:hover': { textDecoration: 'underline' },
+                              }}
+                            >
+                              {artist.name}
+                            </Link>
+                            {idx < track.artists.length - 1 ? ', ' : ''}
+                          </span>
+                        )) || 'Unknown'}
+                      </TableCell>
+                      <TableCell>{album.name}</TableCell>
+                      <TableCell>{formatDuration(track.duration_ms)}</TableCell>
+                      <TableCell>{track.track_number}</TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+
+        {/* 模块 3: 评论 */}
+        <div id="comments" className={styles.section}>
+          <Card sx={{ p: 3 }}>
+            <CardHeader title={`评论 (${comments.count})`} />
+            <Box sx={{ p: 3 }}>
+              {comments.error ? (
+                <Typography color="error">错误: {comments.error}</Typography>
+              ) : comments.items.length === 0 ? (
+                <Typography>暂无评论</Typography>
+              ) : (
+                <Stack spacing={3}>
+                  {comments.items.map((comment) => (
+                    <ProfilePostItem
+                      key={comment.id}
+                      post={{
+                        id: comment.id,
+                        message: comment.content,
+                        createdAt: comment.created_at,
+                        comments: [],
+                        personLikes: [],
+                        media: '',
+                        score: comment.score || 0,
+                      }}
+                    />
+                  ))}
+                </Stack>
+              )}
+              <CommentInput album={album} />
+            </Box>
+          </Card>
+        </div>
+      </div>
+    </DashboardContent>
+  );
 }

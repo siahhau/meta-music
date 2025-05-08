@@ -10,7 +10,7 @@ class Track(db.Model):
     artist_name = db.Column(db.String(255), nullable=False)
     artist_id = db.Column(db.String(255), nullable=False)
     album_name = db.Column(db.String(255))
-    alnum_id = db.Column(db.String(255))  # 假设为 album ID，可添加外键
+    album_id = db.Column(db.String(255))  # 假设为 album ID，可添加外键
     image_url = db.Column(db.String(512))
     release_date = db.Column(db.Date)
     duration_ms = db.Column(db.Integer)
@@ -28,7 +28,7 @@ class Track(db.Model):
             'artist_name': self.artist_name,
             'artist_id': self.artist_id,
             'album_name': self.album_name,
-            'alnum_id': self.alnum_id,
+            'album_id': self.album_id,
             'image_url': self.image_url,
             'release_date': str(self.release_date) if self.release_date else None,
             'duration_ms': self.duration_ms,

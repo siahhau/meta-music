@@ -1,0 +1,13 @@
+.sections {
+  margin-top: 24px;
+}
+
+.section {
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+
+/* 确保平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}

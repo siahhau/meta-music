@@ -80,7 +80,7 @@ def create_track():
             artist_name=data['artist_name'],
             artist_id=data['artist_id'],
             album_name=data.get('album_name'),
-            alnum_id=data.get('alnum_id'),
+            album_id=data.get('album_id'),
             image_url=data.get('image_url'),
             release_date=release_date,
             duration_ms=data.get('duration_ms'),
@@ -112,7 +112,7 @@ def update_track(id):
         track.artist_name = data.get('artist_name', track.artist_name)
         track.artist_id = data.get('artist_id', track.artist_id)
         track.album_name = data.get('album_name', track.album_name)
-        track.alnum_id = data.get('alnum_id', track.alnum_id)
+        track.album_id = data.get('album_id', track.album_id)
         track.image_url = data.get('image_url', track.image_url)
         if data.get('release_date'):
             track.release_date = datetime.strptime(data['release_date'], '%Y-%m-%d').date()
