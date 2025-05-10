@@ -1,10 +1,10 @@
 'use client';
-
+import { useState, useEffect, useCallback } from 'react';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { varAlpha } from 'minimal-shared/utils';
 import { useBoolean } from 'minimal-shared/hooks';
-import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
 import Box from '@mui/material/Box';
 import MenuList from '@mui/material/MenuList';
@@ -15,36 +15,50 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import InputBase, { inputBaseClasses } from '@mui/material/InputBase';
+import Typography from '@mui/material/Typography';
 
 import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SearchNotFound } from 'src/components/search-not-found';
-
-import { ResultItem } from './result-item';
-import { applyFilter, flattenNavSections } from './utils';
+import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 const breakpoint = 'sm';
 
-export function Searchbar({ data: navItems = [], sx, ...other }) {
+// 映射 type 到中文标签
+const typeLabels = {
+  track: '单曲',
+  album: '专辑',
+  artist: '艺术家',
+};
+
+export function Searchbar({ sx, ...other }) {
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up(breakpoint));
 
   const { value: open, onFalse: onClose, onTrue: onOpen, onToggle } = useBoolean();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // 关闭搜索框并重置状态
   const handleClose = useCallback(() => {
     onClose();
     setSearchQuery('');
+    setSearchResults([]);
+    setError(null);
   }, [onClose]);
 
+  // 处理快捷键 ⌘K
   const handleKeyDown = useCallback(
     (event) => {
       if (event.metaKey && event.key.toLowerCase() === 'k') {
         onToggle();
         setSearchQuery('');
+        setSearchResults([]);
+        setError(null);
       }
     },
     [onToggle]
@@ -52,25 +66,49 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  // 处理搜索输入
   const handleSearch = useCallback((event) => {
     setSearchQuery(event.target.value);
   }, []);
 
-  const formattedNavItems = flattenNavSections(navItems);
+  // 调用搜索接口
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      setError(null);
+      return;
+    }
 
-  const dataFiltered = applyFilter({
-    inputData: formattedNavItems,
-    query: searchQuery,
-  });
+    const fetchSearchResults = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get('http://localhost:8000/search', {
+          params: { q: searchQuery },
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (response.status !== 200) {
+          throw new Error(`搜索失败！状态码: ${response.status}`);
+        }
+        setSearchResults(response.data.results || []);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setSearchResults([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const notFound = searchQuery && !dataFiltered.length;
+    const debounce = setTimeout(fetchSearchResults, 300); // 防抖，减少请求频率
+    return () => clearTimeout(debounce);
+  }, [searchQuery]);
 
+  const notFound = searchQuery && !searchResults.length && !isLoading && !error;
+
+  // 渲染搜索按钮
   const renderButton = () => (
     <Box
       onClick={onOpen}
@@ -124,6 +162,7 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
     </Box>
   );
 
+  // 渲染搜索结果列表，保留原始样式，去掉图标，高亮仅加粗，单曲显示“歌名 - 歌手名”
   const renderList = () => (
     <MenuList
       disablePadding
@@ -135,19 +174,68 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
         },
       }}
     >
-      {dataFiltered.map((item) => {
-        const partsTitle = parse(item.title, match(item.title, searchQuery));
+      {searchResults.map((item) => {
+        const typeLabel = typeLabels[item.type] || item.type;
+        // 单曲显示“歌名 - 歌手名”，其他类型直接用 title
+        const displayTitle =
+          item.type === 'track' && item.artist_name
+            ? `${item.title} - ${item.artist_name}`
+            : item.title;
+        const partsTitle = parse(displayTitle, match(displayTitle, searchQuery));
         const partsPath = parse(item.path, match(item.path, searchQuery));
 
         return (
-          <MenuItem disableRipple key={`${item.title}${item.path}`}>
-            <ResultItem
-              path={partsPath}
-              title={partsTitle}
+          <MenuItem disableRipple key={`${item.id}-${item.type}`}>
+            <Box
+              sx={{
+                py: 1,
+                px: 2,
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                textDecoration: 'none', // 去掉下划线
+                color: 'text.primary', // 确保默认颜色
+                '&:hover': {
+                  bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08), // 原始悬停背景
+                },
+              }}
+              component="a"
               href={item.path}
-              labels={item.group.split('.')}
               onClick={handleClose}
-            />
+            >
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="body1" color="text.primary">
+                  {partsTitle.map((part, index) => (
+                    <span
+                      key={index}
+                      style={{ fontWeight: part.highlight ? 'bold' : 'normal' }}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {partsPath.map((part, index) => (
+                    <span
+                      key={index}
+                      style={{ fontWeight: part.highlight ? 'bold' : 'normal' }}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </Typography>
+              </Box>
+              <Label
+                variant="soft"
+                sx={{
+                  bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.16),
+                  color: 'text.secondary',
+                }}
+              >
+                {typeLabel}
+              </Label>
+            </Box>
           </MenuItem>
         );
       })}
@@ -175,7 +263,7 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
         <InputBase
           fullWidth
           autoFocus={open}
-          placeholder="Search..."
+          placeholder="搜索单曲、专辑、艺术家..."
           value={searchQuery}
           onChange={handleSearch}
           startAdornment={
@@ -192,7 +280,17 @@ export function Searchbar({ data: navItems = [], sx, ...other }) {
           }}
         />
 
-        {notFound ? (
+        {isLoading ? (
+          <Box sx={{ py: 15, px: 2.5, textAlign: 'center' }}>
+            <Typography variant="body1">加载中...</Typography>
+          </Box>
+        ) : error ? (
+          <Box sx={{ py: 15, px: 2.5, textAlign: 'center' }}>
+            <Typography variant="body1" color="error">
+              搜索失败: {error}
+            </Typography>
+          </Box>
+        ) : notFound ? (
           <SearchNotFound query={searchQuery} sx={{ py: 15, px: 2.5 }} />
         ) : (
           <Scrollbar sx={{ p: 2.5, height: 400 }}>{renderList()}</Scrollbar>

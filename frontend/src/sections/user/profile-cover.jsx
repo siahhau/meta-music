@@ -1,12 +1,11 @@
 import { varAlpha } from 'minimal-shared/utils';
-
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 
 // ----------------------------------------------------------------------
 
-export function ProfileCover({ sx, name, role, coverUrl, avatarUrl, ...other }) {
+export function ProfileCover({ sx, name, role, coverUrl, avatarUrl, children, ...other }) {
   return (
     <Box
       sx={[
@@ -33,6 +32,7 @@ export function ProfileCover({ sx, name, role, coverUrl, avatarUrl, ...other }) 
           pt: { xs: 6, md: 0 },
           position: { md: 'absolute' },
           flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'center', md: 'flex-start' },
         }}
       >
         <Avatar
@@ -47,20 +47,22 @@ export function ProfileCover({ sx, name, role, coverUrl, avatarUrl, ...other }) 
             }),
           ]}
         >
-          {name?.charAt(0).toUpperCase()}
+          {typeof name === 'string' && name ? name.charAt(0).toUpperCase() : '?'}
         </Avatar>
 
-        <ListItemText
-          primary={name}
-          secondary={role}
-          slotProps={{
-            primary: { sx: { typography: 'h4' } },
-            secondary: {
-              sx: { mt: 0.5, opacity: 0.48, color: 'inherit' },
-            },
-          }}
-          sx={{ mt: 3, ml: { md: 3 }, textAlign: { xs: 'center', md: 'unset' } }}
-        />
+        {children || (
+          <ListItemText
+            primary={name}
+            secondary={role}
+            slotProps={{
+              primary: { sx: { typography: 'h4' } },
+              secondary: {
+                sx: { mt: 0.5, opacity: 0.48, color: 'inherit' },
+              },
+            }}
+            sx={{ mt: 3, ml: { md: 3 }, textAlign: { xs: 'center', md: 'unset' } }}
+          />
+        )}
       </Box>
     </Box>
   );

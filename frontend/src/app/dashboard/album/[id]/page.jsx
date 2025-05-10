@@ -25,6 +25,8 @@ import { RatingInput } from 'src/sections/album/rating-input';
 import { ProfilePostItem } from 'src/sections/album/profile-post-item';
 import TabHeader from 'src/sections/album/tab-header';
 import styles from './album-page.module.css';
+import CommentsSection from 'src/sections/album/comments-section';
+import RatingsSection from 'src/sections/album/ratings-section';
 
 // ----------------------------------------------------------------------
 
@@ -43,13 +45,14 @@ export async function generateMetadata({ params }) {
   try {
     const res = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
       headers: { 'Content-Type': 'application/json' },
+      timeout: 10000, // 设置 10 秒超时
     });
     if (res.status !== 200) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
     const album = res.data;
     return {
-      title: `${album.name} | Dashboard - ${CONFIG.appName}`,
+      title: `${album.name || '未知专辑'} | Dashboard - ${CONFIG.appName}`,
     };
   } catch (error) {
     return {
@@ -66,11 +69,16 @@ export default async function Page({ params }) {
   try {
     const res = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
       headers: { 'Content-Type': 'application/json' },
+      timeout: 10000, // 设置 10 秒超时
     });
     if (res.status !== 200) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
     album = res.data;
+    // 验证 album 数据
+    if (!album || !album.spotify_id) {
+      throw new Error('专辑数据无效或缺失');
+    }
   } catch (error) {
     return (
       <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
@@ -82,39 +90,25 @@ export default async function Page({ params }) {
     );
   }
 
-  // 获取评论数据
-  let comments = { count: 0, items: [] };
-  try {
-    const res = await axios.get(`http://localhost:8000/albums/spotify/${id}/comments`, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (res.status !== 200) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-    comments = res.data;
-  } catch (error) {
-    comments = { count: 0, items: [], error: error.message };
-  }
-
   // 处理 tracks 数据
-  const tracks = album?.tracks?.tracks?.items || [];
+  const tracks = Array.isArray(album?.tracks?.tracks?.items) ? album.tracks.tracks.items : [];
 
   return (
     <DashboardContent maxWidth="xl">
       <Card sx={{ mb: 3, height: 290 }}>
         <ProfileCoverClient
-          role={album.release_date}
-          name={album.name}
-          coverUrl={album.image_url}
-          avatarUrl={album.image_url}
+          role={album.release_date || '未知日期'}
+          name={album.name || '未知专辑'}
+          coverUrl={album.image_url || ''}
+          avatarUrl={album.image_url || ''}
         />
       </Card>
-      <TabHeader commentsCount={comments.count} />
+      <TabHeader commentsCount={0} /> {/* 初始评论计数为 0，动态加载 */}
       <div className={styles.sections}>
         {/* 模块 1: 详情 */}
         <div id="details" className={styles.section}>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 4 }} sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
+            <Grid item xs={12} md={4} sx={{ gap: 3, display: 'flex', flexDirection: 'column', width: { md: '300px', xs: '100%' } }}>
               <Card>
                 <CardHeader title="基础信息" />
                 <Box
@@ -128,29 +122,30 @@ export default async function Page({ params }) {
                 >
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="material-symbols-light:artist" />
-                    <span>{album.artist_name}</span>
+                    <span>{album.artist_name || '未知艺术家'}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="mynaui:label-solid" />
-                    <span>{album.label}</span>
+                    <span>{album.label || '未知标签'}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="ic:round-album" />
-                    <span>歌曲总数：{album.total_tracks}</span>
+                    <span>歌曲总数：{album.total_tracks || 0}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="ic:round-category" />
-                    <span>专辑类型：{album.album_type}</span>
+                    <span>专辑类型：{album.album_type || '未知类型'}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="material-symbols:date-range-outline-rounded" />
-                    <span>{album.release_date}</span>
+                    <span>{album.release_date || '未知日期'}</span>
                   </Box>
                 </Box>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, md: 8 }} sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
+            <Grid item xs={12} md={8} sx={{ gap: 3, display: 'flex', flexDirection: 'column', width: { md: 'calc(100% - 326px)', xs: '100%' } }}>
               <RatingInput album={album} />
+              <RatingsSection album={album} />
             </Grid>
           </Grid>
         </div>
@@ -181,37 +176,41 @@ export default async function Page({ params }) {
                       <TableCell component="th" scope="row">
                         <Link
                           component={RouterLink}
-                          href={`/dashboard/track/${track.id}`}
+                          href={`/dashboard/track/${track.id || ''}`}
                           sx={{
-                            color: 'primary.main',
+                            color: 'text.primary',
                             textDecoration: 'none',
                             '&:hover': { textDecoration: 'underline' },
                           }}
                         >
-                          {track.name}
+                          {track.name || '未知歌曲'}
                         </Link>
                       </TableCell>
                       <TableCell>
-                        {track.artists?.map((artist, idx) => (
-                          <span key={idx}>
-                            <Link
-                              component={RouterLink}
-                              href={`/dashboard/artist/${artist.id}`}
-                              sx={{
-                                color: 'primary.main',
-                                textDecoration: 'none',
-                                '&:hover': { textDecoration: 'underline' },
-                              }}
-                            >
-                              {artist.name}
-                            </Link>
-                            {idx < track.artists.length - 1 ? ', ' : ''}
-                          </span>
-                        )) || 'Unknown'}
+                        {Array.isArray(track.artists) && track.artists.length > 0 ? (
+                          track.artists.map((artist, idx) => (
+                            <span key={idx}>
+                              <Link
+                                component={RouterLink}
+                                href={`/dashboard/artist/${artist.id || ''}`}
+                                sx={{
+                                  color: 'text.primary',
+                                  textDecoration: 'none',
+                                  '&:hover': { textDecoration: 'underline' },
+                                }}
+                              >
+                                {artist.name || '未知艺术家'}
+                              </Link>
+                              {idx < track.artists.length - 1 ? ', ' : ''}
+                            </span>
+                          ))
+                        ) : (
+                          '未知艺术家'
+                        )}
                       </TableCell>
-                      <TableCell>{album.name}</TableCell>
-                      <TableCell>{formatDuration(track.duration_ms)}</TableCell>
-                      <TableCell>{track.track_number}</TableCell>
+                      <TableCell>{album.name || '未知专辑'}</TableCell>
+                      <TableCell>{formatDuration(track.duration_ms || 0)}</TableCell>
+                      <TableCell>{track.track_number || '-'}</TableCell>
                     </TableRow>
                   ))
                 )}
@@ -222,34 +221,7 @@ export default async function Page({ params }) {
 
         {/* 模块 3: 评论 */}
         <div id="comments" className={styles.section}>
-          <Card sx={{ p: 3 }}>
-            <CardHeader title={`评论 (${comments.count})`} />
-            <Box sx={{ p: 3 }}>
-              {comments.error ? (
-                <Typography color="error">错误: {comments.error}</Typography>
-              ) : comments.items.length === 0 ? (
-                <Typography>暂无评论</Typography>
-              ) : (
-                <Stack spacing={3}>
-                  {comments.items.map((comment) => (
-                    <ProfilePostItem
-                      key={comment.id}
-                      post={{
-                        id: comment.id,
-                        message: comment.content,
-                        createdAt: comment.created_at,
-                        comments: [],
-                        personLikes: [],
-                        media: '',
-                        score: comment.score || 0,
-                      }}
-                    />
-                  ))}
-                </Stack>
-              )}
-              <CommentInput album={album} />
-            </Box>
-          </Card>
+          <CommentsSection album={album} />
         </div>
       </div>
     </DashboardContent>

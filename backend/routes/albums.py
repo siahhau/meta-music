@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 import logging
+from sqlalchemy.sql import func
 
 from models.album import Album
 from models.track import Track
@@ -18,15 +19,10 @@ albums_bp = Blueprint('albums', __name__)
 @albums_bp.route('/', methods=['GET'])
 def get_albums():
     try:
-        # 获取分页参数，默认为第 1 页，每页 10 条记录
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 10, type=int)
-
-        # 使用 paginate 进行分页查询
         pagination = Album.query.paginate(page=page, per_page=per_page, error_out=False)
         albums = pagination.items
-
-        # 构造分页响应
         response = {
             'albums': [album.to_dict() for album in albums],
             'pagination': {
@@ -69,15 +65,10 @@ def get_album_by_spotify_id(spotify_id):
 @albums_bp.route('/spotify/<string:spotify_id>/tracks', methods=['GET'])
 def get_album_tracks(spotify_id):
     try:
-        # 获取分页参数，默认为第 1 页，每页 10 条记录
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 10, type=int)
-
-        # 查询专辑下的歌曲
         pagination = Track.query.filter_by(album_id=spotify_id).paginate(page=page, per_page=per_page, error_out=False)
         tracks = pagination.items
-
-        # 构造分页响应
         response = {
             'tracks': [track.to_dict() for track in tracks],
             'pagination': {
@@ -121,7 +112,7 @@ def create_album_comment(spotify_id):
             album_id=spotify_id,
             content=data['content'],
             user=data['user'],
-            score=data.get('score', 0)  # 支持评分
+            score=data.get('score', 0)
         )
         db.session.add(comment)
         db.session.commit()
@@ -130,6 +121,43 @@ def create_album_comment(spotify_id):
         db.session.rollback()
         logger.error(f"创建 comment 失败: {str(e)}")
         return jsonify({'error': str(e)}), 400
+
+# 获取专辑的评测（通过 spotify_id）
+@albums_bp.route('/spotify/<string:spotify_id>/ratings', methods=['GET'])
+def get_album_ratings(spotify_id):
+    try:
+        ratings = Rating.query.filter_by(album_id=spotify_id).all()
+        return jsonify({
+            'count': len(ratings),
+            'items': [rating.to_dict() for rating in ratings]
+        }), 200
+    except Exception as e:
+        logger.error(f"获取 album {spotify_id} 的 ratings 失败: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+# 获取专辑的平均评分（通过 spotify_id）
+@albums_bp.route('/spotify/<string:spotify_id>/average-rating', methods=['GET'])
+def get_album_average_rating(spotify_id):
+    try:
+        result = db.session.query(
+            func.avg(Rating.score).label('average_rating'),
+            func.count(Rating.id).label('rating_count')
+        ).filter_by(album_id=spotify_id).first()
+
+        logger.debug(f"Average rating query result for {spotify_id}: {result}") # 调试日志
+        average_rating = float(result.average_rating) if result.average_rating else 0.0
+        rating_count = result.rating_count or 0
+
+        return jsonify({
+            'average_rating': round(average_rating, 1),
+            'rating_count': rating_count
+        }), 200
+    except Exception as e:
+        logger.error(f"获取 album {spotify_id} 的平均评分失败: {str(e)}")
+        return jsonify({
+            'average_rating': 0,
+            'rating_count': 0
+        }), 200
 
 # 发布评分和评测
 @albums_bp.route('/spotify/<string:spotify_id>/ratings', methods=['POST'])

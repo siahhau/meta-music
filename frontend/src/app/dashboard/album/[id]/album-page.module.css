@@ -1,7 +1,9 @@
 .sections {
   margin-top: 24px;
 }
-
+.MuiGrid-root {
+  flex-shrink: 0; /* 防止 Grid 项被压缩 */
+}
 .section {
   margin-bottom: 24px;
   border-radius: 8px;
