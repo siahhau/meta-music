@@ -5,6 +5,8 @@ import { Card, Box, Typography, Divider, Link, Grid, Rating, Chip } from '@mui/m
 import { RouterLink } from 'src/routes/components';
 import ChordUpload from 'src/components/ChordUpload';
 import ScoreDisplay from 'src/components/ScoreDisplay';
+import ClientComponentsWrapper from 'src/components/ClientComponentsWrapper';
+import ScorePianoRollWrapper from 'src/components/ScorePianoRollWrapper';
 
 // ----------------------------------------------------------------------
 
@@ -67,18 +69,27 @@ export default async function Page({ params }) {
       'Chorus 3': 'primary'
     };
 
-    // 处理和弦显示
+    // 处理和弦显示 - 修复JSON解析错误
     let chordsDisplay = '无';
-    console.log
     if (track.chords && track.chords.length > 0) {
       try {
-        const chordsArray = track.chords;
+        // 尝试作为JSON解析
+        const chordsArray = JSON.parse(track.chords);
         if (Array.isArray(chordsArray)) {
           chordsDisplay = chordsArray.join(', ');
         }
       } catch (e) {
-        console.error('解析和弦失败:', e);
-        chordsDisplay = track.chords; // 直接显示字符串
+        // 如果不是有效的JSON，尝试作为逗号分隔的字符串处理
+        console.log('解析和弦失败，尝试作为逗号分隔字符串处理:', e);
+        
+        // 检查是否已经是字符串格式
+        if (typeof track.chords === 'string') {
+          // 如果是以逗号分隔的字符串，直接显示
+          chordsDisplay = track.chords;
+        } else {
+          // 其他情况，转为字符串显示
+          chordsDisplay = String(track.chords);
+        }
       }
     }
 
@@ -176,11 +187,21 @@ export default async function Page({ params }) {
               )}
             </Box>
             {/* 异步加载简谱 */}
-            <ScoreDisplay spotifyId={id} />
+            {/* <ScoreDisplay spotifyId={id} /> */}
+            <Box sx={{ mb: 3 }}>
+              <ScorePianoRollWrapper spotifyId={id} />
+            </Box>
           </Box>
           {/* 嵌入上传组件 */}
           <ChordUpload spotifyId={id} />
         </Card>
+
+        {/* 使用客户端组件包装器处理MIDI播放和上传 */}
+        <ClientComponentsWrapper 
+          spotifyId={id}
+          midiUrl={track.midi_url}
+          trackName={track.name}
+        />
 
         {/* 第二个 Card：专辑信息 */}
         <Link

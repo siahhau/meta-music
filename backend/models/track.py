@@ -1,3 +1,5 @@
+# 修改 backend/models/track.py
+
 # backend/models/track.py
 from datetime import datetime
 from database import db
@@ -8,8 +10,8 @@ class Track(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(255), nullable=False, unique=True)
     name = db.Column(db.String(255), nullable=False)
-    artist_name = db.Column(db.String(255), nullable=True)  # 改为 255
-    artist_id = db.Column(db.String(255), nullable=True)   # 改为 255
+    artist_name = db.Column(db.String(255), nullable=True)
+    artist_id = db.Column(db.String(255), nullable=True)
     album_name = db.Column(db.String(255))
     album_id = db.Column(db.String(255))
     image_url = db.Column(db.String(512))
@@ -21,8 +23,9 @@ class Track(db.Model):
     key = db.Column(db.String(50))
     scale = db.Column(db.String(50))
     sections = db.Column(JSON, nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # 保留
-    explicit = db.Column(db.Boolean, nullable=True)  # 保留
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    explicit = db.Column(db.Boolean, nullable=True)
+    midi_url = db.Column(db.String(512), nullable=True)  # 添加midi_url字段
 
     def to_dict(self):
         return {
@@ -43,5 +46,6 @@ class Track(db.Model):
             'scale': self.scale,
             'sections': self.sections,
             'created_at': str(self.created_at) if self.created_at else None,
-            'explicit': self.explicit
+            'explicit': self.explicit,
+            'midi_url': self.midi_url  # 添加到返回数据中
         }

@@ -86,8 +86,10 @@ def get_spotify_token():
 def register_blueprints():
     from routes.tracks import tracks_bp
     from routes.albums import albums_bp
+    from routes.midis import midis_bp
     app.register_blueprint(tracks_bp, url_prefix='/tracks')
     app.register_blueprint(albums_bp, url_prefix='/albums')
+    app.register_blueprint(midis_bp, url_prefix='/midis')
 
 # 搜索接口
 @app.route('/search', methods=['GET'])
