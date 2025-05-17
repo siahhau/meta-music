@@ -1,7 +1,10 @@
+// frontend/src/app/dashboard/track/[id]/page.jsx
 import axios from 'axios';
 import { CONFIG } from 'src/global-config';
-import { Card, Box, Typography, Divider, Link, Grid, Rating } from '@mui/material';
+import { Card, Box, Typography, Divider, Link, Grid, Rating, Chip } from '@mui/material';
 import { RouterLink } from 'src/routes/components';
+import ChordUpload from 'src/components/ChordUpload';
+import ScoreDisplay from 'src/components/ScoreDisplay';
 
 // ----------------------------------------------------------------------
 
@@ -48,7 +51,36 @@ export default async function Page({ params }) {
     console.log('data:', track);
 
     // 假设评分值为固定值（可替换为后端获取）
-    const ratingValue = 3.5; // 示例评分，需替换为实际数据
+    const ratingValue = 3.5;
+
+    // 歌曲结构颜色映射
+    const sectionColors = {
+      Intro: 'success',
+      Verse: 'info',
+      Chorus: 'primary',
+      Pre: 'warning',
+      interlude: 'secondary',
+      'Verse 2': 'info',
+      'Pre 2': 'warning',
+      'Chorus 2': 'primary',
+      'Pre 3': 'warning',
+      'Chorus 3': 'primary'
+    };
+
+    // 处理和弦显示
+    let chordsDisplay = '无';
+    console.log
+    if (track.chords && track.chords.length > 0) {
+      try {
+        const chordsArray = track.chords;
+        if (Array.isArray(chordsArray)) {
+          chordsDisplay = chordsArray.join(', ');
+        }
+      } catch (e) {
+        console.error('解析和弦失败:', e);
+        chordsDisplay = track.chords; // 直接显示字符串
+      }
+    }
 
     return (
       <Box sx={{ maxWidth: 1920, p: 3 }}>
@@ -58,9 +90,9 @@ export default async function Page({ params }) {
             variant="h1"
             sx={{
               fontWeight: 'bold',
-              border: 'none', // 参考 DrugBank 的无边框样式
+              border: 'none',
               color: 'text.primary',
-              fontSize: { xs: '2rem', sm: '3rem' }, // h1 字体大小
+              fontSize: { xs: '2rem', sm: '3rem' },
             }}
           >
             {track.name}
@@ -118,11 +150,36 @@ export default async function Page({ params }) {
               <strong>调性：</strong>{' '}
               {track.key && track.scale ? `${track.key} ${track.scale}` : '未知'}
             </Typography>
-            <Typography variant="body1">
-              <strong>和弦进行：</strong>{' '}
-              {track.chords && track.chords.length > 0 ? track.chords.join(', ') : '无'}
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              <strong>和弦进行：</strong>{' '} {chordsDisplay}
             </Typography>
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                <strong>歌曲结构：</strong>
+              </Typography>
+              {track.sections && track.sections.length > 0 ? (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  {track.sections.map((section, index) => (
+                    <Chip
+                      key={index}
+                      label={section}
+                      variant="outlined"
+                      color={sectionColors[section] || 'default'}
+                      sx={{ fontSize: '0.875rem', borderRadius: '16px' }}
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  无
+                </Typography>
+              )}
+            </Box>
+            {/* 异步加载简谱 */}
+            <ScoreDisplay spotifyId={id} />
           </Box>
+          {/* 嵌入上传组件 */}
+          <ChordUpload spotifyId={id} />
         </Card>
 
         {/* 第二个 Card：专辑信息 */}
@@ -143,7 +200,6 @@ export default async function Page({ params }) {
               专辑信息
             </Typography>
             <Grid container spacing={3} alignItems="center">
-              {/* 左侧：专辑缩略图 */}
               <Grid item xs={12} sm={4}>
                 {track.image_url ? (
                   <Box
@@ -170,8 +226,6 @@ export default async function Page({ params }) {
                   </Box>
                 )}
               </Grid>
-
-              {/* 右侧：专辑名称 */}
               <Grid item xs={12} sm={8}>
                 <Typography variant="body1">
                   <strong>专辑名称：</strong> {track.album_name}

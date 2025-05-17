@@ -16,6 +16,7 @@ import Dialog, { dialogClasses } from '@mui/material/Dialog';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import InputBase, { inputBaseClasses } from '@mui/material/InputBase';
 import Typography from '@mui/material/Typography';
+import Skeleton from '@mui/material/Skeleton'; // 新增 Skeleton
 
 import { Label } from 'src/components/label';
 import { Scrollbar } from 'src/components/scrollbar';
@@ -42,6 +43,7 @@ export function Searchbar({ sx, ...other }) {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false); // 新增状态，跟踪是否完成首次搜索
 
   // 关闭搜索框并重置状态
   const handleClose = useCallback(() => {
@@ -49,6 +51,7 @@ export function Searchbar({ sx, ...other }) {
     setSearchQuery('');
     setSearchResults([]);
     setError(null);
+    setHasSearched(false); // 重置搜索状态
   }, [onClose]);
 
   // 处理快捷键 ⌘K
@@ -59,6 +62,7 @@ export function Searchbar({ sx, ...other }) {
         setSearchQuery('');
         setSearchResults([]);
         setError(null);
+        setHasSearched(false);
       }
     },
     [onToggle]
@@ -79,6 +83,7 @@ export function Searchbar({ sx, ...other }) {
     if (!searchQuery.trim()) {
       setSearchResults([]);
       setError(null);
+      setHasSearched(false);
       return;
     }
 
@@ -94,19 +99,22 @@ export function Searchbar({ sx, ...other }) {
         }
         setSearchResults(response.data.results || []);
         setError(null);
+        setHasSearched(true); // 标记搜索完成
       } catch (err) {
         setError(err.message);
         setSearchResults([]);
+        setHasSearched(true);
       } finally {
         setIsLoading(false);
       }
     };
 
-    const debounce = setTimeout(fetchSearchResults, 300); // 防抖，减少请求频率
+    const debounce = setTimeout(fetchSearchResults, 2000); // 防抖 2 秒
     return () => clearTimeout(debounce);
   }, [searchQuery]);
 
-  const notFound = searchQuery && !searchResults.length && !isLoading && !error;
+  // 仅在搜索完成且无结果时显示“没有数据”
+  const notFound = searchQuery && !searchResults.length && !isLoading && !error && hasSearched;
 
   // 渲染搜索按钮
   const renderButton = () => (
@@ -162,7 +170,22 @@ export function Searchbar({ sx, ...other }) {
     </Box>
   );
 
-  // 渲染搜索结果列表，保留原始样式，去掉图标，高亮仅加粗，单曲显示“歌名 - 歌手名”
+  // 渲染脚手架占位
+  const renderSkeleton = () => (
+    <Box sx={{ py: 1, px: 2.5 }}>
+      {[...Array(5)].map((_, index) => (
+        <Box key={index} sx={{ py: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Skeleton variant="text" width="60%" height={24} />
+            <Skeleton variant="text" width="40%" height={16} />
+          </Box>
+          <Skeleton variant="rectangular" width={60} height={24} sx={{ borderRadius: 1 }} />
+        </Box>
+      ))}
+    </Box>
+  );
+
+  // 渲染搜索结果列表
   const renderList = () => (
     <MenuList
       disablePadding
@@ -176,7 +199,6 @@ export function Searchbar({ sx, ...other }) {
     >
       {searchResults.map((item) => {
         const typeLabel = typeLabels[item.type] || item.type;
-        // 单曲显示“歌名 - 歌手名”，其他类型直接用 title
         const displayTitle =
           item.type === 'track' && item.artist_name
             ? `${item.title} - ${item.artist_name}`
@@ -194,10 +216,10 @@ export function Searchbar({ sx, ...other }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 2,
-                textDecoration: 'none', // 去掉下划线
-                color: 'text.primary', // 确保默认颜色
+                textDecoration: 'none',
+                color: 'text.primary',
                 '&:hover': {
-                  bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08), // 原始悬停背景
+                  bgcolor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
                 },
               }}
               component="a"
@@ -281,9 +303,7 @@ export function Searchbar({ sx, ...other }) {
         />
 
         {isLoading ? (
-          <Box sx={{ py: 15, px: 2.5, textAlign: 'center' }}>
-            <Typography variant="body1">加载中...</Typography>
-          </Box>
+          <Scrollbar sx={{ p: 2.5, height: 400 }}>{renderSkeleton()}</Scrollbar>
         ) : error ? (
           <Box sx={{ py: 15, px: 2.5, textAlign: 'center' }}>
             <Typography variant="body1" color="error">
@@ -292,8 +312,14 @@ export function Searchbar({ sx, ...other }) {
           </Box>
         ) : notFound ? (
           <SearchNotFound query={searchQuery} sx={{ py: 15, px: 2.5 }} />
-        ) : (
+        ) : searchResults.length > 0 ? (
           <Scrollbar sx={{ p: 2.5, height: 400 }}>{renderList()}</Scrollbar>
+        ) : (
+          <Box sx={{ py: 15, px: 2.5, textAlign: 'center' }}>
+            <Typography variant="body1" color="text.secondary">
+              输入关键词开始搜索
+            </Typography>
+          </Box>
         )}
       </Dialog>
     </>

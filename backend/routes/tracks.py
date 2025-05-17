@@ -2,145 +2,156 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 import logging
-
+import json
 from models.track import Track
+from models.score import Score
 from database import db
-
-# 配置日志
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 logger = logging.getLogger(__name__)
-
-# 创建蓝图
 tracks_bp = Blueprint('tracks', __name__)
 
-# 获取所有单曲（tracks），支持分页
-@tracks_bp.route('/', methods=['GET'])
-def get_tracks():
-    try:
-        # 获取分页参数，默认为第 1 页，每页 10 条记录
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', 10, type=int)
-
-        # 使用 paginate 进行分页查询
-        pagination = Track.query.paginate(page=page, per_page=per_page, error_out=False)
-        tracks = pagination.items
-
-        # 构造分页响应
-        response = {
-            'tracks': [track.to_dict() for track in tracks],
-            'pagination': {
-                'total': pagination.total,
-                'pages': pagination.pages,
-                'current_page': pagination.page,
-                'per_page': pagination.per_page,
-                'has_prev': pagination.has_prev,
-                'has_next': pagination.has_next,
-                'prev_page': pagination.prev_num,
-                'next_page': pagination.next_num
-            }
-        }
-        return jsonify(response), 200
-    except Exception as e:
-        logger.error(f"获取 tracks 失败: {str(e)}")
-        return jsonify({'error': str(e)}), 500
-
-# 获取单首单曲（通过 id）
-@tracks_bp.route('/<int:id>', methods=['GET'])
-def get_track(id):
-    try:
-        track = Track.query.get_or_404(id)
-        return jsonify(track.to_dict()), 200
-    except Exception as e:
-        logger.error(f"获取 track {id} 失败: {str(e)}")
-        return jsonify({'error': str(e)}), 404
-
-# 获取单首单曲（通过 spotify_id）
 @tracks_bp.route('/spotify/<string:spotify_id>', methods=['GET'])
-def get_track_by_spotify_id(spotify_id):
+def get_track(spotify_id):
+    """获取歌曲信息"""
+    session = db.session()
     try:
-        track = Track.query.filter_by(spotify_id=spotify_id).first_or_404()
+        track = session.query(Track).filter_by(spotify_id=spotify_id).first()
+        if not track:
+            logger.error(f"未找到歌曲: spotify_id={spotify_id}")
+            return jsonify({'error': '歌曲不存在'}), 404
         return jsonify(track.to_dict()), 200
     except Exception as e:
-        logger.error(f"获取 track spotify_id {spotify_id} 失败: {str(e)}")
-        return jsonify({'error': str(e)}), 404
+        logger.error(f"获取歌曲失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
 
-# 添加新单曲（track）
-@tracks_bp.route('/', methods=['POST'])
-def create_track():
-    data = request.get_json()
-    if not data or not all(key in data for key in ['spotify_id', 'name', 'artist_name', 'artist_id']):
-        return jsonify({'error': 'spotify_id、name、artist_name 和 artist_id 为必填项'}), 400
-
+@tracks_bp.route('/spotify/<string:spotify_id>/scores', methods=['GET'])
+def get_scores(spotify_id):
+    """获取歌曲的最新乐谱"""
+    session = db.session()
     try:
-        release_date = None
-        if data.get('release_date'):
-            release_date = datetime.strptime(data['release_date'], '%Y-%m-%d').date()
-
-        track = Track(
-            spotify_id=data['spotify_id'],
-            name=data['name'],
-            artist_name=data['artist_name'],
-            artist_id=data['artist_id'],
-            album_name=data.get('album_name'),
-            album_id=data.get('album_id'),
-            image_url=data.get('image_url'),
-            release_date=release_date,
-            duration_ms=data.get('duration_ms'),
-            track_number=data.get('track_number'),
-            popularity=data.get('popularity'),
-            chords=data.get('chords'),
-            key=data.get('key'),
-            scale=data.get('scale')
-        )
-        db.session.add(track)
-        db.session.commit()
-        return jsonify(track.to_dict()), 201
+        latest_score = session.query(Score).filter_by(track_id=spotify_id).order_by(Score.created_at.desc()).first()
+        if not latest_score:
+            logger.info(f"未找到乐谱 for track {spotify_id}")
+            return jsonify({'score_data': {}}), 200
+        return jsonify(latest_score.to_dict()), 200
     except Exception as e:
-        db.session.rollback()
-        logger.error(f"创建 track 失败: {str(e)}")
-        return jsonify({'error': str(e)}), 400
+        logger.error(f"获取乐谱失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
 
-# 更新单曲（track）
-@tracks_bp.route('/<int:id>', methods=['PUT'])
-def update_track(id):
+@tracks_bp.route('/spotify/<string:spotify_id>/upload-chords', methods=['POST'])
+def upload_chords(spotify_id):
+    """上传乐谱 JSON 文件，更新 tracks 表并保存到 scores 表"""
+    session = Session(bind=db.engine, autoflush=False)  # 使用独立会话，禁用 autoflush
     try:
-        track = Track.query.get_or_404(id)
-        data = request.get_json()
-        if not data:
-            return jsonify({'error': '未提供数据'}), 400
+        if 'file' not in request.files:
+            logger.error("未提供文件")
+            return jsonify({'error': '未提供文件'}), 400
+        
+        file = request.files['file']
+        if not file.filename.endswith('.json'):
+            logger.error("文件必须是 JSON 格式")
+            return jsonify({'error': '文件必须是 JSON 格式'}), 400
 
-        track.spotify_id = data.get('spotify_id', track.spotify_id)
-        track.name = data.get('name', track.name)
-        track.artist_name = data.get('artist_name', track.artist_name)
-        track.artist_id = data.get('artist_id', track.artist_id)
-        track.album_name = data.get('album_name', track.album_name)
-        track.album_id = data.get('album_id', track.album_id)
-        track.image_url = data.get('image_url', track.image_url)
-        if data.get('release_date'):
-            track.release_date = datetime.strptime(data['release_date'], '%Y-%m-%d').date()
-        elif 'release_date' in data:
-            track.release_date = None
-        track.duration_ms = data.get('duration_ms', track.duration_ms)
-        track.track_number = data.get('track_number', track.track_number)
-        track.popularity = data.get('popularity', track.popularity)
-        track.chords = data.get('chords', track.chords)
-        track.key = data.get('key', track.key)
-        track.scale = data.get('scale', track.scale)
-        db.session.commit()
-        return jsonify(track.to_dict()), 200
-    except Exception as e:
-        db.session.rollback()
-        logger.error(f"更新 track {id} 失败: {str(e)}")
-        return jsonify({'error': str(e)}), 400
+        # 读取和解析 JSON 文件
+        try:
+            score_data = json.load(file)
+            logger.info(f"原始 JSON 数据: {score_data}")
+        except json.JSONDecodeError as e:
+            logger.error(f"无效的 JSON 文件: {str(e)}")
+            return jsonify({'error': '无效的 JSON 文件'}), 400
 
-# 删除单曲（track）
-@tracks_bp.route('/<int:id>', methods=['DELETE'])
-def delete_track(id):
-    try:
-        track = Track.query.get_or_404(id)
-        db.session.delete(track)
-        db.session.commit()
-        return jsonify({'message': '单曲删除成功'}), 200
+        # 验证歌曲存在
+        track = session.query(Track).filter_by(spotify_id=spotify_id).first()
+        if not track:
+            logger.error(f"未找到歌曲: spotify_id={spotify_id}")
+            return jsonify({'error': '歌曲不存在'}), 404
+
+        # 提取调性
+        keys = score_data.get('keys', [])
+        if keys:
+            key_info = keys[0]
+            track.key = key_info.get('tonic', track.key)
+            track.scale = key_info.get('scale', track.scale)
+            logger.info(f"更新调性: key={track.key}, scale={track.scale}")
+        else:
+            logger.warning(f"未找到调性信息 for track {spotify_id}")
+
+        # 提取和弦进行
+        chords = score_data.get('chords', [])
+        chord_list = []
+        root_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+        for chord in chords:
+            root = chord.get('root')
+            chord_type = chord.get('type')
+            suspensions = chord.get('suspensions', [])
+            
+            if not root or not isinstance(root, int) or not (1 <= root <= 12):
+                logger.warning(f"无效和弦: {chord}")
+                continue
+            root_name = root_names[root - 1]
+            chord_suffix = '' if chord_type == 5 else 'm' if chord_type == 3 else ''
+            if suspensions and isinstance(suspensions, list) and suspensions:
+                chord_suffix += f"sus{suspensions[0]}"
+            
+            chord_name = f"{root_name}{chord_suffix}"
+            if chord_name not in chord_list:
+                chord_list.append(chord_name)
+
+        track.chords = json.dumps(chord_list) if chord_list else track.chords
+        logger.info(f"更新和弦: {track.chords}")
+
+        # 提取歌曲结构（仅 name）
+        sections = score_data.get('sections', [])
+        section_names = [
+            section['name']
+            for section in sections
+            if isinstance(section, dict) and 'name' in section and section['name']
+        ]
+        track.sections = section_names if section_names else []
+        logger.info(f"更新歌曲结构: {track.sections}")
+
+        # 检查 scores 表是否已有记录
+        with session.no_autoflush:  # 禁用 autoflush
+            score = session.query(Score).filter_by(track_id=spotify_id).order_by(Score.created_at.desc()).first()
+        
+        if score:
+            # 更新现有记录
+            score.score_data = score_data
+            score.created_at = datetime.utcnow()
+            logger.info(f"更新乐谱 for track {spotify_id}")
+        else:
+            # 新增记录
+            score = Score(
+                track_id=spotify_id,
+                score_data=score_data,
+                created_at=datetime.utcnow()
+            )
+            session.add(score)
+            logger.info(f"新增乐谱 for track {spotify_id}")
+
+        # 提交事务
+        session.flush()  # 手动刷新
+        session.commit()
+        logger.info(f"成功保存乐谱 for track {spotify_id}")
+
+        return jsonify({
+            'message': '乐谱上传成功',
+            'track': track.to_dict(),
+            'score_data': score_data
+        }), 200
+
+    except SQLAlchemyError as db_error:
+        session.rollback()
+        logger.error(f"数据库提交失败 for track {spotify_id}: {str(db_error)}")
+        return jsonify({'error': '数据库错误，请稍后重试'}), 500
     except Exception as e:
-        db.session.rollback()
-        logger.error(f"删除 track {id} 失败: {str(e)}")
-        return jsonify({'error': str(e)}), 400
+        session.rollback()
+        logger.error(f"上传乐谱失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()

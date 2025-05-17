@@ -1,3 +1,4 @@
+// frontend/src/app/dashboard/album/[id]/page.jsx
 import axios from 'axios';
 import { CONFIG } from 'src/global-config';
 import {
@@ -27,8 +28,7 @@ import TabHeader from 'src/sections/album/tab-header';
 import styles from './album-page.module.css';
 import CommentsSection from 'src/sections/album/comments-section';
 import RatingsSection from 'src/sections/album/ratings-section';
-
-// ----------------------------------------------------------------------
+import SyncButton from 'src/components/SyncButton';
 
 // 转换毫秒为分钟:秒格式
 const formatDuration = (ms) => {
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
   try {
     const res = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
       headers: { 'Content-Type': 'application/json' },
-      timeout: 10000, // 设置 10 秒超时
+      timeout: 10000,
     });
     if (res.status !== 200) {
       throw new Error(`HTTP error! Status: ${res.status}`);
@@ -65,29 +65,20 @@ export default async function Page({ params }) {
   const id = params?.id || '';
 
   // 获取专辑数据
-  let album;
+  let album = null;
   try {
     const res = await axios.get(`http://localhost:8000/albums/spotify/${id}`, {
       headers: { 'Content-Type': 'application/json' },
-      timeout: 10000, // 设置 10 秒超时
+      timeout: 10000,
     });
-    if (res.status !== 200) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-    album = res.data;
-    // 验证 album 数据
-    if (!album || !album.spotify_id) {
-      throw new Error('专辑数据无效或缺失');
+    if (res.status === 200) {
+      album = res.data;
+      if (!album || !album.spotify_id) {
+        throw new Error('专辑数据无效或缺失');
+      }
     }
   } catch (error) {
-    return (
-      <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-        <Typography variant="h4" color="error" gutterBottom>
-          错误
-        </Typography>
-        <Typography variant="body1">无法加载专辑信息：{error.message}</Typography>
-      </Box>
-    );
+    console.error('获取专辑失败:', error);
   }
 
   // 处理 tracks 数据
@@ -97,13 +88,15 @@ export default async function Page({ params }) {
     <DashboardContent maxWidth="xl">
       <Card sx={{ mb: 3, height: 290 }}>
         <ProfileCoverClient
-          role={album.release_date || '未知日期'}
-          name={album.name || '未知专辑'}
-          coverUrl={album.image_url || ''}
-          avatarUrl={album.image_url || ''}
+          role={album?.release_date || '未知日期'}
+          name={album?.name || '未知专辑'}
+          coverUrl={album?.image_url || ''}
+          avatarUrl={album?.image_url || ''}
         />
       </Card>
-      <TabHeader commentsCount={0} /> {/* 初始评论计数为 0，动态加载 */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <TabHeader commentsCount={0} />
+      </Box>
       <div className={styles.sections}>
         {/* 模块 1: 详情 */}
         <div id="details" className={styles.section}>
@@ -122,30 +115,36 @@ export default async function Page({ params }) {
                 >
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="material-symbols-light:artist" />
-                    <span>{album.artist_name || '未知艺术家'}</span>
+                    <span>{album?.artist_name || '未知艺术家'}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="mynaui:label-solid" />
-                    <span>{album.label || '未知标签'}</span>
+                    <span>{album?.label || '未知标签'}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="ic:round-album" />
-                    <span>歌曲总数：{album.total_tracks || 0}</span>
+                    <span>歌曲总数：{album?.total_tracks || 0}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="ic:round-category" />
-                    <span>专辑类型：{album.album_type || '未知类型'}</span>
+                    <span>专辑类型：{album?.album_type || '未知类型'}</span>
                   </Box>
                   <Box sx={{ gap: 2, display: 'flex', lineHeight: '24px' }}>
                     <Iconify width={24} icon="material-symbols:date-range-outline-rounded" />
-                    <span>{album.release_date || '未知日期'}</span>
+                    <span>{album?.release_date || '未知日期'}</span>
                   </Box>
                 </Box>
               </Card>
             </Grid>
             <Grid item xs={12} md={8} sx={{ gap: 3, display: 'flex', flexDirection: 'column', width: { md: 'calc(100% - 326px)', xs: '100%' } }}>
-              <RatingInput album={album} />
-              <RatingsSection album={album} />
+              {album ? (
+                <>
+                  <RatingInput album={album} />
+                  <RatingsSection album={album} />
+                </>
+              ) : (
+                <Typography variant="body1">等待同步专辑数据...</Typography>
+              )}
             </Grid>
           </Grid>
         </div>
@@ -168,6 +167,7 @@ export default async function Page({ params }) {
                   <TableRow>
                     <TableCell colSpan={5} align="center">
                       <Typography>暂无歌曲</Typography>
+                      <SyncButton spotifyId={id} />
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -221,7 +221,7 @@ export default async function Page({ params }) {
 
         {/* 模块 3: 评论 */}
         <div id="comments" className={styles.section}>
-          <CommentsSection album={album} />
+          {album ? <CommentsSection album={album} /> : <Typography>等待同步专辑数据...</Typography>}
         </div>
       </div>
     </DashboardContent>

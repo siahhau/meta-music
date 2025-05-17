@@ -1,24 +1,28 @@
 # backend/models/track.py
 from datetime import datetime
 from database import db
+from sqlalchemy.dialects.postgresql import JSON
 
 class Track(db.Model):
     __tablename__ = 'tracks'
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(255), nullable=False, unique=True)
     name = db.Column(db.String(255), nullable=False)
-    artist_name = db.Column(db.String(255), nullable=False)
-    artist_id = db.Column(db.String(255), nullable=False)
+    artist_name = db.Column(db.String(255), nullable=True)  # 改为 255
+    artist_id = db.Column(db.String(255), nullable=True)   # 改为 255
     album_name = db.Column(db.String(255))
-    album_id = db.Column(db.String(255))  # 假设为 album ID，可添加外键
+    album_id = db.Column(db.String(255))
     image_url = db.Column(db.String(512))
     release_date = db.Column(db.Date)
     duration_ms = db.Column(db.Integer)
     track_number = db.Column(db.Integer)
     popularity = db.Column(db.Integer)
-    chords = db.Column(db.Text)  # 存储和弦，可能为 JSON 或字符串
-    key = db.Column(db.String(50))  # 音乐调性，例如 C, D#
-    scale = db.Column(db.String(50))  # 大调/小调，例如 major, minor
+    chords = db.Column(db.Text)
+    key = db.Column(db.String(50))
+    scale = db.Column(db.String(50))
+    sections = db.Column(JSON, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # 保留
+    explicit = db.Column(db.Boolean, nullable=True)  # 保留
 
     def to_dict(self):
         return {
@@ -36,5 +40,8 @@ class Track(db.Model):
             'popularity': self.popularity,
             'chords': self.chords,
             'key': self.key,
-            'scale': self.scale
+            'scale': self.scale,
+            'sections': self.sections,
+            'created_at': str(self.created_at) if self.created_at else None,
+            'explicit': self.explicit
         }

@@ -1,19 +1,38 @@
+# backend/routes/albums.py
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 import logging
 from sqlalchemy.sql import func
-
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 from models.album import Album
 from models.track import Track
 from models.comment import Comment
 from models.rating import Rating
 from database import db
+import requests
+import os
 
 # 配置日志
 logger = logging.getLogger(__name__)
 
 # 创建蓝图
 albums_bp = Blueprint('albums', __name__)
+
+# 获取 Spotify 访问令牌
+def get_spotify_token():
+    client_id = os.getenv('SPOTIFY_CLIENT_ID')
+    client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+    if not client_id or not client_secret:
+        raise ValueError("缺少 Spotify 客户端凭据")
+    auth_url = 'https://accounts.spotify.com/api/token'
+    auth_response = requests.post(auth_url, {
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret
+    })
+    auth_response.raise_for_status()
+    return auth_response.json()['access_token']
 
 # 获取所有专辑（albums），支持分页
 @albums_bp.route('/', methods=['GET'])
@@ -259,3 +278,139 @@ def delete_album(id):
         db.session.rollback()
         logger.error(f"删除 album {id} 失败: {str(e)}")
         return jsonify({'error': str(e)}), 400
+    
+@albums_bp.route('/spotify/<string:spotify_id>/sync', methods=['POST'])
+def sync_album(spotify_id):
+    """同步 Spotify 专辑数据"""
+    # 使用独立会话，禁用 autoflush
+    session = Session(bind=db.engine, autoflush=False)
+    try:
+        token = get_spotify_token()
+        headers = {'Authorization': f'Bearer {token}'}
+        url = f'https://api.spotify.com/v1/albums/{spotify_id}'
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        spotify_data = response.json()
+
+        # 处理专辑数据
+        album = session.query(Album).filter_by(spotify_id=spotify_id).first()
+        if not album:
+            album = Album(
+                spotify_id=spotify_id,
+                name=spotify_data.get('name', 'Unknown Album'),
+                artist_name=', '.join(artist['name'] for artist in spotify_data.get('artists', []))[:255],
+                artist_id=', '.join(artist['id'] for artist in spotify_data.get('artists', []))[:255],
+                album_type=spotify_data.get('album_type'),
+                release_date=spotify_data.get('release_date'),
+                release_date_precision=spotify_data.get('release_date_precision'),
+                total_tracks=spotify_data.get('total_tracks', 0),
+                image_url=spotify_data['images'][0]['url'] if spotify_data.get('images') else None,
+                label=spotify_data.get('label'),
+                genres=spotify_data.get('genres', []),
+                popularity=spotify_data.get('popularity'),
+                uri=spotify_data.get('uri'),
+                tracks={
+                    'tracks': {
+                        'items': [
+                            {
+                                'id': track['id'],
+                                'name': track['name'],
+                                'artists': track['artists'],
+                                'duration_ms': track['duration_ms'],
+                                'track_number': track['track_number'],
+                                'popularity': track.get('popularity')
+                            } for track in spotify_data.get('tracks', {}).get('items', [])
+                        ]
+                    }
+                }
+            )
+            session.add(album)
+        else:
+            album.name = spotify_data.get('name', album.name)
+            album.artist_name = ', '.join(artist['name'] for artist in spotify_data.get('artists', []))[:255]
+            album.artist_id = ', '.join(artist['id'] for artist in spotify_data.get('artists', []))[:255]
+            album.album_type = spotify_data.get('album_type', album.album_type)
+            album.release_date = spotify_data.get('release_date', album.release_date)
+            album.release_date_precision = spotify_data.get('release_date_precision', album.release_date_precision)
+            album.total_tracks = spotify_data.get('total_tracks', album.total_tracks)
+            album.image_url = spotify_data['images'][0]['url'] if spotify_data.get('images') else album.image_url
+            album.label = spotify_data.get('label', album.label)
+            album.genres = spotify_data.get('genres', album.genres)
+            album.popularity = spotify_data.get('popularity', album.popularity)
+            album.uri = spotify_data.get('uri', album.uri)
+            album.tracks = {
+                'tracks': {
+                    'items': [
+                        {
+                            'id': track['id'],
+                            'name': track['name'],
+                            'artists': track['artists'],
+                            'duration_ms': track['duration_ms'],
+                            'track_number': track['track_number'],
+                            'popularity': track.get('popularity')
+                        } for track in spotify_data.get('tracks', {}).get('items', [])
+                    ]
+                }
+            }
+
+        # 提交 album 事务
+        session.flush()
+        session.commit()
+
+        # 处理歌曲数据，分批提交
+        for track_data in spotify_data.get('tracks', {}).get('items', []):
+            try:
+                # 新事务处理每首歌曲
+                with session.no_autoflush:
+                    track = session.query(Track).filter_by(spotify_id=track_data['id']).first()
+                if not track:
+                    track = Track(
+                        spotify_id=track_data['id'],
+                        name=track_data.get('name', 'Unknown Song'),
+                        artist_name=', '.join(artist['name'] for artist in track_data.get('artists', []))[:255],
+                        artist_id=', '.join(artist['id'] for artist in track_data.get('artists', []))[:255],
+                        album_name=spotify_data.get('name'),
+                        album_id=spotify_id,
+                        duration_ms=track_data.get('duration_ms'),
+                        track_number=track_data.get('track_number'),
+                        popularity=track_data.get('popularity'),
+                        created_at=datetime.utcnow(),
+                        explicit=track_data.get('explicit', False)
+                    )
+                    session.add(track)
+                else:
+                    track.name = track_data.get('name', track.name)
+                    track.artist_name = ', '.join(artist['name'] for artist in track_data.get('artists', []))[:255]
+                    track.artist_id = ', '.join(artist['id'] for artist in track_data.get('artists', []))[:255]
+                    track.album_name = spotify_data.get('name', track.album_name)
+                    track.album_id = spotify_id
+                    track.duration_ms = track_data.get('duration_ms', track.duration_ms)
+                    track.track_number = track_data.get('track_number', track.track_number)
+                    track.popularity = track_data.get('popularity', track.popularity)
+                    track.explicit = track_data.get('explicit', track.explicit)
+
+                # 提交每首歌曲事务
+                session.flush()
+                session.commit()
+            except Exception as track_error:
+                logger.error(f"处理歌曲 {track_data['id']} 失败: {str(track_error)}")
+                session.rollback()
+                continue  # 继续处理下一首歌曲
+
+        logger.info(f"成功同步专辑 {spotify_id}")
+        return jsonify(album.to_dict()), 200
+
+    except requests.exceptions.RequestException as e:
+        session.rollback()
+        logger.error(f"Spotify API 请求失败 for {spotify_id}: {str(e)}")
+        return jsonify({'error': '无法获取 Spotify 数据'}), 500
+    except SQLAlchemyError as db_error:
+        session.rollback()
+        logger.error(f"数据库提交失败 for {spotify_id}: {str(db_error)}")
+        return jsonify({'error': '数据库错误，请稍后重试'}), 500
+    except Exception as e:
+        session.rollback()
+        logger.error(f"同步专辑失败 for {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
