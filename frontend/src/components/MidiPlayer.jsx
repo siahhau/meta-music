@@ -48,6 +48,9 @@ const MidiPlayer = forwardRef(({
   const playerRef = useRef(null);
   const visualizersRef = useRef(new Set());
   const mmRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const startTimeRef = useRef(null);
+  const lastNoteTimeRef = useRef(0);
   
   // 加载Magenta库
   useEffect(() => {
@@ -83,10 +86,71 @@ const MidiPlayer = forwardRef(({
       isMounted = false;
     };
   }, []);
+
+  useEffect(()=> {
+    console.log('playerRef.current')
+  }, [playerRef.current])
+
+  
+  // 连续更新播放时间
+  const updatePlaybackTime = () => {
+    console.log('playing')
+    if (!playing || seeking || !playerRef.current) return;
+    
+    const now = performance.now();
+    const elapsedSeconds = (now - startTimeRef.current) / 1000;
+    
+    // 新的时间位置是起始位置加上经过的时间
+    const newTime = lastNoteTimeRef.current + elapsedSeconds;
+    
+    // 只有当时间变化超过一定阈值时才更新UI以提高性能
+    if (Math.abs(newTime - currentTime) > 0.01) {
+      setCurrentTime(newTime);
+      
+      // 同时更新可视化器
+      updateVisualizers(newTime);
+    }
+    
+    // 如果已经到达结尾,停止播放
+    if (newTime >= duration) {
+      handleStop(true);
+      return;
+    }
+    
+    // 继续动画循环
+    animationFrameRef.current = requestAnimationFrame(updatePlaybackTime);
+  };
+  
+  // 更新所有可视化器
+  const updateVisualizers = (time) => {
+    // 找到时间点附近的音符用于可视化
+    if (ns && ns.notes) {
+      const activeNotes = ns.notes.filter(
+        note => note.startTime <= time && note.endTime >= time
+      );
+      
+      // 如果有活动音符，使用第一个进行可视化
+      if (activeNotes.length > 0) {
+        const noteToVisualize = activeNotes[0];
+        
+        // 调用visualizer的redraw方法
+        if (visualizer && visualizer.redraw) {
+          visualizer.redraw(noteToVisualize);
+        }
+        
+        // 更新所有注册的可视化器
+        visualizersRef.current.forEach(visualizerItem => {
+          if (visualizerItem && visualizerItem.redraw) {
+            visualizerItem.redraw(noteToVisualize);
+          }
+        });
+      }
+    }
+  };
   
   // 初始化播放器
   const initPlayer = async (mm = mmRef.current) => {
-    if (!src && !ns || !mm) return;
+    if ((!src && !ns) || !mm) return;
     
     try {
       setLoading(true);
@@ -109,11 +173,12 @@ const MidiPlayer = forwardRef(({
       
       const callbackObject = {
         run: (note) => noteCallback(note),
-        stop: () => {}
+        stop: () => handleStop(true)
       };
       
       if (soundFont === null) {
         playerRef.current = new mm.Player(false, callbackObject);
+        console.log(playerRef.current)
       } else {
         const soundFontUrl = soundFont === "" ? DEFAULT_SOUNDFONT : soundFont;
         playerRef.current = new mm.SoundFontPlayer(soundFontUrl, undefined, undefined, undefined, callbackObject);
@@ -134,27 +199,19 @@ const MidiPlayer = forwardRef(({
     if (!playing || seeking) return;
     
     console.log("处理音符回调:", note);
-    setCurrentTime(note.startTime);
+    
+    // 更新最后的音符时间，用于计算
+    lastNoteTimeRef.current = note.startTime;
+    
+    // 更新计时器的开始时间，以便从这个时刻开始计算
+    startTimeRef.current = performance.now();
     
     // 触发音符事件回调
     if (onNote) {
       onNote({ detail: { note } });
     }
     
-    // 直接调用可视化器的redraw方法
-    if (visualizer && visualizer.redraw) {
-      console.log("直接调用可视化器redraw:", note);
-      visualizer.redraw(note);
-    }
-    
-    // 更新可视化器
-    if (visualizersRef.current.size > 0) {
-      visualizersRef.current.forEach(visualizerItem => {
-        if (visualizerItem && visualizerItem.redraw) {
-          visualizerItem.redraw(note);
-        }
-      });
-    }
+    // 由动画帧更新和控制可视化器，不在这里直接调用
   };
   
   // 开始播放
@@ -201,7 +258,20 @@ const MidiPlayer = forwardRef(({
           if (onStart) onStart();
         }
         
+        // 初始化播放时间追踪
+        lastNoteTimeRef.current = offset;
+        startTimeRef.current = performance.now();
+        
+        // 开始动画帧更新
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+        animationFrameRef.current = requestAnimationFrame(updatePlaybackTime);
+        
+        // 开始播放
         await playerRef.current.start(ns, undefined, offset);
+        console.log(playerRef.current)
+        // 播放结束
         handleStop(true);
       } catch (error) {
         console.error('播放失败:', error);
@@ -209,6 +279,15 @@ const MidiPlayer = forwardRef(({
       }
     } else if (playerRef.current.getPlayState() === 'paused') {
       playerRef.current.resume();
+      
+      // 恢复时重新初始化计时
+      startTimeRef.current = performance.now();
+      
+      // 恢复动画帧更新
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      animationFrameRef.current = requestAnimationFrame(updatePlaybackTime);
     }
   };
   
@@ -222,6 +301,12 @@ const MidiPlayer = forwardRef(({
   
   // 处理停止播放
   const handleStop = (finished = false) => {
+    // 停止动画帧更新
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    
     if (finished) {
       if (loop) {
         setCurrentTime(0);
@@ -256,6 +341,12 @@ const MidiPlayer = forwardRef(({
     // 暂停播放，直到用户完成拖动
     if (playerRef.current && playerRef.current.getPlayState() === 'started') {
       playerRef.current.pause();
+      
+      // 也要停止动画帧更新
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
     }
   };
   
@@ -266,6 +357,17 @@ const MidiPlayer = forwardRef(({
     if (playerRef.current) {
       if (playerRef.current.isPlaying()) {
         playerRef.current.seekTo(newValue);
+        
+        // 更新时间追踪
+        lastNoteTimeRef.current = newValue;
+        startTimeRef.current = performance.now();
+        
+        // 恢复动画帧更新
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+        animationFrameRef.current = requestAnimationFrame(updatePlaybackTime);
+        
         if (playerRef.current.getPlayState() === 'paused') {
           playerRef.current.resume();
         }
@@ -341,6 +443,10 @@ const MidiPlayer = forwardRef(({
       setCurrentTime(value);
       if (playerRef.current && playerRef.current.isPlaying()) {
         playerRef.current.seekTo(value);
+        
+        // 更新时间追踪
+        lastNoteTimeRef.current = value;
+        startTimeRef.current = performance.now();
       }
     },
     get duration() {
@@ -356,6 +462,11 @@ const MidiPlayer = forwardRef(({
     return () => {
       if (playerRef.current && playerRef.current.isPlaying()) {
         playerRef.current.stop();
+      }
+      
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     };
   }, []);

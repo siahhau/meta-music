@@ -4,9 +4,14 @@ import { CONFIG } from 'src/global-config';
 import { Card, Box, Typography, Divider, Link, Grid, Rating, Chip } from '@mui/material';
 import { RouterLink } from 'src/routes/components';
 import ChordUpload from 'src/components/ChordUpload';
-import ScoreDisplay from 'src/components/ScoreDisplay';
 import ClientComponentsWrapper from 'src/components/ClientComponentsWrapper';
 import ScorePianoRollWrapper from 'src/components/ScorePianoRollWrapper';
+import SameKeyTracks from 'src/components/SameKeyTracks';
+import ScoreDataViewer from 'src/components/ScoreDataViewer';
+import SameYearTracks from 'src/components/SameYearTracks';
+import { formatDuration } from 'src/utils/formatDuration';
+import SimilarDurationTracks from 'src/components/SimilarDurationTracks';
+
 
 // ----------------------------------------------------------------------
 
@@ -81,7 +86,7 @@ export default async function Page({ params }) {
       } catch (e) {
         // 如果不是有效的JSON，尝试作为逗号分隔的字符串处理
         console.log('解析和弦失败，尝试作为逗号分隔字符串处理:', e);
-        
+
         // 检查是否已经是字符串格式
         if (typeof track.chords === 'string') {
           // 如果是以逗号分隔的字符串，直接显示
@@ -140,8 +145,14 @@ export default async function Page({ params }) {
           <Divider sx={{ mb: 2 }} />
           <Box sx={{ p: 2 }}>
             <Typography variant="body1" sx={{ mb: 1 }}>
-              <strong>时长：</strong> {(track.duration_ms / 1000 / 60).toFixed(2)} 分钟
+               <strong>时长：</strong> {formatDuration(track.duration_ms)}
             </Typography>
+            {track.duration_ms && (
+              <SimilarDurationTracks
+                spotifyId={id}
+                durationMs={track.duration_ms}
+              />
+            )}
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>曲目编号：</strong> {track.track_number}
             </Typography>
@@ -151,6 +162,12 @@ export default async function Page({ params }) {
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>发行日期：</strong> {track.release_date}
             </Typography>
+            {track.release_date && (
+              <SameYearTracks
+                spotifyId={id}
+                releaseDate={track.release_date}
+              />
+            )}
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>Spotify ID：</strong> {track.spotify_id}
             </Typography>
@@ -161,6 +178,15 @@ export default async function Page({ params }) {
               <strong>调性：</strong>{' '}
               {track.key && track.scale ? `${track.key} ${track.scale}` : '未知'}
             </Typography>
+
+            {/* 相同调性歌曲组件 */}
+            {track.key && track.scale && (
+              <SameKeyTracks
+                spotifyId={id}
+                keyName={track.key}
+                scaleName={track.scale}
+              />
+            )}
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>和弦进行：</strong>{' '} {chordsDisplay}
             </Typography>
@@ -185,7 +211,9 @@ export default async function Page({ params }) {
                   无
                 </Typography>
               )}
+              {/* <SimilarStructureSongs spotifyId={id} /> */}
             </Box>
+
             {/* 异步加载简谱 */}
             {/* <ScoreDisplay spotifyId={id} /> */}
             <Box sx={{ mb: 3 }}>
@@ -194,10 +222,13 @@ export default async function Page({ params }) {
           </Box>
           {/* 嵌入上传组件 */}
           <ChordUpload spotifyId={id} />
+
+           <ScoreDataViewer spotifyId={id} />
+
         </Card>
 
         {/* 使用客户端组件包装器处理MIDI播放和上传 */}
-        <ClientComponentsWrapper 
+        <ClientComponentsWrapper
           spotifyId={id}
           midiUrl={track.midi_url}
           trackName={track.name}

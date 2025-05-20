@@ -155,3 +155,161 @@ def upload_chords(spotify_id):
         return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
     finally:
         session.close()
+
+@tracks_bp.route('/spotify/<string:spotify_id>/similar-structure', methods=['GET'])
+def get_similar_structure_tracks(spotify_id):
+    """获取具有相同歌曲结构的其他歌曲"""
+    session = db.session()
+    try:
+        # 获取当前歌曲的结构
+        current_track = session.query(Track).filter_by(spotify_id=spotify_id).first()
+        if not current_track or not current_track.sections:
+            logger.info(f"歌曲 {spotify_id} 无结构数据")
+            return jsonify({"tracks": []}), 200
+        
+        # 获取所有有sections数据的其他歌曲
+        all_tracks = session.query(Track).filter(
+            Track.spotify_id != spotify_id,
+            Track.sections.isnot(None)
+        ).all()
+        
+        # 在Python中比较sections的相等性
+        similar_tracks = []
+        current_sections = current_track.sections
+        for track in all_tracks:
+            if track.sections == current_sections:  # Python的列表比较
+                similar_tracks.append(track)
+            if len(similar_tracks) >= 10:  # 最多返回10首
+                break
+        
+        return jsonify({
+            "tracks": [track.to_dict() for track in similar_tracks]
+        }), 200
+    except Exception as e:
+        logger.error(f"查询相似结构歌曲失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
+
+@tracks_bp.route('/spotify/<string:spotify_id>/similar-key', methods=['GET'])
+def get_similar_key_tracks(spotify_id):
+    """获取具有相同调性的其他歌曲"""
+    session = db.session()
+    try:
+        # 获取当前歌曲的调性
+        current_track = session.query(Track).filter_by(spotify_id=spotify_id).first()
+        if not current_track or not current_track.key or not current_track.scale:
+            logger.info(f"歌曲 {spotify_id} 无调性数据")
+            return jsonify({"tracks": []}), 200
+        
+        # 获取所有具有相同调性的其他歌曲
+        similar_tracks = session.query(Track).filter(
+            Track.spotify_id != spotify_id,
+            Track.key == current_track.key,
+            Track.scale == current_track.scale,
+            Track.key.isnot(None),
+            Track.scale.isnot(None)
+        ).limit(10).all()
+        
+        return jsonify({
+            "tracks": [track.to_dict() for track in similar_tracks]
+        }), 200
+    except Exception as e:
+        logger.error(f"查询相同调性歌曲失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
+
+@tracks_bp.route('/spotify/<string:spotify_id>/similar-year', methods=['GET'])
+def get_similar_year_tracks(spotify_id):
+    """获取同一年发行的其他歌曲"""
+    session = db.session()
+    try:
+        # 获取请求参数中的年份
+        year = request.args.get('year')
+        if not year:
+            # 如果没有提供年份，尝试从当前歌曲中获取
+            current_track = session.query(Track).filter_by(spotify_id=spotify_id).first()
+            if not current_track or not current_track.release_date:
+                logger.info(f"歌曲 {spotify_id} 无发行日期数据")
+                return jsonify({"tracks": []}), 200
+                
+            # 从日期中提取年份
+            if current_track.release_date:
+                year = str(current_track.release_date).split('-')[0]
+            
+        if not year:
+            logger.info("无法确定年份")
+            return jsonify({"tracks": []}), 200
+            
+        # 构建日期范围查询条件（从年份开始到年份结束）
+        year_start = f"{year}-01-01"
+        year_end = f"{year}-12-31"
+        
+        # 获取同一年发行的其他歌曲
+        similar_tracks = session.query(Track).filter(
+            Track.spotify_id != spotify_id,
+            Track.release_date.isnot(None),
+            Track.release_date >= year_start,
+            Track.release_date <= year_end
+        ).order_by(Track.popularity.desc()).limit(12).all()
+        
+        return jsonify({
+            "tracks": [track.to_dict() for track in similar_tracks]
+        }), 200
+    except Exception as e:
+        logger.error(f"查询同年发行歌曲失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
+
+@tracks_bp.route('/spotify/<string:spotify_id>/similar-duration', methods=['GET'])
+def get_similar_duration_tracks(spotify_id):
+    """获取相似时长的其他歌曲"""
+    session = db.session()
+    try:
+        # 获取请求参数
+        duration_ms = request.args.get('duration_ms')
+        range_seconds = request.args.get('range_seconds', '30')  # 默认±30秒范围
+        
+        # 转换参数类型
+        try:
+            if duration_ms:
+                duration_ms = int(duration_ms)
+            else:
+                # 如果没有提供持续时间，从当前歌曲获取
+                current_track = session.query(Track).filter_by(spotify_id=spotify_id).first()
+                if not current_track or not current_track.duration_ms:
+                    logger.info(f"歌曲 {spotify_id} 无持续时间数据")
+                    return jsonify({"tracks": []}), 200
+                duration_ms = current_track.duration_ms
+                
+            range_seconds = int(range_seconds)
+        except (ValueError, TypeError) as e:
+            logger.error(f"参数类型转换失败: {str(e)}")
+            return jsonify({'error': '无效的参数类型'}), 400
+        
+        # 计算持续时间范围（毫秒）
+        range_ms = range_seconds * 1000
+        min_duration = max(0, duration_ms - range_ms)  # 确保不小于0
+        max_duration = duration_ms + range_ms
+        
+        # 查询相似持续时间的歌曲
+        similar_tracks = session.query(Track).filter(
+            Track.spotify_id != spotify_id,
+            Track.duration_ms.isnot(None),
+            Track.duration_ms >= min_duration,
+            Track.duration_ms <= max_duration
+        ).order_by(
+            # 按持续时间差升序排序（最接近的优先）
+            db.func.abs(Track.duration_ms - duration_ms)
+        ).limit(15).all()
+        
+        return jsonify({
+            "tracks": [track.to_dict() for track in similar_tracks]
+        }), 200
+    except Exception as e:
+        logger.error(f"查询相似时长歌曲失败 for track {spotify_id}: {str(e)}")
+        return jsonify({'error': '服务器内部错误，请稍后重试'}), 500
+    finally:
+        session.close()
