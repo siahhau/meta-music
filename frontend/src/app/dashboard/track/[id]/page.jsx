@@ -11,6 +11,8 @@ import ScoreDataViewer from 'src/components/ScoreDataViewer';
 import SameYearTracks from 'src/components/SameYearTracks';
 import { formatDuration } from 'src/utils/formatDuration';
 import SimilarDurationTracks from 'src/components/SimilarDurationTracks';
+import SameSongStructure from 'src/components/SameSongStructure';
+import SimilarChordProgressions from 'src/components/SimilarChordProgressions';
 
 
 // ----------------------------------------------------------------------
@@ -145,14 +147,9 @@ export default async function Page({ params }) {
           <Divider sx={{ mb: 2 }} />
           <Box sx={{ p: 2 }}>
             <Typography variant="body1" sx={{ mb: 1 }}>
-               <strong>时长：</strong> {formatDuration(track.duration_ms)}
+              <strong>时长：</strong> {formatDuration(track.duration_ms)}
             </Typography>
-            {track.duration_ms && (
-              <SimilarDurationTracks
-                spotifyId={id}
-                durationMs={track.duration_ms}
-              />
-            )}
+
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>曲目编号：</strong> {track.track_number}
             </Typography>
@@ -162,12 +159,7 @@ export default async function Page({ params }) {
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>发行日期：</strong> {track.release_date}
             </Typography>
-            {track.release_date && (
-              <SameYearTracks
-                spotifyId={id}
-                releaseDate={track.release_date}
-              />
-            )}
+
             <Typography variant="body1" sx={{ mb: 1 }}>
               <strong>Spotify ID：</strong> {track.spotify_id}
             </Typography>
@@ -179,17 +171,20 @@ export default async function Page({ params }) {
               {track.key && track.scale ? `${track.key} ${track.scale}` : '未知'}
             </Typography>
 
-            {/* 相同调性歌曲组件 */}
-            {track.key && track.scale && (
-              <SameKeyTracks
-                spotifyId={id}
-                keyName={track.key}
-                scaleName={track.scale}
-              />
-            )}
+
             <Typography variant="body1" sx={{ mb: 1 }}>
-              <strong>和弦进行：</strong>{' '} {chordsDisplay}
+              <strong>和弦进行：</strong> {track.chords && track.chords.map((chord) => (<Chip 
+                label={chord} 
+                size="small"
+                variant="outlined"
+                sx={{ 
+                  fontFamily: 'monospace',
+                  fontWeight: 'medium',
+                  marginRight: 1
+                }}
+              />))}
             </Typography>
+            
             <Box sx={{ mb: 2 }}>
               <Typography variant="body1" sx={{ mb: 1 }}>
                 <strong>歌曲结构：</strong>
@@ -211,7 +206,36 @@ export default async function Page({ params }) {
                   无
                 </Typography>
               )}
-              {/* <SimilarStructureSongs spotifyId={id} /> */}
+              {track.duration_ms && (
+                <SimilarDurationTracks
+                  spotifyId={id}
+                  durationMs={track.duration_ms}
+                />
+              )}
+              {track.release_date && (
+                <SameYearTracks
+                  spotifyId={id}
+                  releaseDate={track.release_date}
+                />
+              )}
+              {/* 相同调性歌曲组件 */}
+              {track.key && track.scale && (
+                <SameKeyTracks
+                  spotifyId={id}
+                  keyName={track.key}
+                  scaleName={track.scale}
+                />
+              )}
+              <SameSongStructure
+                spotifyId={id}
+                sections={track.sections}
+              />
+              {track.chords && (
+                <SimilarChordProgressions
+                  spotifyId={id}
+                  chords={track.chords}  // 直接传递track中的chords字段
+                />
+              )}
             </Box>
 
             {/* 异步加载简谱 */}
@@ -223,7 +247,7 @@ export default async function Page({ params }) {
           {/* 嵌入上传组件 */}
           <ChordUpload spotifyId={id} />
 
-           <ScoreDataViewer spotifyId={id} />
+          <ScoreDataViewer spotifyId={id} />
 
         </Card>
 

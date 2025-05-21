@@ -53,7 +53,7 @@ const ScoreDataViewer = ({ spotifyId }) => {
       </Box>
       
       <Box role="tabpanel" hidden={tabValue !== 0}>
-        {tabValue === 0 && <ChordsBySection spotifyId={spotifyId} />}
+        {tabValue === 0 && <ChordsBySection spotifyId={spotifyId} scoreData={scoreData} />}
       </Box>
       
       <Box role="tabpanel" hidden={tabValue !== 1}>
